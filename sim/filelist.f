@@ -1,5 +1,6 @@
 +incdir+../rtl/
 +incdir+../tb/test_lib/
++incdir+../tb/sequence_lib/
 +incdir+../tb/env/
 +incdir+../tb/agent/wb_master/
 
@@ -11,6 +12,7 @@
 // TB Files
 ../tb/tb_top/wb_interface.sv
 ../tb/agent/wb_master/wb_agent_pkg.sv
+../tb/sequence_lib/wb_i2c_seq_pkg.sv
 ../tb/env/wb_i2c_env_pkg.sv
 ../tb/test_lib/wb_i2c_test_pkg.sv
 ../tb/tb_top/tb_top.sv

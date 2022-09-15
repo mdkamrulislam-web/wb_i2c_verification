@@ -28,6 +28,9 @@ module tb_top;
 
   initial begin
     `uvm_info("TB_TOP", "Inside tb_top Initial block", UVM_NONE)
+
+    uvm_config_db#(virtual wb_interface)::set(null, "*", "wb_vintf", wb_intf);
+
     run_test("wb_i2c_base_test");
     #1ms;
     $finish;
