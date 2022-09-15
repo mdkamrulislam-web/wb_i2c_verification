@@ -37,7 +37,12 @@ class wb_agent extends uvm_agent;
   // ! Wishbone Agent Connect Phase
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    `uvm_info(get_full_name(), "Inside Wishbone Agent Connect Phase.", UVM_NONE)
+    `uvm_info(get_full_name(), "Inside Wishbone Agent Connect Phase.", UVM_NONE);
+
+    // Connecting Driver & Sequencer, depending on the Agent.
+    if(wb_agt_con.is_active == UVM_ACTIVE) begin
+      wb_dvr.seq_item_port.connect(wb_sqr.seq_item_export);
+    end
   endfunction
 
   // ! Wishbone Agent Run Phase

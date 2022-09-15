@@ -32,7 +32,6 @@ module tb_top;
     uvm_config_db#(virtual wb_interface)::set(null, "*", "wb_vintf", wb_intf);
 
     run_test("wb_i2c_base_test");
-    #1ms;
     $finish;
   end
 endmodule

@@ -6,4 +6,5 @@ package wb_i2c_test_pkg;
   import wb_agent_pkg::wb_agent_config;
 
   `include "wb_i2c_base_test.sv"
+  `include "wb_sync_rst_test.sv"
 endpackage
