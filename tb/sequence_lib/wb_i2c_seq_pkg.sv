@@ -5,4 +5,6 @@ package wb_i2c_seq_pkg;
 
   `include "wb_i2c_seq.sv"
   `include "wb_sync_rst_seq.sv"
+  `include "wb_wr_seq.sv"
+  `include "wb_rd_seq.sv"
 endpackage

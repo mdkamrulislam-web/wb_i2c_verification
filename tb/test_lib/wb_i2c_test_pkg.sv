@@ -7,4 +7,5 @@ package wb_i2c_test_pkg;
 
   `include "wb_i2c_base_test.sv"
   `include "wb_sync_rst_test.sv"
+  `include "wb_wr_rd_test.sv"
 endpackage

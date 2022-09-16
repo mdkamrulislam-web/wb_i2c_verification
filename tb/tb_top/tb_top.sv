@@ -7,7 +7,7 @@ module tb_top;
   bit WB_CLK_I;
 
   // ! Clock Generation
-  initial forever #5 WB_CLK_I = ~WB_CLK_I;
+  initial forever #15.625 WB_CLK_I = ~WB_CLK_I;
 
   // ! Interface Instance
   wb_interface wb_intf(WB_CLK_I);

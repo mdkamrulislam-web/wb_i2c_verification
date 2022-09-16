@@ -7,7 +7,9 @@ class wb_i2c_base_test extends uvm_test;
   wb_agent_config wb_agt_con;
 
   // ! Declaring handles for different sequences.
-  wb_sync_rst_seq wb_s_rstn_seq;
+  wb_sync_rst_seq wb_s_rstn_sq;
+  wb_wr_seq wb_wr_sq;
+  wb_rd_seq wb_rd_sq;
 
   // ! WB_I2C Base Test Constructor: new
   function new(string name = "wb_i2c_base_test", uvm_component parent = null);
@@ -52,9 +54,33 @@ class wb_i2c_base_test extends uvm_test;
   // ! WB Synchronous Reset Task
   task wb_sync_reset_task();
     // Creating WB Sync Reset Sequence Instance
-    wb_s_rstn_seq = wb_sync_rst_seq::type_id::create("wb_s_rstn_seq");
+    wb_s_rstn_sq = wb_sync_rst_seq::type_id::create("wb_s_rstn_sq");
 
     // Starting WB Sync Reset Sequence through Sequencer
-    wb_s_rstn_seq.start(wb_i2c_env.wb_agt.wb_sqr);
+    wb_s_rstn_sq.start(wb_i2c_env.wb_agt.wb_sqr);
+  endtask
+
+  // ! WB Write Task
+  task wb_write_task(bit randomization, bit [2:0] addr, bit [7:0] data);
+    // Creating WB Write Sequence Instance
+    wb_wr_sq = wb_wr_seq::type_id::create("wb_wr_sq");
+
+    wb_wr_sq.wb_address    = addr;
+    wb_wr_sq.wb_dataIn     = data;
+    wb_wr_sq.randomization = randomization;
+
+    // Starting WB Write Sequence through Sequencer
+    wb_wr_sq.start(wb_i2c_env.wb_agt.wb_sqr);
+  endtask
+
+  // ! WB Read Task
+  task wb_read_task(bit [2:0] addr);
+    // Creating WB Read Sequence Instance
+    wb_rd_sq = wb_rd_seq::type_id::create("wb_rd_sq");
+
+    wb_rd_sq.wb_address    = addr;
+
+    // Starting WB Read Sequence through Sequencer
+    wb_rd_sq.start(wb_i2c_env.wb_agt.wb_sqr);
   endtask
 endclass

@@ -5,7 +5,7 @@ class wb_sequence_item extends uvm_sequence_item;
   rand  logic [2:0] wb_adr_i ;
   rand  logic [7:0] wb_dat_i ;
         logic [7:0] wb_dat_o ;
-        logic       wb_we_i  ;
+  rand  logic       wb_we_i  ;
         logic       wb_stb_i ;
         logic       wb_cyc_i ;
         logic       wb_ack_o ;
