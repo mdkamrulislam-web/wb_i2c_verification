@@ -52,24 +52,24 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
   endtask
 
   task wb_sync_reset();
-    wb_intf.ARST_I   <= 0;
     wb_intf.WB_RST_I <= 0;
     wb_intf.WB_ADR_I <= 0;
     wb_intf.WB_DAT_I <= 0;
     wb_intf.WB_WE_I  <= 0;
     wb_intf.WB_STB_I <= 0;
     wb_intf.WB_CYC_I <= 0;
-
-    @(negedge wb_intf.WB_CLK_I);
+    wb_intf.ARST_I <= 1;
+    repeat (4) @(negedge wb_intf.WB_CLK_I);
 
     wb_intf.WB_RST_I <= 1;
+    wb_intf.ARST_I <= 0;
     @(negedge wb_intf.WB_CLK_I);
   endtask
 
   task wb_write();
     @(posedge wb_intf.WB_CLK_I);
     //wb_intf.WB_RST_I <= 1;
-    //wb_intf.ARST_I <= 1;
+    
     wb_intf.WB_ADR_I <= dvr_seq_item.wb_adr_i;
     wb_intf.WB_DAT_I <= dvr_seq_item.wb_dat_i;
     wb_intf.WB_WE_I  <= 1;

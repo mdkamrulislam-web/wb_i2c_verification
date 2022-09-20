@@ -98,7 +98,7 @@ module i2c_master_top
 	output       wb_inta_o;    // interrupt request signal output
 
 	reg [7:0] wb_dat_o;
-	reg wb_ack_o;
+	reg wb_ack_o = 0;
 	reg wb_inta_o;
 
 	// I2C signals
