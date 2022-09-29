@@ -39,7 +39,7 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
     forever begin
       seq_item_port.get_next_item(dvr_seq_item);
         if(dvr_seq_item.wb_rst_i == 1) begin
-          wb_sync_reset();
+          wb_reset();
         end
         else if((dvr_seq_item.wb_rst_i == 0) && (dvr_seq_item.wb_we_i == 1)) begin
           wb_write();
@@ -50,59 +50,69 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
       seq_item_port.item_done();
     end
   endtask
-
-  task wb_sync_reset();
-    wb_intf.WB_RST_I <= 0;
+  
+  // ! RESET TASK
+  task wb_reset();
     wb_intf.WB_ADR_I <= 0;
     wb_intf.WB_DAT_I <= 0;
     wb_intf.WB_WE_I  <= 0;
     wb_intf.WB_STB_I <= 0;
     wb_intf.WB_CYC_I <= 0;
-    wb_intf.ARST_I <= 1;
-    repeat (4) @(negedge wb_intf.WB_CLK_I);
-
+    
     wb_intf.WB_RST_I <= 1;
+    wb_intf.ARST_I <= 1;
+
+    @(negedge wb_intf.WB_CLK_I);
+
+    wb_intf.WB_RST_I <= 0;
     wb_intf.ARST_I <= 0;
+
+    wb_intf.WB_STB_I <= 0;
+    wb_intf.WB_CYC_I <= 0;
+
     @(negedge wb_intf.WB_CLK_I);
   endtask
 
+  // ! WRITE TASK
   task wb_write();
-    @(posedge wb_intf.WB_CLK_I);
-    //wb_intf.WB_RST_I <= 1;
-    
-    wb_intf.WB_ADR_I <= dvr_seq_item.wb_adr_i;
-    wb_intf.WB_DAT_I <= dvr_seq_item.wb_dat_i;
+    @(negedge wb_intf.WB_CLK_I);
+
     wb_intf.WB_WE_I  <= 1;
     wb_intf.WB_STB_I <= 1;
     wb_intf.WB_CYC_I <= 1;
-    @(posedge wb_intf.WB_CLK_I);
+    
+    @(negedge wb_intf.WB_CLK_I);
+
+    wb_intf.WB_ADR_I <= dvr_seq_item.wb_adr_i;
+    wb_intf.WB_DAT_I <= dvr_seq_item.wb_dat_i;
+
+    @(negedge wb_intf.WB_CLK_I);
+    
+    wb_intf.WB_WE_I  <= 0;
     wb_intf.WB_STB_I <= 0;
     wb_intf.WB_CYC_I <= 0;
+
+    `uvm_info("WRITE_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_I), UVM_NONE)
+    
   endtask
+  
+  // ! READ TASK
 
   task wb_read();
-    @(posedge wb_intf.WB_CLK_I);
-    //wb_intf.WB_RST_I <= 1;
-    //wb_intf.ARST_I <= 1;
+    @(negedge wb_intf.WB_CLK_I);
+
     wb_intf.WB_ADR_I <= dvr_seq_item.wb_adr_i;
     wb_intf.WB_WE_I  <= 0;
     wb_intf.WB_STB_I <= 1;
     wb_intf.WB_CYC_I <= 1;
-    @(posedge wb_intf.WB_CLK_I);
+
+    @(negedge wb_intf.WB_CLK_I);
+  
     wb_intf.WB_STB_I <= 0;
     wb_intf.WB_CYC_I <= 0;
+
+    `uvm_info("READ_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_O), UVM_NONE)
+
   endtask
 
-/*
-WB_RST_I 
-ARST_I   
-WB_ADR_I 
-WB_DAT_I 
-WB_DAT_O 
-WB_WE_I  
-WB_STB_I 
-WB_CYC_I 
-WB_ACK_O 
-WB_INTA_O
-*/
 endclass

@@ -7,7 +7,7 @@ class wb_i2c_base_test extends uvm_test;
   wb_agent_config wb_agt_con;
 
   // ! Declaring handles for different sequences.
-  wb_sync_rst_seq wb_s_rstn_sq;
+  wb_rst_seq wb_rstn_sq;
   wb_wr_seq wb_wr_sq;
   wb_rd_seq wb_rd_sq;
 
@@ -51,13 +51,13 @@ class wb_i2c_base_test extends uvm_test;
     `uvm_info(get_full_name(), "Inside WB_I2C Base Test Run Phase", UVM_NONE)
   endtask
   
-  // ! WB Synchronous Reset Task
-  task wb_sync_reset_task();
-    // Creating WB Sync Reset Sequence Instance
-    wb_s_rstn_sq = wb_sync_rst_seq::type_id::create("wb_s_rstn_sq");
+  // ! WB Reset Task
+  task wb_reset_task();
+    // Creating WB Reset Sequence Instance
+    wb_rstn_sq = wb_rst_seq::type_id::create("wb_rstn_sq");
 
-    // Starting WB Sync Reset Sequence through Sequencer
-    wb_s_rstn_sq.start(wb_i2c_env.wb_agt.wb_sqr);
+    // Starting WB Reset Sequence through Sequencer
+    wb_rstn_sq.start(wb_i2c_env.wb_agt.wb_sqr);
   endtask
 
   // ! WB Write Task

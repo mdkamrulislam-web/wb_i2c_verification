@@ -32,14 +32,22 @@ class wb_wr_rd_test extends wb_i2c_base_test;
 		// * Write --> bit randomization, bit [2:0] addr, bit [7:0] data
     // * Read  --> bit [2:0] addr
     phase.raise_objection(this);
-      wb_sync_reset_task();
-      wb_write_task(0, 1, 100);
+
+      // ! RESET
+      wb_reset_task();
+
+      // ! WRITE
+      wb_write_task(0, 0, 8'h00);
+      wb_write_task(0, 1, 8'h3F);
+      wb_write_task(0, 2, 8'hC0);
+      
+      // ! READ
+      wb_read_task(0);
       wb_read_task(1);
-      wb_write_task(0, 2, 200);
       wb_read_task(2);
-      wb_write_task(0, 3, 150);
-      wb_read_task(3);
+
       #100;
+
     phase.drop_objection(this);
   endtask
 endclass
