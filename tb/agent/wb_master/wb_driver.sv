@@ -11,30 +11,30 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
   // ! Wishbone Driver Constructor
   function new(string name = "wb_driver", uvm_component parent = null);
     super.new(name, parent);
-    `uvm_info(get_full_name(), "Inside Wishbone Driver Constructor.", UVM_NONE)
+    `uvm_info(get_full_name(), "Inside Wishbone Driver Constructor.", UVM_MEDIUM)
   endfunction
   
   // ! Wishbone Driver Build Phase
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    `uvm_info(get_full_name(), "Inside Wishbone Driver Build Phase.", UVM_NONE)
+    `uvm_info(get_full_name(), "Inside Wishbone Driver Build Phase.", UVM_MEDIUM)
 
     if(!uvm_config_db#(virtual wb_interface)::get(this, "", "wb_vintf", wb_intf)) begin
       `uvm_fatal("WB Virtual Interface Not Found Inside Driver!", {"Virtual interface must be set for: ",get_full_name(),".wb_vintf"})
     end
     else begin
-      `uvm_info("WB_INTF", "WB Virtual Interface found inside driver.", UVM_NONE)
+      `uvm_info("WB_INTF", "WB Virtual Interface found inside driver.", UVM_MEDIUM)
     end
   endfunction
   
   // ! Wishbone Driver Connect Phase
   virtual function void connect_phase(uvm_phase phase);
-    `uvm_info(get_full_name(), "Inside Wishbone Driver Connect Phase.", UVM_NONE)
+    `uvm_info(get_full_name(), "Inside Wishbone Driver Connect Phase.", UVM_MEDIUM)
   endfunction
   
   // ! Wishbone Driver Run Phase
   task run_phase(uvm_phase phase);
-    `uvm_info(get_full_name(), "Inside Wishbone Driver Run Phase.", UVM_NONE)
+    `uvm_info(get_full_name(), "Inside Wishbone Driver Run Phase.", UVM_MEDIUM)
 
     forever begin
       seq_item_port.get_next_item(dvr_seq_item);
@@ -60,17 +60,17 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
     wb_intf.WB_CYC_I <= 0;
     
     wb_intf.WB_RST_I <= 1;
-    wb_intf.ARST_I <= 1;
+    wb_intf.ARST_I   <= 1;
 
     @(negedge wb_intf.WB_CLK_I);
 
     wb_intf.WB_RST_I <= 0;
-    wb_intf.ARST_I <= 0;
+    wb_intf.ARST_I   <= 0;
 
     wb_intf.WB_STB_I <= 0;
     wb_intf.WB_CYC_I <= 0;
-
-    @(negedge wb_intf.WB_CLK_I);
+    
+    repeat (5) @(negedge wb_intf.WB_CLK_I);
   endtask
 
   // ! WRITE TASK
@@ -86,14 +86,14 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
     wb_intf.WB_ADR_I <= dvr_seq_item.wb_adr_i;
     wb_intf.WB_DAT_I <= dvr_seq_item.wb_dat_i;
 
-    @(negedge wb_intf.WB_CLK_I);
+    //@(negedge wb_intf.WB_CLK_I);
     
     wb_intf.WB_WE_I  <= 0;
     wb_intf.WB_STB_I <= 0;
     wb_intf.WB_CYC_I <= 0;
 
-    `uvm_info("WRITE_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_I), UVM_NONE)
-    
+    `uvm_info("WRITE_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_I), UVM_LOW)
+    @(negedge wb_intf.WB_CLK_I);
   endtask
   
   // ! READ TASK
@@ -101,18 +101,21 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
   task wb_read();
     @(negedge wb_intf.WB_CLK_I);
 
-    wb_intf.WB_ADR_I <= dvr_seq_item.wb_adr_i;
     wb_intf.WB_WE_I  <= 0;
-    wb_intf.WB_STB_I <= 1;
-    wb_intf.WB_CYC_I <= 1;
+    wb_intf.WB_STB_I <= 0;
+    wb_intf.WB_CYC_I <= 0;    
 
     @(negedge wb_intf.WB_CLK_I);
-  
+
+    wb_intf.WB_ADR_I <= dvr_seq_item.wb_adr_i;
+
+    //@(negedge wb_intf.WB_CLK_I);
+
     wb_intf.WB_STB_I <= 0;
     wb_intf.WB_CYC_I <= 0;
 
-    `uvm_info("READ_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_O), UVM_NONE)
+    `uvm_info("READ_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_O), UVM_LOW)
 
+    @(negedge wb_intf.WB_CLK_I);
   endtask
-
 endclass

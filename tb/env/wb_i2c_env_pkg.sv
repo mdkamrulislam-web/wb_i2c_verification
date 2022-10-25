@@ -1,6 +1,6 @@
 package wb_i2c_env_pkg;
   import uvm_pkg::*;
-  //`include "uvm_macros.svh"
+  `include "uvm_macros.svh"
   
   import wb_agent_pkg::*;
 

@@ -11,13 +11,13 @@ class wb_agent extends uvm_agent;
   // ! Wishbone Agent Constructor
   function new(string name = "wb_agent", uvm_component parent = null);
     super.new(name, parent);
-    `uvm_info(get_full_name(), "Inside Wishbone Agent Constructor.", UVM_NONE)
+    `uvm_info(get_full_name(), "Inside Wishbone Agent Constructor.", UVM_MEDIUM)
   endfunction
 
   // ! Wishbone Agent Build Phase
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    `uvm_info(get_full_name(), "Inside Wishbone Agent Build Phase.", UVM_NONE)
+    `uvm_info(get_full_name(), "Inside Wishbone Agent Build Phase.", UVM_MEDIUM)
 
     // Getting WB_AGENT_CON from UVM Configuration Database which was set from WB_I2C_Environment to Configure WB_Agent.
     if(!uvm_config_db#(wb_agent_config)::get(this, "", "wb_agent_config", wb_agt_con)) begin
@@ -31,13 +31,12 @@ class wb_agent extends uvm_agent;
     end
 
     wb_mtr = wb_monitor::type_id::create("wb_mtr", this);
-		
   endfunction
 
   // ! Wishbone Agent Connect Phase
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    `uvm_info(get_full_name(), "Inside Wishbone Agent Connect Phase.", UVM_NONE);
+    `uvm_info(get_full_name(), "Inside Wishbone Agent Connect Phase.", UVM_MEDIUM);
 
     // Connecting Driver & Sequencer, depending on the Agent.
     if(wb_agt_con.is_active == UVM_ACTIVE) begin
@@ -47,6 +46,6 @@ class wb_agent extends uvm_agent;
 
   // ! Wishbone Agent Run Phase
   task run_phase(uvm_phase phase);
-    `uvm_info(get_full_name(), "Inside Wishbone Agent Run Phase.", UVM_NONE)
+    `uvm_info(get_full_name(), "Inside Wishbone Agent Run Phase.", UVM_MEDIUM)
   endtask
 endclass

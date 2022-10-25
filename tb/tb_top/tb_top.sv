@@ -1,3 +1,4 @@
+`include "uvm_macros.svh"
 module tb_top;
   // ! Importing UVM Package and Test Package
   import uvm_pkg::*;
@@ -14,7 +15,7 @@ module tb_top;
 
   // ! DUT instance
   i2c_master_top I2C_DUT(
-    .wb_clk_i   (  wb_intf.WB_CLK_I  )  ,
+    .wb_clk_i   (  wb_intf.WB_CLK_I   )  ,
     .wb_rst_i   (  wb_intf.WB_RST_I   )  ,
     .arst_i     (  wb_intf.ARST_I     )  ,
     .wb_adr_i   (  wb_intf.WB_ADR_I   )  ,
@@ -28,7 +29,7 @@ module tb_top;
   );
 
   initial begin
-    `uvm_info("TB_TOP", "Inside tb_top Initial block", UVM_NONE)
+    `uvm_info("TB_TOP", "Inside tb_top Initial block", UVM_MEDIUM)
 
     uvm_config_db#(virtual wb_interface)::set(null, "*", "wb_vintf", wb_intf);
 

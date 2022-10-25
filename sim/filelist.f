@@ -1,3 +1,6 @@
++incdir+C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src/
+C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src/uvm_pkg.sv
+
 +incdir+../rtl/
 +incdir+../tb/test_lib/
 +incdir+../tb/sequence_lib/
@@ -16,3 +19,5 @@
 ../tb/env/wb_i2c_env_pkg.sv
 ../tb/test_lib/wb_i2c_test_pkg.sv
 ../tb/tb_top/tb_top.sv
+
++define+UVM_NO_DPI

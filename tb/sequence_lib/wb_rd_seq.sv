@@ -8,8 +8,18 @@ class wb_rd_seq extends wb_i2c_seq;
   endfunction
 
   virtual task body();
-    `uvm_info("WB_RD_SEQ", "Inside WB Read Sequence Constructor.", UVM_NONE)
+    `uvm_info("WB_RD_SEQ", "Inside WB Read Sequence Constructor.", UVM_MEDIUM)
     
+    wb_item = wb_sequence_item::type_id::create("wb_item");
+
+    wait_for_grant();
+      wb_item.wb_adr_i = wb_address;
+      wb_item.wb_rst_i = 0;
+      wb_item.wb_we_i  = 0;
+      send_request(wb_item);
+    wait_for_item_done();
+    
+    /*
     `uvm_do_with(
       wb_item,
       {
@@ -18,6 +28,7 @@ class wb_rd_seq extends wb_i2c_seq;
         wb_item.wb_we_i  == 0;
       }
     )
+    */
   endtask
 
 /*

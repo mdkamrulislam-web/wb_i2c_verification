@@ -80,12 +80,12 @@ module i2c_master_byte_ctrl
 	//
 	// inputs & outputs
 	//
-	input clk;     // master clock
-    input [6:0] my_addr; // Slave address input
-	input rst;     // synchronous active high reset
-	input nReset;  // asynchronous active low reset
-	input ena;     // core enable signal
-    input sl_cont;
+	input        clk;     // master clock
+  input [6:0]  my_addr; // Slave address input
+	input        rst;     // synchronous active high reset
+	input        nReset;  // asynchronous active low reset
+	input        ena;     // core enable signal
+  input        sl_cont;
 	input [15:0] clk_cnt; // 4x SCL
 
 	// control inputs
@@ -98,25 +98,25 @@ module i2c_master_byte_ctrl
 
 	// status outputs
 	output       cmd_ack;
-	reg cmd_ack;
+	reg          cmd_ack;
 	output       ack_out;
-	reg ack_out;
+	reg          ack_out;
 	output       i2c_busy;
 	output       i2c_al;
 	output [7:0] dout;
 
 	// I2C signals
-	input  scl_i;
-	output scl_o;
-	output scl_oen;
-	input  sda_i;
-	output sda_o;
-	output sda_oen;
-    input 	slave_en;
-    output reg 	slave_dat_req;
-    output reg 	slave_dat_avail;
-    output reg 	slave_act;
-    output reg 	slave_cmd_ack;
+	input       scl_i;
+	output      scl_o;
+	output      scl_oen;
+	input       sda_i;
+	output      sda_o;
+	output      sda_oen;
+  input 	    slave_en;
+  output reg 	slave_dat_req;
+  output reg 	slave_dat_avail;
+  output reg 	slave_act;
+  output reg 	slave_cmd_ack;
 	//
 	// Variable declarations
 	//
@@ -146,7 +146,7 @@ module i2c_master_byte_ctrl
 	// signals for shift register
 	reg [7:0] sr; //8bit shift register
 	reg       shift, ld;
-	reg 	  master_mode;
+	reg 	    master_mode;
 	reg [1:0] slave_cmd_out;
 	// signals for state machine
 	wire       go;
