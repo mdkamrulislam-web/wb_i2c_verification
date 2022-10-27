@@ -39,11 +39,18 @@ class wb_wr_rd_test extends wb_i2c_base_test;
       // ! WRITE
       //wb_write_task(0, 1, 8'h3F);
       //wb_write_task(0, 0, 8'h00);
-      wb_write_task(0, 2, 8'hC0);
-      wb_write_task(0, 9, 8'hEF);
+/*      wb_write_task(0, 2, 8'h30);
+      wb_write_task(0, 0, 8'h3F);
 
       wb_read_task(2);
-      wb_read_task(9);
+      wb_read_task(0);
+
+      #200;
+*/
+      wb_write_task(0, 1, 8'h03);
+      wb_read_task(1);
+      wb_write_task(0, 2, 8'h02);
+      wb_read_task(2);
       
       // ! READ
       //wb_read_task(0);

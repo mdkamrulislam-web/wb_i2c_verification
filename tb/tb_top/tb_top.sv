@@ -14,7 +14,7 @@ module tb_top;
   wb_interface wb_intf(WB_CLK_I);
 
   // ! DUT instance
-  i2c_master_top I2C_DUT(
+  i2c_master_top WB_DUT(
     .wb_clk_i   (  wb_intf.WB_CLK_I   )  ,
     .wb_rst_i   (  wb_intf.WB_RST_I   )  ,
     .arst_i     (  wb_intf.ARST_I     )  ,

@@ -8,10 +8,15 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
   // ! Declaring a handle for WB_SEQUENCE_ITEM, which will be used to receive incoming packet for driving data to the DUT.
   wb_sequence_item dvr_seq_item;
 
+  // ! Declearing uvm_analysis_port, which is used to send packets from driver to scoreboard.
+	uvm_analysis_port #(wb_sequence_item) wb_dvr2scb_port;
+
   // ! Wishbone Driver Constructor
   function new(string name = "wb_driver", uvm_component parent = null);
     super.new(name, parent);
     `uvm_info(get_full_name(), "Inside Wishbone Driver Constructor.", UVM_MEDIUM)
+
+    wb_dvr2scb_port = new("wb_dvr_scb", this);
   endfunction
   
   // ! Wishbone Driver Build Phase
@@ -75,8 +80,6 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
 
   // ! WRITE TASK
   task wb_write();
-    @(negedge wb_intf.WB_CLK_I);
-
     wb_intf.WB_WE_I  <= 1;
     wb_intf.WB_STB_I <= 1;
     wb_intf.WB_CYC_I <= 1;
@@ -86,36 +89,33 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
     wb_intf.WB_ADR_I <= dvr_seq_item.wb_adr_i;
     wb_intf.WB_DAT_I <= dvr_seq_item.wb_dat_i;
 
-    //@(negedge wb_intf.WB_CLK_I);
+    @(negedge wb_intf.WB_CLK_I);
+
+    wb_dvr2scb_port.write(dvr_seq_item);
     
+    `uvm_info("DRIVER_WRITE_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_I), UVM_LOW)
+
     wb_intf.WB_WE_I  <= 0;
     wb_intf.WB_STB_I <= 0;
     wb_intf.WB_CYC_I <= 0;
-
-    `uvm_info("WRITE_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_I), UVM_LOW)
-    @(negedge wb_intf.WB_CLK_I);
   endtask
   
   // ! READ TASK
-
   task wb_read();
-    @(negedge wb_intf.WB_CLK_I);
-
     wb_intf.WB_WE_I  <= 0;
-    wb_intf.WB_STB_I <= 0;
-    wb_intf.WB_CYC_I <= 0;    
+    wb_intf.WB_STB_I <= 1;
+    wb_intf.WB_CYC_I <= 1;    
 
     @(negedge wb_intf.WB_CLK_I);
 
     wb_intf.WB_ADR_I <= dvr_seq_item.wb_adr_i;
 
-    //@(negedge wb_intf.WB_CLK_I);
+    @(negedge wb_intf.WB_CLK_I);
 
+    //`uvm_info("READ_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_O), UVM_LOW)
+
+    wb_intf.WB_WE_I  <= 0;
     wb_intf.WB_STB_I <= 0;
     wb_intf.WB_CYC_I <= 0;
-
-    `uvm_info("READ_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_O), UVM_LOW)
-
-    @(negedge wb_intf.WB_CLK_I);
   endtask
 endclass
