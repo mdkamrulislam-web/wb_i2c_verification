@@ -199,3 +199,42 @@
   CREATE_STREAM @0 {NAME:wb_rstn_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:635}
   CREATE_STREAM @192 {NAME:wb_wr_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:680}
   CREATE_STREAM @256 {NAME:wb_rd_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:694}
+  CREATE_STREAM @0 {NAME:wb_rstn_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:635}
+  CREATE_STREAM @192 {NAME:wb_wr_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:680}
+  CREATE_STREAM @256 {NAME:wb_rd_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:694}
+  CREATE_STREAM @0 {NAME:wb_rstn_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:635}
+  CREATE_STREAM @192 {NAME:wb_wr_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:680}
+  CREATE_STREAM @256 {NAME:wb_rd_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:694}
+  CREATE_STREAM @0 {NAME:wb_rstn_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:637}
+  CREATE_STREAM @192 {NAME:wb_wr_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:682}
+  CREATE_STREAM @256 {NAME:wb_rd_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:700}
+  CREATE_STREAM @0 {NAME:wb_rstn_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:637}
+  CREATE_STREAM @192 {NAME:wb_wr_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:682}
+  CREATE_STREAM @256 {NAME:wb_rd_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:698}
+  CREATE_STREAM @0 {NAME:wb_rstn_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:637}
+  CREATE_STREAM @192 {NAME:wb_wr_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:682}
+  CREATE_STREAM @256 {NAME:wb_rd_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:698}
+  CREATE_STREAM @0 {NAME:wb_rstn_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:637}
+  CREATE_STREAM @192 {NAME:wb_wr_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:682}
+  CREATE_STREAM @256 {NAME:wb_rd_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:700}
+  CREATE_STREAM @0 {NAME:wb_rstn_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:647}
+  CREATE_STREAM @192 {NAME:wb_wr_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:696}
+  CREATE_STREAM @256 {NAME:wb_rd_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:712}
+  CREATE_STREAM @0 {NAME:wb_rstn_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:647}
+  CREATE_STREAM @192 {NAME:wb_wr_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:696}
+  CREATE_STREAM @256 {NAME:wb_rd_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:712}
+  CREATE_STREAM @0 {NAME:wb_rstn_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:645}
+  CREATE_STREAM @192 {NAME:wb_wr_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:694}
+  CREATE_STREAM @256 {NAME:wb_rd_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:708}
+  CREATE_STREAM @0 {NAME:wb_rstn_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:647}
+  CREATE_STREAM @192 {NAME:wb_wr_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:696}
+  CREATE_STREAM @256 {NAME:wb_rd_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:712}
+  CREATE_STREAM @0 {NAME:wb_rstn_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:645}
+  CREATE_STREAM @192 {NAME:wb_wr_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:694}
+  CREATE_STREAM @256 {NAME:wb_rd_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:708}
+  CREATE_STREAM @0 {NAME:wb_rstn_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:645}
+  CREATE_STREAM @192 {NAME:wb_wr_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:694}
+  CREATE_STREAM @256 {NAME:wb_rd_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:708}
+  CREATE_STREAM @0 {NAME:wb_rstn_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:645}
+  CREATE_STREAM @192 {NAME:wb_wr_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:694}
+  CREATE_STREAM @256 {NAME:wb_rd_sq T:Transactions SCOPE:uvm_test_top.wb_i2c_env.wb_agt.wb_sqr STREAM:708}
