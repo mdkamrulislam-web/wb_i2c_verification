@@ -1,19 +1,31 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
-add wave -noupdate /tb_top/wb_intf/WB_CLK_I
-add wave -noupdate /tb_top/wb_intf/WB_RST_I
-add wave -noupdate /tb_top/wb_intf/ARST_I
-add wave -noupdate -radix hexadecimal -expand /tb_top/wb_intf/WB_ADR_I
-add wave -noupdate -radix hexadecimal /tb_top/wb_intf/WB_DAT_I
-add wave -noupdate -radix hexadecimal /tb_top/wb_intf/WB_DAT_O
-add wave -noupdate /tb_top/wb_intf/WB_WE_I
-add wave -noupdate /tb_top/wb_intf/WB_STB_I
-add wave -noupdate /tb_top/wb_intf/WB_CYC_I
-add wave -noupdate /tb_top/wb_intf/WB_ACK_O
-add wave -noupdate /tb_top/wb_intf/WB_INTA_O
+add wave -noupdate /tb_top/wb_i2c_intf/WB_CLK_I
+add wave -noupdate /tb_top/wb_i2c_intf/WB_RST_I
+add wave -noupdate /tb_top/wb_i2c_intf/ARST_I
+add wave -noupdate -radix hexadecimal /tb_top/wb_i2c_intf/WB_ADR_I
+add wave -noupdate -radix hexadecimal /tb_top/wb_i2c_intf/WB_DAT_I
+add wave -noupdate -radix hexadecimal /tb_top/wb_i2c_intf/WB_DAT_O
+add wave -noupdate /tb_top/wb_i2c_intf/WB_WE_I
+add wave -noupdate /tb_top/wb_i2c_intf/WB_STB_I
+add wave -noupdate /tb_top/wb_i2c_intf/WB_CYC_I
+add wave -noupdate /tb_top/wb_i2c_intf/WB_ACK_O
+add wave -noupdate /tb_top/wb_i2c_intf/WB_INTA_O
+add wave -noupdate /tb_top/wb_i2c_intf/SCL_PAD_I
+add wave -noupdate /tb_top/wb_i2c_intf/SCL_PAD_O
+add wave -noupdate /tb_top/wb_i2c_intf/SCL_PADOEN_O
+add wave -noupdate /tb_top/wb_i2c_intf/SDA_PAD_I
+add wave -noupdate /tb_top/wb_i2c_intf/SDA_PAD_O
+add wave -noupdate /tb_top/wb_i2c_intf/SDA_PADOEN_O
+add wave -noupdate /tb_top/WB_DUT/scl_pad_i
+add wave -noupdate /tb_top/WB_DUT/scl_pad_o
+add wave -noupdate /tb_top/WB_DUT/scl_padoen_o
+add wave -noupdate /tb_top/WB_DUT/sda_pad_i
+add wave -noupdate /tb_top/WB_DUT/sda_pad_o
+add wave -noupdate /tb_top/WB_DUT/sda_padoen_o
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {0 ps} 0}
-quietly wave cursor active 0
+WaveRestoreCursors {{Cursor 1} {123 ps} 0}
+quietly wave cursor active 1
 configure wave -namecolwidth 211
 configure wave -valuecolwidth 100
 configure wave -justifyvalue left
@@ -28,4 +40,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {953 ps}
+WaveRestoreZoom {0 ps} {459480 ps}

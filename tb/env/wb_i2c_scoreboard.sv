@@ -53,14 +53,14 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
       exp_item = exp_que.pop_front();
       if(wb_act_item.wb_adr_i == exp_item.wb_adr_i) begin
         if(wb_act_item.wb_dat_o == exp_item.wb_dat_i) begin
-          uvm_report_info("PASSED", $psprintf("\tCAPTURED DATA & EXPECTED DATA MATCHED =====> EXPECTED ADDR = %h\tCAPTURED ADDR = %h\tEXPECTED DATA = %h\tCAPTURED DATA = %h\t", exp_item.wb_adr_i, wb_act_item.wb_adr_i, exp_item.wb_dat_i, wb_act_item.wb_dat_o), UVM_NONE);
+          uvm_report_info("PASSED", $psprintf("CAPTURED DATA & EXPECTED DATA MATCHED =====> EXPECTED ADDR = %h :: CAPTURED ADDR = %h :: EXPECTED DATA = %h :: CAPTURED DATA = %h\t", exp_item.wb_adr_i, wb_act_item.wb_adr_i, exp_item.wb_dat_i, wb_act_item.wb_dat_o), UVM_NONE);
         end
         else begin
-					uvm_report_info("FAILED", $psprintf("\tCAPTURED DATA & EXPECTED DATA MISMATCHED =====> EXPECTED ADDR = %h\tCAPTURED ADDR = %h\tEXPECTED DATA = %h\tCAPTURED DATA = %h\t", exp_item.wb_adr_i, wb_act_item.wb_adr_i, exp_item.wb_dat_i, wb_act_item.wb_dat_o), UVM_NONE);
+					uvm_report_info("FAILED", $psprintf("CAPTURED DATA & EXPECTED DATA MISMATCHED =====> EXPECTED ADDR = %h :: CAPTURED ADDR = %h :: EXPECTED DATA = %h :: CAPTURED DATA = %h\t", exp_item.wb_adr_i, wb_act_item.wb_adr_i, exp_item.wb_dat_i, wb_act_item.wb_dat_o), UVM_NONE);
 				end
       end
       else begin
-        uvm_report_info("FAILED", $psprintf("\tCAPTURED DATA & EXPECTED DATA MISMATCHED =====> EXPECTED ADDR = %h\tCAPTURED ADDR = %h\tEXPECTED DATA = %h\tCAPTURED DATA = %h\t", exp_item.wb_adr_i, wb_act_item.wb_adr_i, exp_item.wb_dat_i, wb_act_item.wb_dat_o), UVM_NONE);
+        uvm_report_info("FAILED", $psprintf("CAPTURED DATA & EXPECTED DATA MISMATCHED =====> EXPECTED ADDR = %h :: CAPTURED ADDR = %h :: EXPECTED DATA = %h :: CAPTURED DATA = %h\t", exp_item.wb_adr_i, wb_act_item.wb_adr_i, exp_item.wb_dat_i, wb_act_item.wb_dat_o), UVM_NONE);
       end
     end
   endfunction

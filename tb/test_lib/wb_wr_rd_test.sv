@@ -1,66 +1,87 @@
 class wb_wr_rd_test extends wb_i2c_base_test;
-  // ! Factory registration of WB Write Read Test
+  // Factory registration of WB Write Read Test
   `uvm_component_utils(wb_wr_rd_test)
+  
+  parameter PRER_LO = 3'b000;
+  parameter PRER_HI = 3'b001;
+  parameter CTR     = 3'b010;
+  parameter TXR     = 3'b011;
+  parameter CR      = 3'b100;
+  parameter RXR     = 3'b011;
+  parameter SR      = 3'b100;
+  parameter SLVADDR = 7'b0010_000;
+  parameter WR      = 1'b0;
+  parameter RD      = 1'b1;
 
-  // ! WB Write Read Test Constructor
+  reg [7:0] check_SR;
+  reg [7:0] data_R;
+
+  // WB Write Read Test Constructor
   function new(string name = "wb_wr_rd_test", uvm_component parent = null);
     super.new(name, parent);
     `uvm_info(get_full_name(), "Inside WB Write Read Test Constructor.", UVM_MEDIUM)
   endfunction
 
-  // ! WB Write Read Test Build Phase
+  // WB Write Read Test Build Phase
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
     `uvm_info(get_full_name(), "Inside WB Write Read Test Build Phase", UVM_MEDIUM)
   endfunction
 
-  // ! WB Write Read Test Connect Phase 
+  // WB Write Read Test Connect Phase 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
     `uvm_info(get_full_name(), "Inside WB Write Read Test Connect Phase.", UVM_MEDIUM)
   endfunction
-  // ! WB Write Read Test Run Phase
+  // WB Write Read Test Run Phase
   task run_phase(uvm_phase phase);
     `uvm_info(get_full_name(), "Inside WB Write Read Test Run Phase.", UVM_MEDIUM)
 
     /*
-		UVM testbench components which uses an objection mechanism share a counter between them.
-		The method raise_objection increments the count & drop_objection decrements the count.
-		*/
+      UVM testbench components which uses an objection mechanism share a counter between them.
+      The method raise_objection increments the count & drop_objection decrements the count.
+    */
 
-		// Objection raised to increment the count, so that the test doesn't stop immediately.
-		// * Write --> bit randomization, bit [2:0] addr, bit [7:0] data
+    // Objection raised to increment the count, so that the test doesn't stop immediately.
+    // * Write --> bit randomization, bit [2:0] addr, bit [7:0] data
     // * Read  --> bit [2:0] addr
     phase.raise_objection(this);
 
-      // ! RESET
+      // RESET
       wb_reset_task();
 
-      // ! WRITE
-      //wb_write_task(0, 1, 8'h3F);
-      //wb_write_task(0, 0, 8'h00);
-/*      wb_write_task(0, 2, 8'h30);
-      wb_write_task(0, 0, 8'h3F);
-
-      wb_read_task(2);
-      wb_read_task(0);
-
-      #200;
-*/
-      wb_write_task(0, 1, 8'h03);
-      wb_read_task(1);
-      wb_write_task(0, 2, 8'h02);
-      wb_read_task(2);
+      ////////////////////////////////////
+      // Initialize The I2C Master Core //
+      ////////////////////////////////////
+      // Setting the Prescale Register to the desired Value
+      wb_write_task(0, PRER_LO, 8'h64);
+      wb_write_task(0, PRER_HI, 8'h00);
       
-      // ! READ
-      //wb_read_task(0);
-      //wb_read_task(1);
-      //wb_read_task(2);
+      // Enabling the Core
+      wb_write_task(0, CTR, 8'h80);
 
-      #100;
+      /////////////////////////////
+      // Write to a Slave Device //
+      /////////////////////////////
+      // Transmit Register
+      // wb_write_task(0, 3, 8'h8A); // Slv Addr = 8'h45, Wr = 0 :: {8'h45, 0} = 8'h8A
+      // wb_write_task(0, 3, 8'h20); // Slv Addr = 8'h10, Wr = 0 :: {8'h10, 0} = 8'h20
+      // wb_write_task(0, 3, 8'h20); // Slv Addr = 8'h51, Wr = 0 :: {8'h51, 0} = 8'hA2
+      //wb_write_task(0, TXR, 8'hFC); // Slv Addr = 8'h7E, Wr = 0 :: {8'h7E, 0} = 8'hFC
+      wb_write_task(0, TXR, {SLVADDR,WR}); // Slv Addr = 8'h7E, Wr = 0 :: {8'h7E, 0} = 8'hFC
+// b111_1110
+      // Enabling Start and Write
+      wb_write_task(0, CR, 8'h90);
+
+      // Setting Slave Memory Address for the data to be written
+      //wb_write_task(0, 3, 8'hAC);
+
+      // Setting Command Register to such a value so that a Write Transfer can be done
+      //wb_write_task(0, 4, 8'h10);
+
+      #1000000ns;
 
     phase.drop_objection(this);
 
   endtask
 endclass
-

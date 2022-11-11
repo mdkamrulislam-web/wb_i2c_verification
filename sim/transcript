@@ -1,6 +1,6 @@
-# vsim tb_top "+UVM_TESTNAME=wb_wr_rd_test" "+UVM_VERBOSITY=UVM_NONE" 
-# Start time: 16:34:01 on Oct 27,2022
-# Loading C:/Users/Training/AppData/Local/Temp\Training@DESKTOP-NNJKP08_dpi_16112\win32pe_gcc-4.2.1\export_tramp.dll
+# vsim tb_top "+UVM_TESTNAME=wb_wr_rd_test" "+UVM_VERBOSITY=UVM_NONE" -do "run.do" -onfinish stop 
+# Start time: 11:03:46 on Nov 11,2022
+# Loading C:/Users/Training/AppData/Local/Temp\Training@DESKTOP-NNJKP08_dpi_2192\win32pe_gcc-4.2.1\export_tramp.dll
 # ** Note: (vsim-8785) UVM-aware debugging capabilities will be disabled since no compiled "questa_uvm_pkg" can be found.
 # This also means that later if you turn on UVM-aware debugging your debug simulations may have
 # different random seeds from your non-debug simulations.
@@ -15,29 +15,16 @@
 # Loading work.i2c_master_top
 # Loading work.i2c_master_byte_ctrl
 # Loading work.i2c_master_bit_ctrl
-# Compiling C:/Users/Training/AppData/Local/Temp\Training@DESKTOP-NNJKP08_dpi_16112\win32pe_gcc-4.2.1\exportwrapper.c
-# Loading C:/Users/Training/AppData/Local/Temp\Training@DESKTOP-NNJKP08_dpi_16112\win32pe_gcc-4.2.1\vsim_auto_compile.dll
-# ** Warning: Design size of 56430 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
+# Compiling C:/Users/Training/AppData/Local/Temp\Training@DESKTOP-NNJKP08_dpi_2192\win32pe_gcc-4.2.1\exportwrapper.c
+# Loading C:/Users/Training/AppData/Local/Temp\Training@DESKTOP-NNJKP08_dpi_2192\win32pe_gcc-4.2.1\vsim_auto_compile.dll
+# ** Warning: Design size of 56465 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
 # Expect performance to be adversely affected.
-add wave -position insertpoint  \
-sim:/tb_top/wb_i2c_intf/WB_CLK_I \
-sim:/tb_top/wb_i2c_intf/WB_RST_I \
-sim:/tb_top/wb_i2c_intf/ARST_I \
-sim:/tb_top/wb_i2c_intf/WB_ADR_I \
-sim:/tb_top/wb_i2c_intf/WB_DAT_I \
-sim:/tb_top/wb_i2c_intf/WB_DAT_O \
-sim:/tb_top/wb_i2c_intf/WB_WE_I \
-sim:/tb_top/wb_i2c_intf/WB_STB_I \
-sim:/tb_top/wb_i2c_intf/WB_CYC_I \
-sim:/tb_top/wb_i2c_intf/WB_ACK_O \
-sim:/tb_top/wb_i2c_intf/WB_INTA_O \
-sim:/tb_top/wb_i2c_intf/SCL_PAD_I \
-sim:/tb_top/wb_i2c_intf/SCL_PAD_O \
-sim:/tb_top/wb_i2c_intf/SCL_PADOEN_O \
-sim:/tb_top/wb_i2c_intf/SDA_PAD_I \
-sim:/tb_top/wb_i2c_intf/SDA_PAD_O \
-sim:/tb_top/wb_i2c_intf/SDA_PADOEN_O
-run -all
+# do run.do
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: Training  Hostname: DESKTOP-NNJKP08  ProcessID: 5948
+#           Attempting to use alternate WLF file "./wlftakjisi".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftakjisi
 # UVM_INFO C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src//base/uvm_root.svh(392) @ 0: reporter [UVM/RELNOTES] 
 # ----------------------------------------------------------------
 # UVM-1.2
@@ -62,9 +49,101 @@ run -all
 # 
 # UVM_INFO C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src//base/uvm_root.svh(453) @ 0: reporter [NO_DPI_TSTNAME] UVM_NO_DPI defined--getting UVM_TESTNAME directly, without DPI
 # UVM_INFO C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src//base/uvm_traversal.svh(279) @ 0: reporter [UVM/COMP/NAMECHECK] This implementation of the component name checks requires DPI to be enabled
-# UVM_INFO @ 320: uvm_test_top.wb_i2c_env.wb_i2c_sb [PASSED] 	CAPTURED DATA & EXPECTED DATA MATCHED =====> EXPECTED ADDR = 1	CAPTURED ADDR = 1	EXPECTED DATA = 03	CAPTURED DATA = 03	
-# UVM_INFO @ 448: uvm_test_top.wb_i2c_env.wb_i2c_sb [PASSED] 	CAPTURED DATA & EXPECTED DATA MATCHED =====> EXPECTED ADDR = 2	CAPTURED ADDR = 2	EXPECTED DATA = 02	CAPTURED DATA = 02	
 # ** Note: $finish    : C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src//base/uvm_root.svh(517)
-#    Time: 548 ps  Iteration: 68  Instance: /tb_top
-# 1
+#    Time: 1000512 ns  Iteration: 68  Instance: /tb_top
 # Break in Task uvm_pkg/uvm_root::run_test at C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src//base/uvm_root.svh line 517
+do rerun.do
+# End time: 11:28:32 on Nov 11,2022, Elapsed time: 0:24:46
+# Errors: 0, Warnings: 3
+# Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+# Start time: 11:28:33 on Nov 11,2022
+# vlog -reportprogress 300 -f filelist.f 
+# -- Compiling package uvm_pkg (uvm-1.2 Built-in)
+# ** Warning: C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src//seq/uvm_sequencer_base.svh(1499): (vlog-2186) SystemVerilog testbench feature
+# (randomization, coverage or assertion) detected in the design.
+# These features are only supported in Questasim.
+# ** Warning: C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src//seq/uvm_sequencer_base.svh(1662): (vlog-2186) SystemVerilog testbench feature
+# (randomization, coverage or assertion) detected in the design.
+# These features are only supported in Questasim.
+# ** Warning: C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src//seq/uvm_sequence_base.svh(1333): (vlog-2186) SystemVerilog testbench feature
+# (randomization, coverage or assertion) detected in the design.
+# These features are only supported in Questasim.
+# -- Compiling module i2c_master_bit_ctrl
+# -- Compiling module i2c_master_byte_ctrl
+# -- Compiling module i2c_master_top
+# -- Compiling interface wb_i2c_interface
+# -- Compiling package wb_agent_pkg
+# -- Importing package uvm_pkg (uvm-1.2 Built-in)
+# -- Compiling package wb_i2c_seq_pkg
+# -- Importing package wb_agent_pkg
+# -- Compiling package wb_i2c_env_pkg
+# -- Compiling package wb_i2c_test_pkg
+# -- Importing package wb_i2c_seq_pkg
+# -- Importing package wb_i2c_env_pkg
+# -- Compiling module tb_top
+# -- Importing package wb_i2c_test_pkg
+# 
+# Top level modules:
+# 	tb_top
+# End time: 11:28:34 on Nov 11,2022, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 3
+# vsim tb_top "+UVM_TESTNAME=wb_wr_rd_test" "+UVM_VERBOSITY=UVM_NONE" -do "run.do" -onfinish stop 
+# Start time: 11:28:35 on Nov 11,2022
+# Loading C:/Users/Training/AppData/Local/Temp\Training@DESKTOP-NNJKP08_dpi_15836\win32pe_gcc-4.2.1\export_tramp.dll
+# ** Note: (vsim-8785) UVM-aware debugging capabilities will be disabled since no compiled "questa_uvm_pkg" can be found.
+# This also means that later if you turn on UVM-aware debugging your debug simulations may have
+# different random seeds from your non-debug simulations.
+# Loading sv_std.std
+# Loading work.wb_i2c_interface
+# Loading work.uvm_pkg
+# Loading work.wb_agent_pkg
+# Loading work.wb_i2c_env_pkg
+# Loading work.wb_i2c_seq_pkg
+# Loading work.wb_i2c_test_pkg
+# Loading work.tb_top
+# Loading work.i2c_master_top
+# Loading work.i2c_master_byte_ctrl
+# Loading work.i2c_master_bit_ctrl
+# Compiling C:/Users/Training/AppData/Local/Temp\Training@DESKTOP-NNJKP08_dpi_15836\win32pe_gcc-4.2.1\exportwrapper.c
+# Loading C:/Users/Training/AppData/Local/Temp\Training@DESKTOP-NNJKP08_dpi_15836\win32pe_gcc-4.2.1\vsim_auto_compile.dll
+# ** Warning: Design size of 56465 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
+# Expect performance to be adversely affected.
+# do run.do
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: Training  Hostname: DESKTOP-NNJKP08  ProcessID: 5948
+#           Attempting to use alternate WLF file "./wlfttx9zzj".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlfttx9zzj
+# UVM_INFO C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src//base/uvm_root.svh(392) @ 0: reporter [UVM/RELNOTES] 
+# ----------------------------------------------------------------
+# UVM-1.2
+# (C) 2007-2014 Mentor Graphics Corporation
+# (C) 2007-2014 Cadence Design Systems, Inc.
+# (C) 2006-2014 Synopsys, Inc.
+# (C) 2011-2013 Cypress Semiconductor Corp.
+# (C) 2013-2014 NVIDIA Corporation
+# ----------------------------------------------------------------
+# 
+#   ***********       IMPORTANT RELEASE NOTES         ************
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_NO_DEPRECATED undefined.
+#   See http://www.eda.org/svdb/view.php?id=3313 for more details.
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_OBJECT_DO_NOT_NEED_CONSTRUCTOR undefined.
+#   See http://www.eda.org/svdb/view.php?id=3770 for more details.
+# 
+#       (Specify +UVM_NO_RELNOTES to turn off this notice)
+# 
+# UVM_INFO C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src//base/uvm_root.svh(453) @ 0: reporter [NO_DPI_TSTNAME] UVM_NO_DPI defined--getting UVM_TESTNAME directly, without DPI
+# UVM_INFO C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src//base/uvm_traversal.svh(279) @ 0: reporter [UVM/COMP/NAMECHECK] This implementation of the component name checks requires DPI to be enabled
+# ** Note: $finish    : C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src//base/uvm_root.svh(517)
+#    Time: 1000320 ns  Iteration: 68  Instance: /tb_top
+# Break in Task uvm_pkg/uvm_root::run_test at C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src//base/uvm_root.svh line 517
+run -all
+# ** Note: $finish    : ../tb/tb_top/tb_top.sv(53)
+#    Time: 1000320 ns  Iteration: 68  Instance: /tb_top
+# Break in Module tb_top at ../tb/tb_top/tb_top.sv line 53
+# End time: 17:06:17 on Nov 11,2022, Elapsed time: 5:37:42
+# Errors: 0, Warnings: 3
