@@ -9,10 +9,4 @@ interface wb_interface(input bit WB_CLK_I);
   logic             WB_CYC_I     ;
   logic             WB_ACK_O     ;
   logic             WB_INTA_O    ;
-  logic             SCL_PAD_I    ;
-  logic             SCL_PAD_O    ;
-  logic             SCL_PADOEN_O ;
-  logic             SDA_PAD_I    ;
-  logic             SDA_PAD_O    ;
-  logic             SDA_PADOEN_O ;
 endinterface

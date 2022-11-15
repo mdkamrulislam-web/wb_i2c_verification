@@ -3,7 +3,7 @@ class wb_monitor extends uvm_monitor;
   `uvm_component_utils(wb_monitor)
 
   // ! Declaring handle for virtual interface
-  virtual wb_i2c_interface wb_i2c_intf;
+  virtual wb_interface wb_intf;
 
   // ! Declaring a handle of WB_SEQ_ITEM
   wb_sequence_item wb_act_mtr_seq_item;
@@ -26,11 +26,11 @@ class wb_monitor extends uvm_monitor;
     super.build_phase(phase);
     `uvm_info(get_full_name(), "Inside Wishbone Monitor Build Phase.", UVM_MEDIUM)
 
-    if(!uvm_config_db#(virtual wb_i2c_interface)::get(this, "", "wb_i2c_vintf", wb_i2c_intf)) begin
-      `uvm_fatal("WB I2C Virtual Interface Not Found Inside Monitor!", {"Virtual interface must be set for: ",get_full_name(),".wb_i2c_vintf"})
+    if(!uvm_config_db#(virtual wb_interface)::get(this, "", "wb_vintf", wb_intf)) begin
+      `uvm_fatal("WB Virtual Interface Not Found Inside Monitor!", {"Virtual interface must be set for: ",get_full_name(),".wb_vintf"})
     end
     else begin
-      `uvm_info("WB_I2C_INTF", "WB I2C Virtual Interface found inside monitor.", UVM_MEDIUM)
+      `uvm_info("WB_INTF", "WB Virtual Interface found inside monitor.", UVM_MEDIUM)
     end
   endfunction
 
@@ -50,14 +50,14 @@ class wb_monitor extends uvm_monitor;
     fork
       begin
         forever begin
-          @(posedge wb_i2c_intf.WB_CLK_I);
-          if((!wb_i2c_intf.WB_RST_I && !wb_i2c_intf.ARST_I) && (wb_i2c_intf.WB_CYC_I && wb_i2c_intf.WB_STB_I && wb_i2c_intf.WB_WE_I)) begin
-            @(negedge wb_i2c_intf.WB_CLK_I);
-            if(wb_i2c_intf.WB_ACK_O) begin
-              @(negedge wb_i2c_intf.WB_CLK_I);
-              wb_exp_mtr_seq_item.wb_adr_i = wb_i2c_intf.WB_ADR_I;
-              wb_exp_mtr_seq_item.wb_dat_i = wb_i2c_intf.WB_DAT_I;
-              `uvm_info("MONITOR_WRITE_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_i2c_intf.WB_ADR_I, wb_i2c_intf.WB_DAT_I), UVM_LOW);
+          @(posedge wb_intf.WB_CLK_I);
+          if((!wb_intf.WB_RST_I && !wb_intf.ARST_I) && (wb_intf.WB_CYC_I && wb_intf.WB_STB_I && wb_intf.WB_WE_I)) begin
+            @(negedge wb_intf.WB_CLK_I);
+            if(wb_intf.WB_ACK_O) begin
+              @(negedge wb_intf.WB_CLK_I);
+              wb_exp_mtr_seq_item.wb_adr_i = wb_intf.WB_ADR_I;
+              wb_exp_mtr_seq_item.wb_dat_i = wb_intf.WB_DAT_I;
+              `uvm_info("MONITOR_WRITE_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_I), UVM_LOW);
               wb_exp_mtr2scb_port.write(wb_exp_mtr_seq_item);
             end
           end
@@ -66,14 +66,14 @@ class wb_monitor extends uvm_monitor;
 
       begin
         forever begin
-          @(posedge wb_i2c_intf.WB_CLK_I);
-          if((!wb_i2c_intf.WB_RST_I && !wb_i2c_intf.ARST_I) && (wb_i2c_intf.WB_CYC_I && wb_i2c_intf.WB_STB_I && !wb_i2c_intf.WB_WE_I)) begin
-            @(negedge wb_i2c_intf.WB_CLK_I);
-            if(wb_i2c_intf.WB_ACK_O) begin
-              @(negedge wb_i2c_intf.WB_CLK_I);
-              wb_act_mtr_seq_item.wb_adr_i = wb_i2c_intf.WB_ADR_I;
-              wb_act_mtr_seq_item.wb_dat_o = wb_i2c_intf.WB_DAT_O;
-              `uvm_info("MONITOR_READ_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_i2c_intf.WB_ADR_I, wb_i2c_intf.WB_DAT_O), UVM_LOW);
+          @(posedge wb_intf.WB_CLK_I);
+          if((!wb_intf.WB_RST_I && !wb_intf.ARST_I) && (wb_intf.WB_CYC_I && wb_intf.WB_STB_I && !wb_intf.WB_WE_I)) begin
+            @(negedge wb_intf.WB_CLK_I);
+            if(wb_intf.WB_ACK_O) begin
+              @(negedge wb_intf.WB_CLK_I);
+              wb_act_mtr_seq_item.wb_adr_i = wb_intf.WB_ADR_I;
+              wb_act_mtr_seq_item.wb_dat_o = wb_intf.WB_DAT_O;
+              `uvm_info("MONITOR_READ_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_O), UVM_LOW);
               wb_act_mtr2scb_port.write(wb_act_mtr_seq_item);
             end
           end
@@ -82,9 +82,9 @@ class wb_monitor extends uvm_monitor;
 
       begin
         forever begin
-          @(negedge wb_i2c_intf.WB_CLK_I);
-          if((wb_i2c_intf.WB_RST_I || wb_i2c_intf.ARST_I) && (wb_i2c_intf.WB_CYC_I && wb_i2c_intf.WB_STB_I && !wb_i2c_intf.WB_WE_I)) begin
-            `uvm_info("MONITOR_READ_CHECKER", $sformatf("Addr :: %0h,Data :: %0h", wb_i2c_intf.WB_ADR_I, wb_i2c_intf.WB_DAT_O), UVM_LOW);
+          @(negedge wb_intf.WB_CLK_I);
+          if((wb_intf.WB_RST_I || wb_intf.ARST_I) && (wb_intf.WB_CYC_I && wb_intf.WB_STB_I && !wb_intf.WB_WE_I)) begin
+            `uvm_info("MONITOR_READ_CHECKER", $sformatf("Addr :: %0h,Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_O), UVM_LOW);
             wb_act_mtr2scb_port.write(wb_act_mtr_seq_item);
           end
         end
