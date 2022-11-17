@@ -32,7 +32,7 @@ class wb_i2c_base_test extends uvm_test;
     wb_agt_con     = wb_agent_config   ::type_id::create("wb_agt_con"    , this);
 
     // Setting parameters of WB_I2C Environment Configuration
-    wb_i2c_env_con.has_scoreboard      = 1          ; 
+    wb_i2c_env_con.has_scoreboard      = 0          ; 
     wb_agt_con.has_functional_coverage = 1          ;
     wb_agt_con.is_active               = UVM_ACTIVE ;
 
@@ -88,6 +88,6 @@ class wb_i2c_base_test extends uvm_test;
     wb_rd_sq.start(wb_i2c_env.wb_agt.wb_sqr);
     tip_flag = wb_rd_sq.dvr_rsp.t_flag;
 
-    `uvm_info("READ_SEQ ===> TEST", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
+    //`uvm_info("READ_SEQ ===> TEST", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
   endtask
 endclass

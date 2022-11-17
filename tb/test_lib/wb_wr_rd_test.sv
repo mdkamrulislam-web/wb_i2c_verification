@@ -49,13 +49,18 @@ class wb_wr_rd_test extends wb_i2c_base_test;
       // Enabling the Core
       wb_write_task(0, `CTR, 8'h80);
 
-      /////////////////////////////
-      // Write to a Slave Device //
-      /////////////////////////////
+      /////////////////////////////////////
+      // Drive Slave Address & Write Bit //
+      /////////////////////////////////////
       // Enabling Start and Write
       wb_write_task(0, `CR, 8'h90);
       wb_write_task(0, `TXR, {`SLVADDR, `WR});
 
+      // TODO: Check Slave Acknowledgement
+      
+      ////////////////////////////////////////
+      // Polling TIP bit of Status Register //
+      ////////////////////////////////////////
       wb_read_task(`SR, tip_flag);
       `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
       while (tip_flag) begin
@@ -63,7 +68,48 @@ class wb_wr_rd_test extends wb_i2c_base_test;
         `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
       end
 
-      #150000ns;
+      //////////////////////////
+      // Slave Memory Address //
+      //////////////////////////
+      wb_write_task(0, `TXR, 8'h05);
+      wb_write_task(0, `CR, 8'h10);
+
+      ////////////////////////////////////////
+      // Polling TIP bit of Status Register //
+      ////////////////////////////////////////
+      wb_read_task(`SR, tip_flag);
+      `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
+      while (tip_flag) begin
+        wb_read_task(`SR, tip_flag);
+        `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
+      end
+
+      ///////////////////////////
+      // Writing Data to Slave //
+      ///////////////////////////
+      wb_write_task(0, `TXR, 8'hAA);
+      wb_write_task(0, `CR, 8'h10);
+
+      ////////////////////////////////////////
+      // Polling TIP bit of Status Register //
+      ////////////////////////////////////////
+      wb_read_task(`SR, tip_flag);
+      `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
+      while (tip_flag) begin
+        wb_read_task(`SR, tip_flag);
+        `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
+      end
+
+      //////////////
+      // Stop Bit //
+      //////////////
+      wb_write_task(0, `CR, 8'h40);
+
+      #100000;
+
+      wb_read_task(`RXR, tip_flag);
+
+      #20000;
 
     phase.drop_objection(this);
 
