@@ -12,15 +12,10 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
   // ! Declaring a handle for WB_SEQUENCE_ITEM, which will be used to receive incoming packet for driving data to the DUT.
   wb_sequence_item dvr_seq_item;
 
-  // ! Declearing uvm_analysis_port, which is used to send packets from driver to scoreboard.
-	//uvm_analysis_port #(wb_sequence_item) wb_dvr2scb_port;
-
   // ! Wishbone Driver Constructor
   function new(string name = "wb_driver", uvm_component parent = null);
     super.new(name, parent);
     `uvm_info(get_full_name(), "Inside Wishbone Driver Constructor.", UVM_MEDIUM)
-
-    //wb_dvr2scb_port = new("wb_dvr_scb", this);
   endfunction
   
   // ! Wishbone Driver Build Phase
@@ -55,9 +50,8 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
         end
         else if((dvr_seq_item.wb_rst_i == 0) && (dvr_seq_item.wb_we_i == 0)) begin
           wb_read();
-          uvm_config_db#(bit)::set(this, "", "tip_flag", tip_flag);
         end
-      seq_item_port.item_done();
+      seq_item_port.item_done(dvr_seq_item);
     end
   endtask
   
@@ -94,7 +88,6 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
     wb_intf.WB_DAT_I <= dvr_seq_item.wb_dat_i;
 
     @(negedge wb_intf.WB_CLK_I);
-
     //wb_dvr2scb_port.write(dvr_seq_item);
 
     while(~wb_intf.WB_ACK_O) @(negedge wb_intf.WB_CLK_I);
@@ -120,10 +113,10 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
     @(negedge wb_intf.WB_CLK_I);
     if(wb_intf.WB_ADR_I == `SR) begin
       if(wb_intf.WB_DAT_O[1] == 1) begin
-        tip_flag = 1;
+        dvr_seq_item.t_flag = 1;
       end
       else begin
-        tip_flag = 0;
+        dvr_seq_item.t_flag = 0;
       end
     end
 

@@ -52,42 +52,17 @@ class wb_wr_rd_test extends wb_i2c_base_test;
       /////////////////////////////
       // Write to a Slave Device //
       /////////////////////////////
-      // Transmit Register
-      // wb_write_task(0, 3, 8'h8A); // Slv Addr = 8'h45, Wr = 0 :: {8'h45, 0} = 8'h8A
-      // wb_write_task(0, 3, 8'h20); // Slv Addr = 8'h10, Wr = 0 :: {8'h10, 0} = 8'h20
-      // wb_write_task(0, 3, 8'h20); // Slv Addr = 8'h51, Wr = 0 :: {8'h51, 0} = 8'hA2
-      //wb_write_task(0, TXR, 8'hFC); // Slv Addr = 8'h7E, Wr = 0 :: {8'h7E, 0} = 8'hFC
-      
-// b111_1110
       // Enabling Start and Write
       wb_write_task(0, `CR, 8'h90);
       wb_write_task(0, `TXR, {`SLVADDR, `WR});
 
-      // Setting Slave Memory Address for the data to be written
-      //wb_write_task(0, 3, 8'hAC);
-
-      // Setting Command Register to such a value so that a Write Transfer can be done
-      //wb_write_task(0, 4, 8'h10);
-      //#1000ns;
-
-      //wb_read_task(`PRER_LO);
-      //wb_read_task(`PRER_HI);
-      //wb_read_task(`CTR);
-      /*
-      wb_read_task(`SR);
-      
-      while (wb_i2c_env.wb_agt.wb_dvr.tip_flag) begin
-        wb_read_task(`SR);
-        `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", wb_i2c_env.wb_agt.wb_dvr.tip_flag), UVM_NONE)
-      end
-      */
-
       wb_read_task(`SR, tip_flag);
-      
+      `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
       while (tip_flag) begin
         wb_read_task(`SR, tip_flag);
-        //`uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", wb_i2c_env.wb_agt.wb_dvr.tip_flag), UVM_NONE)
+        `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
       end
+
       #150000ns;
 
     phase.drop_objection(this);

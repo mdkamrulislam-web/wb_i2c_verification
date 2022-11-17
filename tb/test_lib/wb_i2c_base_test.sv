@@ -82,17 +82,12 @@ class wb_i2c_base_test extends uvm_test;
   task wb_read_task(bit [2:0] addr, output bit tip_flag);
     // Creating WB Read Sequence Instance
     wb_rd_sq = wb_rd_seq::type_id::create("wb_rd_sq");
-
     wb_rd_sq.wb_address = addr;
 
     // Starting WB Read Sequence through Sequencer
     wb_rd_sq.start(wb_i2c_env.wb_agt.wb_sqr);
+    tip_flag = wb_rd_sq.dvr_rsp.t_flag;
 
-    if(!uvm_config_db#(bit)::get(this, "wb_i2c_env.wb_agt.wb_dvr", "tip_flag", tip_flag)) begin
-      `uvm_fatal("TIP flag was not found!", {"TIP must be set for: ",get_full_name(),".tip_flag"})
-    end
-    else begin
-      `uvm_info("TIP_FLAG_FOUND", $sformatf("TIP FLAG :: %0d", tip_flag), UVM_LOW)
-    end
+    `uvm_info("READ_SEQ ===> TEST", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
   endtask
 endclass

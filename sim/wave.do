@@ -19,10 +19,6 @@ add wave -noupdate /tb_top/i2c_intf/SDA_PAD_I
 add wave -noupdate /tb_top/i2c_intf/SDA_PAD_O
 add wave -noupdate /tb_top/i2c_intf/SDA_PADOEN_O
 add wave -noupdate /tb_top/WB_I2C_DUT/tip
-add wave -noupdate /tb_top/i2c_intf/scl
-add wave -noupdate /tb_top/i2c_intf/sda
-add wave -noupdate /tb_top/myReg
-add wave -noupdate /wb_agent_pkg::wb_driver::tip_flag
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {227362279 ps} 0}
 quietly wave cursor active 1
@@ -40,4 +36,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {158445 ns}
+WaveRestoreZoom {0 ps} {266091 ns}
