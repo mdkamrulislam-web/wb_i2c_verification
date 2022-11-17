@@ -2,15 +2,19 @@ interface i2c_interface(input bit WB_CLK_I);
   logic             SCL_PAD_I    ;
   logic             SCL_PAD_O    ;
   logic             SCL_PADOEN_O ;
-  logic             SDA_PAD_I    ;
+  wire              SDA_PAD_I    ;
   logic             SDA_PAD_O    ;
   logic             SDA_PADOEN_O ;
 
-  logic scl;
-  logic sda;
+  wire scl;
+  wire sda;
 
-  assign scl       = (SCL_PADOEN_O == 0) ? SCL_PAD_O : 1'b1 ; 
-  assign sda       = (SDA_PADOEN_O == 0) ? SDA_PAD_O : 1'b1 ; 
-  assign SCL_PAD_I = scl; 
-  assign SDA_PAD_I = sda; 
+  //assign sda = i2c_intf.SDA_PADOEN_O ? 1'bz : i2c_intf.SDA_PAD_O;
+  //assign i2c_intf.SDA_PAD_I = sda;
+  //pullup(sda);
+
+  //assign scl = i2c_intf.SCL_PADOEN_O ? 1'bz : i2c_intf.SCL_PAD_O;
+  //assign i2c_intf.SCL_PAD_I = scl;
+  //pullup(scl);
+
 endinterface

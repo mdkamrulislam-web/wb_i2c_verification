@@ -8,6 +8,8 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
 
 	// ! Taking a queue as exp_que
 	wb_sequence_item exp_que[$];
+	//wb_sequence_item act_que[$];
+  wb_sequence_item exp_mtr_item , item2;
 
 	// ! Declaring imports for getting driver packets and monitor packets.
 	uvm_analysis_imp_wb_exp_mtr2scb#(wb_sequence_item, wb_i2c_scoreboard) wb_exp_mtr2scb;
@@ -25,6 +27,7 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
     // Creating objects for the above declared imports
     wb_exp_mtr2scb = new("wb_exp_mtr2scb", this);
     wb_act_mtr2scb = new("wb_act_mtr2scb", this);
+    
   endfunction
 
   virtual function void connect_phase(uvm_phase phase);
@@ -34,23 +37,31 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
 
   task run_phase(uvm_phase phase);
     `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Run Phase.", UVM_MEDIUM)
+    /*fork
+      forever begin
+        #1;
+        if(exp_que.size() && act_que.size()) begin
+          compare();
+        end
+      end
+    join_none*/
   endtask
 
 	// ! Defining write_wb_exp_mtr2scb() method which was created by macro `uvm_analysis_imp_decl(_wb_exp_mtr2scb).	
 	// Storing the received packet in the expected queue.
 	function void write_wb_exp_mtr2scb(wb_sequence_item wb_exp_item);
-		`uvm_info("DRIVER ==> SCOREBOARD", $sformatf("ADDR = %0h, DATA = %0h", wb_exp_item.wb_adr_i, wb_exp_item.wb_dat_i), UVM_MEDIUM);
-		
+		`uvm_info("MONITOR ==> SCOREBOARD EXP", $sformatf("ADDR = %0h, DATA = %0h", wb_exp_item.wb_adr_i, wb_exp_item.wb_dat_i), UVM_LOW);
+    
 		exp_que.push_back(wb_exp_item);
-		//wb_exp_item.print();
 	endfunction
 
   function void write_wb_act_mtr2scb(wb_sequence_item wb_act_item);
     wb_sequence_item exp_item;
-
-    `uvm_info("MONITOR ==> SCOREBOARD", $sformatf("ADDR = %0h, DATA = %0h", wb_act_item.wb_adr_i, wb_act_item.wb_dat_o), UVM_MEDIUM);
-    if(exp_que.size()) begin
+    `uvm_info("MONITOR ==> SCOREBOARD ACT", $sformatf("ADDR = %0h, DATA = %0h, Size :: %0d", wb_act_item.wb_adr_i, wb_act_item.wb_dat_o, exp_que.size()), UVM_LOW);
+    
+    if(exp_que.size() != 0) begin
       exp_item = exp_que.pop_front();
+
       if(wb_act_item.wb_adr_i == exp_item.wb_adr_i) begin
         if(wb_act_item.wb_dat_o == exp_item.wb_dat_i) begin
           uvm_report_info("PASSED", $psprintf("CAPTURED DATA & EXPECTED DATA MATCHED =====> EXPECTED ADDR = %h :: CAPTURED ADDR = %h :: EXPECTED DATA = %h :: CAPTURED DATA = %h\t", exp_item.wb_adr_i, wb_act_item.wb_adr_i, exp_item.wb_dat_i, wb_act_item.wb_dat_o), UVM_NONE);
@@ -63,5 +74,14 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
         uvm_report_info("FAILED", $psprintf("CAPTURED DATA & EXPECTED DATA MISMATCHED =====> EXPECTED ADDR = %h :: CAPTURED ADDR = %h :: EXPECTED DATA = %h :: CAPTURED DATA = %h\t", exp_item.wb_adr_i, wb_act_item.wb_adr_i, exp_item.wb_dat_i, wb_act_item.wb_dat_o), UVM_NONE);
       end
     end
+    else begin
+			uvm_report_info(get_type_name(), $psprintf("No more items in the expected queue to compare."), UVM_NONE);
+		end
+    
   endfunction
+/*
+  function void compare();
+    $display("exp queue = %d, act queue = %0d", exp_que.size(), act_que.size());
+  endfunction
+*/
 endclass

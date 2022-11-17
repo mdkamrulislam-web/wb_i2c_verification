@@ -33,10 +33,10 @@ class wb_rst_test extends wb_i2c_base_test;
     wb_reset_task();
     
     // ! READ
-    wb_read_task(0);
-    wb_read_task(1);
-    wb_read_task(2);
-    wb_read_task(3);
+    //wb_read_task(0);
+    //wb_read_task(1);
+    //wb_read_task(2);
+    //wb_read_task(3);
 
     phase.drop_objection(this);
   endtask

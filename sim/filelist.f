@@ -8,9 +8,16 @@ C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src/uvm_pkg.sv
 +incdir+../tb/agent/wb_master/
 
 //RTL Files
+// I2C Master
 ../rtl/i2c_master_bit_ctrl.v
 ../rtl/i2c_master_byte_ctrl.v
 ../rtl/i2c_master_top.v
+
+// I2C Slave
+../rtl/registerInterface.v
+../rtl/serialInterface.v
+../rtl/i2cSlave.v
+../rtl/i2cSlaveTop.v
 
 // TB Files
 ../tb/tb_top/i2c_interface.sv

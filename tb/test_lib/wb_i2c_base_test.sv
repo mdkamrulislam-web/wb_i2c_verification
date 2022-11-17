@@ -1,6 +1,10 @@
 class wb_i2c_base_test extends uvm_test;
   `uvm_component_utils(wb_i2c_base_test)
 
+  `include "../defines/defines.sv"
+
+  bit tip_flag;
+
   // ! Declearing handle of the WB_I2C Environment, Environment Config, WB Agent Config
   wb_i2c_environment wb_i2c_env;
   wb_i2c_env_config wb_i2c_env_con;
@@ -75,13 +79,20 @@ class wb_i2c_base_test extends uvm_test;
   endtask
 
   // ! WB Read Task
-  task wb_read_task(bit [2:0] addr);
+  task wb_read_task(bit [2:0] addr, output bit tip_flag);
     // Creating WB Read Sequence Instance
     wb_rd_sq = wb_rd_seq::type_id::create("wb_rd_sq");
 
-    wb_rd_sq.wb_address    = addr;
+    wb_rd_sq.wb_address = addr;
 
     // Starting WB Read Sequence through Sequencer
     wb_rd_sq.start(wb_i2c_env.wb_agt.wb_sqr);
+
+    if(!uvm_config_db#(bit)::get(this, "wb_i2c_env.wb_agt.wb_dvr", "tip_flag", tip_flag)) begin
+      `uvm_fatal("TIP flag was not found!", {"TIP must be set for: ",get_full_name(),".tip_flag"})
+    end
+    else begin
+      `uvm_info("TIP_FLAG_FOUND", $sformatf("TIP FLAG :: %0d", tip_flag), UVM_LOW)
+    end
   endtask
 endclass
