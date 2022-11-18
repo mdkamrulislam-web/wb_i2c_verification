@@ -2,7 +2,8 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
   // ! Factory registration of Wishbone Driver
   `uvm_component_utils(wb_driver)
 
-  bit tip_flag;
+  bit         tip_flag;
+  logic [7:0] read_dat;
 
   `include "../../defines/defines.sv"
 
@@ -120,12 +121,19 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
       end
     end
 
+    if(wb_intf.WB_ADR_I == `RXR) begin
+      dvr_seq_item.read_dat = wb_intf.WB_DAT_O;
+    end
+    else begin
+      dvr_seq_item.read_dat = 8'bXX;
+    end
+
     while(~wb_intf.WB_ACK_O) @(negedge wb_intf.WB_CLK_I);
     //`uvm_info("READ_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_O), UVM_LOW)
 
     wb_intf.WB_ADR_I <= 3'hX;
     wb_intf.WB_WE_I  <= 1'hX;
     wb_intf.WB_STB_I <= 1'hX;
-    wb_intf.WB_CYC_I <= 0;
+    wb_intf.WB_CYC_I <= 0   ;
   endtask
 endclass

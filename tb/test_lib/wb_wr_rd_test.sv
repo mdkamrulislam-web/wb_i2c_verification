@@ -55,8 +55,6 @@ class wb_wr_rd_test extends wb_i2c_base_test;
       // Enabling Start and Write
       wb_write_task(0, `CR, 8'h90);
       wb_write_task(0, `TXR, {`SLVADDR, `WR});
-
-      // TODO: Check Slave Acknowledgement
       
       ////////////////////////////////////////
       // Polling TIP bit of Status Register //
