@@ -123,15 +123,15 @@ class wb_i2c_base_test extends uvm_test;
     input logic [7:0] ctr_dat
   );
     `uvm_info("I2C CORE SETUP", "##### I2C Core setup is started #####", UVM_LOW)
-    ////////////////////////////////////
-    // Initialize The I2C Master Core //
-    ////////////////////////////////////
+    // ?       ////////////////////////////////////
+    // ?       // Initialize The I2C Master Core //
+    // ?       ////////////////////////////////////
     // Setting the Prescale Registers to the desired Value
-    wb_write_task(0, `PRER_LO, prer_lo_dat); // 8'h64
-    wb_write_task(0, `PRER_HI, prer_hi_dat); // 8'h00
+    wb_write_task(0, `PRER_LO, prer_lo_dat); // * Prescale Lower Bits
+    wb_write_task(0, `PRER_HI, prer_hi_dat); // * Prescale Higher Bits
     
     // Enabling the Core
-    wb_write_task(0, `CTR    , ctr_dat    ); // 8'h80
+    wb_write_task(0, `CTR    , ctr_dat    ); // * I2C Core & Interrupt Enable
 
     `uvm_info("I2C CORE SETUP", "##### I2C Core setup is done #####", UVM_LOW)
   endtask

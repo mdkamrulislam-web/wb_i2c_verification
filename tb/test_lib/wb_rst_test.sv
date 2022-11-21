@@ -41,4 +41,3 @@ class wb_rst_test extends wb_i2c_base_test;
     phase.drop_objection(this);
   endtask
 endclass
-
