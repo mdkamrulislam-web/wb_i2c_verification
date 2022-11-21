@@ -1,17 +1,16 @@
 class wb_sequence_item extends uvm_sequence_item;
   // ! Declaring Parameters
-  logic       wb_rst_i     ; 
-  logic       arst_i       ;
-  logic [2:0] wb_adr_i     ;
-  logic [7:0] wb_dat_i     ;
-  logic [7:0] wb_dat_o     ;
-  logic       wb_we_i      ;
-  logic       wb_stb_i     ;
-  logic       wb_cyc_i     ;
-  logic       wb_ack_o     ;
-  logic       wb_inta_o    ;
-  bit         t_flag       ;
-  logic [7:0] read_dat ;
+  logic              wb_rst_i  ; 
+  logic              arst_i    ;
+  logic        [2:0] wb_adr_i  ;
+  logic        [7:0] wb_dat_i  ;
+  logic        [7:0] wb_dat_o  ;
+  logic              wb_we_i   ;
+  logic              wb_stb_i  ;
+  logic              wb_cyc_i  ;
+  logic              wb_ack_o  ;
+  logic              wb_inta_o ;
+  bit                t_flag    ;
 
   // ! The `uvm_object_utils or `uvm_object_utils_begin..`uvm_object_utils_end macros are used to register an uvm_object and other derived types like uvm_transaction, uvm_sequece_items in the UVM factory.
   `uvm_object_utils_begin(wb_sequence_item)
@@ -26,7 +25,6 @@ class wb_sequence_item extends uvm_sequence_item;
     `uvm_field_int(wb_ack_o     , UVM_ALL_ON)
     `uvm_field_int(wb_inta_o    , UVM_ALL_ON)
     `uvm_field_int(t_flag       , UVM_ALL_ON)
-    `uvm_field_int(read_dat , UVM_ALL_ON)
   `uvm_object_utils_end
 
   // ! WB Sequence Item Constructor

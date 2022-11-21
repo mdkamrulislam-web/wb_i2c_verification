@@ -36,10 +36,11 @@ class i2c_wr_rd_test extends wb_i2c_base_test;
 
       i2c_core_setup(8'h64, 8'h00, 8'h80);    // ! Core & Prescale Registers Setup
 
-      i2c_write(`SLVADDR, 8'h05, 8'hAA);      // ! I2C Write Transfer
-      wb_read_task(`RXR, tip_flag);           // ! Checking RXR Register
+      i2c_write(`SLVADDR, 8'h02, 8'b1010_1010);      // ! I2C Write Transfer
+      i2c_read(`SLVADDR, 8'h02);              // ! I2C Read Transfer
 
-      i2c_read(`SLVADDR, 8'h05, i2c_read_dat);
+      i2c_write(`SLVADDR, 8'h01, 8'b0101_0101);      // ! I2C Write Transfer
+      i2c_read(`SLVADDR, 8'h01);              // ! I2C Read Transfer
     phase.drop_objection(this);
 
   endtask

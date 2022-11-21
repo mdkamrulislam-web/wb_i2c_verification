@@ -3,7 +3,6 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
   `uvm_component_utils(wb_driver)
 
   bit         tip_flag;
-  logic [7:0] read_dat;
 
   `include "../../defines/defines.sv"
 
@@ -119,13 +118,6 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
       else begin
         dvr_seq_item.t_flag = 0;
       end
-    end
-
-    if(wb_intf.WB_ADR_I == `RXR) begin
-      dvr_seq_item.read_dat = wb_intf.WB_DAT_O;
-    end
-    else begin
-      dvr_seq_item.read_dat = 8'bXX;
     end
 
     while(~wb_intf.WB_ACK_O) @(negedge wb_intf.WB_CLK_I);
