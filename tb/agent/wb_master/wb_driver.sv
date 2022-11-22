@@ -50,8 +50,21 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
         end
         else if((dvr_seq_item.wb_rst_i == 0) && (dvr_seq_item.wb_we_i == 0)) begin
           wb_read();
+          tip_flag_checker();
         end
       seq_item_port.item_done(dvr_seq_item);
+    end
+  endtask
+
+  // ! TIP FLAG CHECKER
+  task tip_flag_checker();
+    if(wb_intf.WB_ADR_I == `SR) begin
+      if(wb_intf.WB_DAT_O[1] == 1) begin
+        dvr_seq_item.t_flag = 1;
+      end
+      else begin
+        dvr_seq_item.t_flag = 0;
+      end
     end
   endtask
   
@@ -111,14 +124,6 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
     wb_intf.WB_ADR_I <= dvr_seq_item.wb_adr_i;
 
     @(negedge wb_intf.WB_CLK_I);
-    if(wb_intf.WB_ADR_I == `SR) begin
-      if(wb_intf.WB_DAT_O[1] == 1) begin
-        dvr_seq_item.t_flag = 1;
-      end
-      else begin
-        dvr_seq_item.t_flag = 0;
-      end
-    end
 
     while(~wb_intf.WB_ACK_O) @(negedge wb_intf.WB_CLK_I);
     //`uvm_info("READ_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_O), UVM_LOW)

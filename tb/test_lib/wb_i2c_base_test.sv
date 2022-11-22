@@ -136,6 +136,79 @@ class wb_i2c_base_test extends uvm_test;
     `uvm_info("I2C CORE SETUP", "##### I2C Core setup is done #####", UVM_LOW)
   endtask
 
+  // !      #########################################################
+  // !      ################## I2C Slave Check Task #################
+  // !      #########################################################
+  task i2c_slv_addr_trans(input logic [6:0] i2c_slv_addr);
+    `uvm_info("Transmitting Slave Address", $sformatf("SLV_ADDRESS => %0h", i2c_slv_addr), UVM_LOW)
+
+    wb_write_task(0, `TXR, {i2c_slv_addr, `WR});
+    wb_write_task(0, `CR, 8'b1001_0000);  // * Start & Write Bits
+    tip_poll();
+  endtask
+
+  task i2c_mem_addr_trans(input logic [7:0] mem_address);
+    `uvm_info("Transmitting Memory Address", $sformatf("MEM_ADDRESS => %0h", mem_address), UVM_LOW)
+
+    wb_write_task(0, `TXR, mem_address);
+    wb_write_task(0, `CR, 8'b0001_0000);  // * Write Bit
+    tip_poll();
+  endtask
+
+  task rep_start_wr(logic [7:0] data);
+    wb_write_task(0, `TXR, data);
+    wb_write_task(0, `CR, 8'b0001_0000);  // * Write Bits
+    tip_poll();
+  endtask
+
+  task stop_wr(logic [7:0] data);
+    wb_write_task(0, `TXR, data);
+    wb_write_task(0, `CR, 8'b0101_0000);  // * Stop & Write Bits
+    tip_poll();
+  endtask
+
+  task i2c_data_trans(input logic [31:0] data, input logic [1:0] byte_no);
+    `uvm_info("Transmitting Data", $sformatf("Data => %0h", data), UVM_LOW)
+    if(byte_no == 2'b00) begin
+      stop_wr(data[31:24]);
+    end
+    else if(byte_no ==  2'b01) begin
+      rep_start_wr(data[31:24]);
+
+      stop_wr(data[23:16]);
+    end 
+    else if(byte_no ==  2'b10) begin
+      rep_start_wr(data[31:24]);
+      rep_start_wr(data[23:16]);
+
+      stop_wr(data[15:8]);
+    end
+    else if(byte_no ==  2'b11) begin
+      rep_start_wr(data[31:24]);
+      rep_start_wr(data[23:16]);
+      rep_start_wr(data[15:8]);
+
+      stop_wr(data[7:0]);
+    end 
+  endtask
+
+  // !      ###################################################
+  // !      ################## I2C Write Task #################
+  // !      ###################################################
+  task i2c_write(
+    input logic [6:0]  i2c_slv_addr,
+    input logic [7:0]  mem_address ,
+    input logic [31:0] data        ,
+    input logic [1:0]  byte_no
+  );
+
+    i2c_slv_addr_trans(i2c_slv_addr);
+    i2c_mem_addr_trans(mem_address);
+    i2c_data_trans(data, byte_no);
+
+
+  endtask
+/*
   // !      ###################################################
   // !      ################## I2C Write Task #################
   // !      ###################################################
@@ -189,6 +262,7 @@ class wb_i2c_base_test extends uvm_test;
       UVM_LOW
     )
   endtask
+*/
   // !      ###################################################
   // !      ################## I2C Read Task ##################
   // !      ###################################################

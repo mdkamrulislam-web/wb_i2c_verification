@@ -35,13 +35,15 @@ class i2c_wr_rd_test extends wb_i2c_base_test;
       wb_reset_task();                          // ! System Reset
 
       i2c_core_setup(8'h64, 8'h00, 8'hC0);      // ! Core & Prescale Registers Setup
-
+      
+      i2c_write(`SLVADDR, 8'h00,32'hAA_55_22_11, 2'b11);
+      /*
       i2c_write(`SLVADDR, 8'h02, 8'b1010_1010); // ! I2C Write Transfer
       i2c_read(`SLVADDR, 8'h02);                // ! I2C Read Transfer
 
       i2c_write(`SLVADDR, 8'h01, 8'b0101_0101); // ! I2C Write Transfer
       i2c_read(`SLVADDR, 8'h01);                // ! I2C Read Transfer
-
+      */
       // for(int i = 0; i < 4; i++) begin
       //   for(int j = 0; j < 256; j++) begin
       //     i2c_write(`SLVADDR, i, j);  // ! I2C Write Transfer

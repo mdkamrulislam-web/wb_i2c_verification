@@ -19,16 +19,19 @@ add wave -noupdate /tb_top/i2c_intf/SCL_PADOEN_O
 add wave -noupdate /tb_top/i2c_intf/SDA_PAD_O
 add wave -noupdate /tb_top/i2c_intf/SDA_PADOEN_O
 add wave -noupdate /tb_top/WB_I2C_DUT/tip
-add wave -noupdate /tb_top/I2C_SLV_DUT/myReg0
-add wave -noupdate /tb_top/I2C_SLV_DUT/myReg1
-add wave -noupdate /tb_top/I2C_SLV_DUT/myReg2
-add wave -noupdate /tb_top/I2C_SLV_DUT/myReg3
+add wave -noupdate -radix hexadecimal /tb_top/I2C_SLV_DUT/myReg0
+add wave -noupdate -radix hexadecimal /tb_top/I2C_SLV_DUT/myReg1
+add wave -noupdate -radix hexadecimal /tb_top/I2C_SLV_DUT/myReg2
+add wave -noupdate -radix hexadecimal /tb_top/I2C_SLV_DUT/myReg3
 add wave -noupdate /tb_top/I2C_SLV_DUT/myReg4
 add wave -noupdate /tb_top/I2C_SLV_DUT/myReg5
 add wave -noupdate /tb_top/I2C_SLV_DUT/myReg6
 add wave -noupdate /tb_top/I2C_SLV_DUT/myReg7
+add wave -noupdate /tb_top/WB_I2C_DUT/ien
+add wave -noupdate /tb_top/WB_I2C_DUT/irq_flag
+add wave -noupdate /tb_top/WB_I2C_DUT/i2c_busy
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {20722747 ps} 0} {{Cursor 2} {21511992 ps} 0}
+WaveRestoreCursors {{Cursor 1} {20722747 ps} 0} {{Cursor 2} {748256627 ps} 0}
 quietly wave cursor active 2
 configure wave -namecolwidth 211
 configure wave -valuecolwidth 100
@@ -44,4 +47,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {275173050 ps} {297454050 ps}
+WaveRestoreZoom {0 ps} {578697 ns}
