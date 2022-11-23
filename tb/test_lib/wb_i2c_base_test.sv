@@ -197,21 +197,6 @@ class wb_i2c_base_test extends uvm_test;
     end 
   endtask
 
-  /*####################
-  ### I2C Write Task ###
-  ####################*/
-  task i2c_write(
-    input logic [6:0]  i2c_slv_addr,
-    input logic [7:0]  mem_address ,
-    input logic [31:0] data        ,
-    input logic [1:0]  byte_no
-  );
-
-    i2c_slv_addr_trans(i2c_slv_addr, `WR);
-    i2c_mem_addr_trans(mem_address);
-    i2c_data_trans(data, byte_no);
-  endtask
-
   /*#################################################################
   ### I2C Repeated Start Condition Generation & Data Receive Task ###
   #################################################################*/
@@ -256,6 +241,21 @@ class wb_i2c_base_test extends uvm_test;
 
       read_nack_stop();
     end 
+  endtask
+
+  /*####################
+  ### I2C Write Task ###
+  ####################*/
+  task i2c_write(
+    input logic [6:0]  i2c_slv_addr,
+    input logic [7:0]  mem_address ,
+    input logic [31:0] data        ,
+    input logic [1:0]  byte_no
+  );
+
+    i2c_slv_addr_trans(i2c_slv_addr, `WR);
+    i2c_mem_addr_trans(mem_address);
+    i2c_data_trans(data, byte_no);
   endtask
 
   /*###################
