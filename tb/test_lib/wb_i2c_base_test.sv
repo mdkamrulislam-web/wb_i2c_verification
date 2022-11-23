@@ -58,9 +58,9 @@ class wb_i2c_base_test extends uvm_test;
     `uvm_info(get_full_name(), "Inside WB_I2C Base Test Run Phase", UVM_MEDIUM)
   endtask
 
-  // !      ###################################################
-  // !      ############### Wishbone Reset Task ###############
-  // !      ###################################################
+  /*#########################
+  ### Wishbone Reset Task ###
+  #########################*/
   task wb_reset_task();
     // Creating WB Reset Sequence Instance
     wb_rstn_sq = wb_rst_seq::type_id::create("wb_rstn_sq");
@@ -69,9 +69,9 @@ class wb_i2c_base_test extends uvm_test;
     wb_rstn_sq.start(wb_i2c_env.wb_agt.wb_sqr);
   endtask
 
-  // !      ###################################################
-  // !      ############### Wishbone Write Task ###############
-  // !      ###################################################
+  /*#########################
+  ### Wishbone Write Task ###
+  #########################*/
   task wb_write_task(bit randomization, bit [2:0] addr, bit [7:0] data);
     // Creating WB Write Sequence Instance
     wb_wr_sq = wb_wr_seq::type_id::create("wb_wr_sq");
@@ -84,9 +84,9 @@ class wb_i2c_base_test extends uvm_test;
     wb_wr_sq.start(wb_i2c_env.wb_agt.wb_sqr);
   endtask
 
-  // !      ###################################################
-  // !      ############### Wishbone Read Task ################
-  // !      ###################################################
+  /*########################
+  ### Wishbone Read Task ###
+  ########################*/
   task wb_read_task(bit [2:0] addr, output bit tip_flag);
     // Creating WB Read Sequence Instance
     wb_rd_sq = wb_rd_seq::type_id::create("wb_rd_sq");
@@ -99,13 +99,10 @@ class wb_i2c_base_test extends uvm_test;
     //`uvm_info("READ_SEQ ===> TEST", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
   endtask
   
-  // !      ###################################################
-  // !      ######### WB Status Register Polling Task #########
-  // !      ###################################################
+  /*#####################################
+  ### WB Status Register Polling Task ###
+  #####################################*/
   task tip_poll();
-    ////////////////////////////////////////
-    // Polling TIP bit of Status Register //
-    ////////////////////////////////////////
     wb_read_task(`SR, tip_flag);
     //`uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
     while (tip_flag) begin
@@ -114,18 +111,14 @@ class wb_i2c_base_test extends uvm_test;
     end
   endtask
 
-  // !      ###################################################
-  // !      ############### I2C Core Setup Task ###############
-  // !      ###################################################
+  /*#########################
+  ### I2C Core Setup Task ###
+  #########################*/
   task i2c_core_setup(
     input logic [7:0] prer_lo_dat,
     input logic [7:0] prer_hi_dat,
     input logic [7:0] ctr_dat
   );
-    `uvm_info("I2C CORE SETUP", "##### I2C Core setup is started #####", UVM_LOW)
-    // ?       ////////////////////////////////////
-    // ?       // Initialize The I2C Master Core //
-    // ?       ////////////////////////////////////
     // Setting the Prescale Registers to the desired Value
     wb_write_task(0, `PRER_LO, prer_lo_dat); // * Prescale Lower Bits
     wb_write_task(0, `PRER_HI, prer_hi_dat); // * Prescale Higher Bits
@@ -133,40 +126,52 @@ class wb_i2c_base_test extends uvm_test;
     // Enabling the Core
     wb_write_task(0, `CTR    , ctr_dat    ); // * I2C Core & Interrupt Enable
 
-    `uvm_info("I2C CORE SETUP", "##### I2C Core setup is done #####", UVM_LOW)
+    `uvm_info("I2C CORE SETUP", "I2C CORE SETUP IS DONE", UVM_LOW)
   endtask
 
-  // !      #########################################################
-  // !      ################## I2C Slave Check Task #################
-  // !      #########################################################
-  task i2c_slv_addr_trans(input logic [6:0] i2c_slv_addr);
+  /*##############################################################################
+  ### I2C Start Condition Generation & Slave Address & WR/RD Bit Transfer Task ###
+  ##############################################################################*/
+  task i2c_slv_addr_trans(input logic [6:0] i2c_slv_addr, input bit wr_rd);
     `uvm_info("Transmitting Slave Address", $sformatf("SLV_ADDRESS => %0h", i2c_slv_addr), UVM_LOW)
 
-    wb_write_task(0, `TXR, {i2c_slv_addr, `WR});
-    wb_write_task(0, `CR, 8'b1001_0000);  // * Start & Write Bits
+    wb_write_task(0, `TXR, {i2c_slv_addr, wr_rd});
+    wb_write_task(0, `CR, 8'b1001_0000);  // Start & Write Bits HIGH
     tip_poll();
   endtask
 
+  /*######################################
+  ### I2C Memory Address Transfer Task ###
+  ######################################*/
   task i2c_mem_addr_trans(input logic [7:0] mem_address);
     `uvm_info("Transmitting Memory Address", $sformatf("MEM_ADDRESS => %0h", mem_address), UVM_LOW)
 
     wb_write_task(0, `TXR, mem_address);
-    wb_write_task(0, `CR, 8'b0001_0000);  // * Write Bit
+    wb_write_task(0, `CR, 8'b0001_0000);  // Write Bit HIGH
     tip_poll();
   endtask
 
+  /*##################################################################
+  ### I2C Repeated Start Condition Generation & Data Transfer Task ###
+  ##################################################################*/
   task rep_start_wr(logic [7:0] data);
     wb_write_task(0, `TXR, data);
-    wb_write_task(0, `CR, 8'b0001_0000);  // * Write Bits
+    wb_write_task(0, `CR, 8'b0001_0000);  // * Write Bit HIGH
     tip_poll();
   endtask
 
+  /*########################################################
+  ### I2C Stop Condition Generation & Data Transfer Task ###
+  ########################################################*/
   task stop_wr(logic [7:0] data);
     wb_write_task(0, `TXR, data);
-    wb_write_task(0, `CR, 8'b0101_0000);  // * Stop & Write Bits
+    wb_write_task(0, `CR, 8'b0101_0000);  // * Stop & Write Bits HIGH
     tip_poll();
   endtask
 
+  /*################################################################
+  ### I2C Data Transfer Task Depending On Different Data Lengths ###
+  ################################################################*/  
   task i2c_data_trans(input logic [31:0] data, input logic [1:0] byte_no);
     `uvm_info("Transmitting Data", $sformatf("Data => %0h", data), UVM_LOW)
     if(byte_no == 2'b00) begin
@@ -192,9 +197,9 @@ class wb_i2c_base_test extends uvm_test;
     end 
   endtask
 
-  // !      ###################################################
-  // !      ################## I2C Write Task #################
-  // !      ###################################################
+  /*####################
+  ### I2C Write Task ###
+  ####################*/
   task i2c_write(
     input logic [6:0]  i2c_slv_addr,
     input logic [7:0]  mem_address ,
@@ -202,122 +207,70 @@ class wb_i2c_base_test extends uvm_test;
     input logic [1:0]  byte_no
   );
 
-    i2c_slv_addr_trans(i2c_slv_addr);
+    i2c_slv_addr_trans(i2c_slv_addr, `WR);
     i2c_mem_addr_trans(mem_address);
     i2c_data_trans(data, byte_no);
-
-
   endtask
-/*
-  // !      ###################################################
-  // !      ################## I2C Write Task #################
-  // !      ###################################################
-  task i2c_write(
-    input logic [6:0] i2c_slv_addr,
-    input logic [7:0] mem_address,
-    input logic [7:0] data
-  );
-    `uvm_info(
-      "I2C WRITE TRANSFER STARTED",
-      $sformatf(
-        "SLV_ADDRESS => %0h :: MEM_ADDRESS => %0h :: WRITE_DATA => %0h",
-        i2c_slv_addr,
-        mem_address,
-        data
-      ),
-      UVM_LOW
-    )
 
-    // ?       /////////////////////////
-    // ?       // Drive Slave Address //
-    // ?       /////////////////////////
-    wb_write_task(0, `TXR, {i2c_slv_addr, `WR});
-    wb_write_task(0, `CR, 8'b1001_0000);  // * Start & Write Bits
-    tip_poll();
-
-    // ?       //////////////////////////
-    // ?       // Slave Memory Address //
-    // ?       //////////////////////////
-    wb_write_task(0, `TXR, mem_address);
-    wb_write_task(0, `CR, 8'b0001_0000);  // * Write Bit
-    tip_poll();
-
-    // ?       ///////////////////////////
-    // ?       // Writing Data to Slave //
-    // ?       ///////////////////////////
-    wb_write_task(0, `TXR, data);
-    wb_write_task(0, `CR, 8'b0101_0000);  // * Stop & Write Bits
-    tip_poll();
-
-    #100000;
-
-    `uvm_info(
-      "I2C WRITE TRANSFER   ENDED",
-      $sformatf(
-        "SLV_ADDRESS => %0h :: MEM_ADDRESS => %0h :: WRITE_DATA => %0h",
-        i2c_slv_addr,
-        mem_address,
-        data
-      ),
-      UVM_LOW
-    )
-  endtask
-*/
-  // !      ###################################################
-  // !      ################## I2C Read Task ##################
-  // !      ###################################################
-  task i2c_read(
-    input logic [6:0] i2c_slv_addr,
-    input logic [7:0] mem_address
-  );
-    `uvm_info(
-      "I2C READ TRANSFER STARTED",
-      $sformatf(
-        "SLV_ADDRESS => %0h :: MEM_ADDRESS => %0h",
-        i2c_slv_addr,
-        mem_address
-      ),
-      UVM_LOW
-    )
-    // ?       /////////////////////////////////////
-    // ?       // Drive Slave Address & Write Bit //
-    // ?       /////////////////////////////////////
-    wb_write_task(0, `TXR, {i2c_slv_addr, `WR});
-    wb_write_task(0, `CR, 8'b1001_0000);  // * Start & Write Bits
-    tip_poll();
-    //#5000;
-
-    // ?       //////////////////////////
-    // ?       // Slave Memory Address //
-    // ?       //////////////////////////
-    wb_write_task(0, `TXR, mem_address);
-    wb_write_task(0, `CR, 8'b0001_0000);  // * Write Bit
-    tip_poll();
-   
-    // ?       ////////////////////////////////////
-    // ?       // Drive Slave Address & Read Bit //
-    // ?       ////////////////////////////////////
-    wb_write_task(0, `TXR, {i2c_slv_addr, `RD});
-    wb_write_task(0, `CR, 8'b1001_0000);  // * Start & Write Bits
-    tip_poll();
-
-    // ?       //////////////////
-    // ?       // Reading Data //
-    // ?       //////////////////
-    wb_write_task(0, `CR, 8'b0110_1000);  // * Stop, Read & NACK Bits
+  /*#################################################################
+  ### I2C Repeated Start Condition Generation & Data Receive Task ###
+  #################################################################*/
+  task rep_read_ack();
+    wb_write_task(0, `CR, 8'b0010_0000);  // * Read HIGH & ACK Bit LOW
     wb_read_task(`RXR, tip_flag);
     tip_poll();
+  endtask
 
-    #100000;
+  /*##############################################################
+  ### I2C NACK & Stop Condition Generation & Data Receive Task ###
+  ##############################################################*/
+  task read_nack_stop();
+    wb_write_task(0, `CR, 8'b0110_1000);  // * Stop HIGH, Read HIGH & ACK Bit HIGH
+    wb_read_task(`RXR, tip_flag);
+    tip_poll();
+  endtask
 
-    `uvm_info(
-      "I2C READ TRANSFER   ENDED",
-      $sformatf(
-        "SLV_ADDRESS => %0h :: MEM_ADDRESS => %0h",
-        i2c_slv_addr,
-        mem_address
-      ),
-      UVM_LOW
-    )
+  /*###############################################################
+  ### I2C Data Receive Task Depending On Different Data Lengths ###
+  ###############################################################*/
+  task i2c_data_recv(input logic [1:0] byte_no);
+    //`uvm_info("Receiving Data", $sformatf("Data => %0h", data), UVM_LOW)
+    if(byte_no == 2'b00) begin
+      read_nack_stop();
+    end
+    else if(byte_no ==  2'b01) begin
+      rep_read_ack();
+
+      read_nack_stop();
+    end 
+    else if(byte_no ==  2'b10) begin
+      rep_read_ack();
+      rep_read_ack();
+
+      read_nack_stop();
+    end
+    else if(byte_no ==  2'b11) begin
+      rep_read_ack();
+      rep_read_ack();
+      rep_read_ack();
+
+      read_nack_stop();
+    end 
+  endtask
+
+  /*###################
+  ### I2C Read Task ###
+  ###################*/
+  task i2c_read(
+    input logic [6:0]  i2c_slv_addr,
+    input logic [7:0]  mem_address ,
+    input logic [1:0]  byte_no  
+  );
+
+  i2c_slv_addr_trans(i2c_slv_addr, `WR);
+  i2c_mem_addr_trans(mem_address);
+  i2c_slv_addr_trans(i2c_slv_addr, `RD);
+  i2c_data_recv(byte_no);
+
   endtask
 endclass
