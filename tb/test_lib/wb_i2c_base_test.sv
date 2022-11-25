@@ -6,6 +6,7 @@ class wb_i2c_base_test extends uvm_test;
   bit         tip_flag;
   logic [7:0] wb_read_data;
   logic [7:0] i2c_read_data;
+  static int byte_no;
 
   // ! Declearing handle of the WB_I2C Environment, Environment Config, WB Agent Config
   wb_i2c_environment wb_i2c_env;
@@ -34,7 +35,7 @@ class wb_i2c_base_test extends uvm_test;
     wb_agt_con     = wb_agent_config   ::type_id::create("wb_agt_con"    , this);
 
     // Setting parameters of WB_I2C Environment Configuration
-    wb_i2c_env_con.has_scoreboard      = 0          ; 
+    wb_i2c_env_con.has_scoreboard      = 1          ; 
     wb_agt_con.has_functional_coverage = 1          ;
     wb_agt_con.is_active               = UVM_ACTIVE ;
 
@@ -154,7 +155,7 @@ class wb_i2c_base_test extends uvm_test;
   /*##################################################################
   ### I2C Repeated Start Condition Generation & Data Transfer Task ###
   ##################################################################*/
-  task rep_start_wr(logic [7:0] data);
+  task rep_start_wr(input logic [7:0] data);
     wb_write_task(0, `TXR, data);
     wb_write_task(0, `CR, 8'b0001_0000);  // * Write Bit HIGH
     tip_poll();
@@ -167,34 +168,6 @@ class wb_i2c_base_test extends uvm_test;
     wb_write_task(0, `TXR, data);
     wb_write_task(0, `CR, 8'b0101_0000);  // * Stop & Write Bits HIGH
     tip_poll();
-  endtask
-
-  /*################################################################
-  ### I2C Data Transfer Task Depending On Different Data Lengths ###
-  ################################################################*/  
-  task i2c_data_trans(input logic [31:0] data, input logic [1:0] byte_no);
-    `uvm_info("Transmitting Data", $sformatf("Data => %0h", data), UVM_LOW)
-    if(byte_no == 2'b00) begin
-      stop_wr(data[31:24]);
-    end
-    else if(byte_no ==  2'b01) begin
-      rep_start_wr(data[31:24]);
-
-      stop_wr(data[23:16]);
-    end 
-    else if(byte_no ==  2'b10) begin
-      rep_start_wr(data[31:24]);
-      rep_start_wr(data[23:16]);
-
-      stop_wr(data[15:8]);
-    end
-    else if(byte_no ==  2'b11) begin
-      rep_start_wr(data[31:24]);
-      rep_start_wr(data[23:16]);
-      rep_start_wr(data[15:8]);
-
-      stop_wr(data[7:0]);
-    end 
   endtask
 
   /*#################################################################
@@ -215,32 +188,51 @@ class wb_i2c_base_test extends uvm_test;
     tip_poll();
   endtask
 
+  /*################################################################
+  ### I2C Data Transfer Task Depending On Different Data Lengths ###
+  ################################################################*/  
+  task i2c_data_trans(
+    logic [(`DATAWIDTH_64-1):0] data,
+    int dwidth
+  );
+    byte_no = dwidth / 8;
+    
+    if(byte_no > 1) begin
+      while(byte_no > 1) begin
+        rep_start_wr(data[((byte_no * 8) - 1) -: 8]);
+        `uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", byte_no, data[((byte_no * 8) - 1) -: 8]), UVM_LOW)
+        byte_no = byte_no - 1;
+      end
+      `uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", byte_no, data[((byte_no * 8) - 1) -: 8]), UVM_LOW)
+      stop_wr(data[((byte_no * 8) - 1) -: 8]);
+    end
+    else if(byte_no == 1) begin
+      `uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", byte_no, data[((byte_no * 8) - 1) -: 8]), UVM_LOW)
+      stop_wr(data[((byte_no * 8) - 1) -: 8]);
+    end
+  endtask
+
   /*###############################################################
   ### I2C Data Receive Task Depending On Different Data Lengths ###
   ###############################################################*/
-  task i2c_data_recv(input logic [1:0] byte_no);
-    //`uvm_info("Receiving Data", $sformatf("Data => %0h", data), UVM_LOW)
-    if(byte_no == 2'b00) begin
+  task i2c_data_recv(
+    int dwidth
+  );
+    byte_no = dwidth / 8;
+    
+    if(byte_no > 1) begin
+      while(byte_no > 1) begin
+        rep_read_ack();
+        `uvm_info("RECEIVE DATA", $sformatf("Byte No => %0d", byte_no), UVM_LOW)
+        byte_no = byte_no - 1;
+      end
+      `uvm_info("RECEIVE DATA", $sformatf("Byte No => %0d", byte_no), UVM_LOW)
       read_nack_stop();
     end
-    else if(byte_no ==  2'b01) begin
-      rep_read_ack();
-
-      read_nack_stop();
-    end 
-    else if(byte_no ==  2'b10) begin
-      rep_read_ack();
-      rep_read_ack();
-
+    else if(byte_no == 1) begin
+      `uvm_info("RECEIVE DATA", $sformatf("Byte No => %0d", byte_no), UVM_LOW)
       read_nack_stop();
     end
-    else if(byte_no ==  2'b11) begin
-      rep_read_ack();
-      rep_read_ack();
-      rep_read_ack();
-
-      read_nack_stop();
-    end 
   endtask
 
   /*####################
@@ -249,13 +241,13 @@ class wb_i2c_base_test extends uvm_test;
   task i2c_write(
     input logic [6:0]  i2c_slv_addr,
     input logic [7:0]  mem_address ,
-    input logic [31:0] data        ,
-    input logic [1:0]  byte_no
+    input logic [31:0] data        ,     
+    input int dwidth
   );
 
     i2c_slv_addr_trans(i2c_slv_addr, `WR);
     i2c_mem_addr_trans(mem_address);
-    i2c_data_trans(data, byte_no);
+    i2c_data_trans(data, dwidth);
   endtask
 
   /*###################
@@ -264,13 +256,13 @@ class wb_i2c_base_test extends uvm_test;
   task i2c_read(
     input logic [6:0]  i2c_slv_addr,
     input logic [7:0]  mem_address ,
-    input logic [1:0]  byte_no  
+    input int dwidth
   );
 
   i2c_slv_addr_trans(i2c_slv_addr, `WR);
   i2c_mem_addr_trans(mem_address);
   i2c_slv_addr_trans(i2c_slv_addr, `RD);
-  i2c_data_recv(byte_no);
+  i2c_data_recv(dwidth);
 
   endtask
 endclass

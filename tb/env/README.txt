@@ -27,6 +27,9 @@ Plan for I2C Monitor and how send expected item from Wishbone Monitor to Scorebo
  b. Check if wb_dat_o[4] == 1.
  c. i2c_wr_flag = i2c_wr_flag + 1
 
+
+
+
 ## Wishbone Write 5
  a. Check if wb_addr_i is equal to `TXR.
  b. Save wb_dat_o[7:0] to exp_transmit_data.

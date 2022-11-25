@@ -35,10 +35,14 @@ class i2c_wr_rd_test extends wb_i2c_base_test;
       wb_reset_task();                                      // ! System Reset
 
       i2c_core_setup(8'h64, 8'h00, 8'hC0);                  // ! Core & Prescale Registers Setup
-      
-      i2c_write(`SLVADDR, 8'h01, 32'hAA_55_22_11, 2'b11);   // ! I2C Data Transfer
-      i2c_read(`SLVADDR, 8'h01, 2'b11);                     // ! I2C Data Receive
-    phase.drop_objection(this);
+
+      // i2c_write(`SLVADDR, 8'h00, 64'h35_D2, `DATAWIDTH_8);   // ! I2C Data Transfer
+      i2c_write(`SLVADDR, 8'h00, 64'h55_A2, `DATAWIDTH_16);   // ! I2C Data Transfer
+      // i2c_write(`SLVADDR, 8'h00, 64'h66_3A, `DATAWIDTH_24);   // ! I2C Data Transfer
+      // i2c_write(`SLVADDR, 8'h00, 64'h55_77_88_C3, `DATAWIDTH_32);   // ! I2C Data Transfer
+      //i2c_read(`SLVADDR, 8'h01, 2'b11); // ! I2C Data Receive
+      i2c_read(`SLVADDR, 8'h00, `DATAWIDTH_16); // ! I2C Data Receive
+      phase.drop_objection(this);
 
   endtask
 endclass

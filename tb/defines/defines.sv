@@ -11,4 +11,13 @@
 `define SR      3'b100
 `define SLVADDR 7'h3C 
 `define WR      1'b0  
-`define RD      1'b1  
+`define RD      1'b1
+
+`define DATAWIDTH_64 64
+`define DATAWIDTH_56 56
+`define DATAWIDTH_48 48
+`define DATAWIDTH_40 40
+`define DATAWIDTH_32 32
+`define DATAWIDTH_24 24
+`define DATAWIDTH_16 16
+`define DATAWIDTH_8  8

@@ -26,13 +26,13 @@ class wb_i2c_environment extends uvm_env;
     else begin
       // Creating WB_I2C Scoreboard Instance.
       if (wb_i2c_env_con.has_scoreboard) begin
+        wb_i2c_prdctr = wb_i2c_predictor::type_id::create("wb_i2c_prdctr", this);
         wb_i2c_sb = wb_i2c_scoreboard::type_id::create("wb_i2c_sb", this);
       end
     end
 
-    wb_agt        = wb_agent        ::type_id::create("wb_agt"       , this);
-    wb_i2c_prdctr = wb_i2c_predictor::type_id::create("wb_i2c_prdctr", this);
-
+    wb_agt = wb_agent::type_id::create("wb_agt", this);
+    
     // Setting WB_AGENT_CON in UVM Configuration Database to get it from WB Agent.
     uvm_config_db#(wb_agent_config)::set(this, "wb_agt", "wb_agent_config", wb_i2c_env_con.wb_agt_con);
 		
@@ -45,13 +45,7 @@ class wb_i2c_environment extends uvm_env;
 
 		// Connecting Driver & Monitor with Scoreboard, depending on the parameters of Enviornment Configuration & Agent Configuration
     if(wb_i2c_env_con.has_scoreboard) begin
-      wb_agt.wb_mtr.wb_exp_mtr2scb_port.connect(wb_i2c_sb.wb_exp_mtr2scb);
-      wb_agt.wb_mtr.wb_act_mtr2scb_port.connect(wb_i2c_sb.wb_act_mtr2scb);
-      /*
-      if (wb_i2c_env_con.wb_agt_con.is_active == UVM_ACTIVE) begin
-				wb_agt.wb_dvr.wb_dvr2scb_port.connect(wb_i2c_sb.wb_dvr2scb);
-			end
-      */  
+      wb_agt.wb_mtr.wb_wr_exp_mtr2pdctr_port.connect(wb_i2c_prdctr.wb_wr_mtr2pdctr);
     end
     else begin
 			`uvm_info("WB_ENV_CONFIG", "THIS TESTBENCH DOES NOT HAVE A SCOREBOARD.", UVM_LOW)
