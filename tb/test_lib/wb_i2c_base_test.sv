@@ -127,14 +127,14 @@ class wb_i2c_base_test extends uvm_test;
     // Enabling the Core
     wb_write_task(0, `CTR    , ctr_dat    ); // * I2C Core & Interrupt Enable
 
-    `uvm_info("I2C CORE SETUP", "I2C CORE SETUP IS DONE", UVM_LOW)
+    //`uvm_info("I2C CORE SETUP", "I2C CORE SETUP IS DONE", UVM_LOW)
   endtask
 
   /*##############################################################################
   ### I2C Start Condition Generation & Slave Address & WR/RD Bit Transfer Task ###
   ##############################################################################*/
   task i2c_slv_addr_trans(input logic [6:0] i2c_slv_addr, input bit wr_rd);
-    `uvm_info("Transmitting Slave Address", $sformatf("SLV_ADDRESS => %0h", i2c_slv_addr), UVM_LOW)
+    //`uvm_info("Transmitting Slave Address", $sformatf("SLV_ADDRESS => %0h", i2c_slv_addr), UVM_LOW)
 
     wb_write_task(0, `TXR, {i2c_slv_addr, wr_rd});
     wb_write_task(0, `CR, 8'b1001_0000);  // Start & Write Bits HIGH
@@ -145,7 +145,7 @@ class wb_i2c_base_test extends uvm_test;
   ### I2C Memory Address Transfer Task ###
   ######################################*/
   task i2c_mem_addr_trans(input logic [7:0] mem_address);
-    `uvm_info("Transmitting Memory Address", $sformatf("MEM_ADDRESS => %0h", mem_address), UVM_LOW)
+    //`uvm_info("Transmitting Memory Address", $sformatf("MEM_ADDRESS => %0h", mem_address), UVM_LOW)
 
     wb_write_task(0, `TXR, mem_address);
     wb_write_task(0, `CR, 8'b0001_0000);  // Write Bit HIGH
@@ -200,14 +200,14 @@ class wb_i2c_base_test extends uvm_test;
     if(byte_no > 1) begin
       while(byte_no > 1) begin
         rep_start_wr(data[((byte_no * 8) - 1) -: 8]);
-        `uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", byte_no, data[((byte_no * 8) - 1) -: 8]), UVM_LOW)
+        //`uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", byte_no, data[((byte_no * 8) - 1) -: 8]), UVM_LOW)
         byte_no = byte_no - 1;
       end
-      `uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", byte_no, data[((byte_no * 8) - 1) -: 8]), UVM_LOW)
+      //`uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", byte_no, data[((byte_no * 8) - 1) -: 8]), UVM_LOW)
       stop_wr(data[((byte_no * 8) - 1) -: 8]);
     end
     else if(byte_no == 1) begin
-      `uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", byte_no, data[((byte_no * 8) - 1) -: 8]), UVM_LOW)
+      //`uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", byte_no, data[((byte_no * 8) - 1) -: 8]), UVM_LOW)
       stop_wr(data[((byte_no * 8) - 1) -: 8]);
     end
   endtask
@@ -223,14 +223,14 @@ class wb_i2c_base_test extends uvm_test;
     if(byte_no > 1) begin
       while(byte_no > 1) begin
         rep_read_ack();
-        `uvm_info("RECEIVE DATA", $sformatf("Byte No => %0d", byte_no), UVM_LOW)
+        //`uvm_info("RECEIVE DATA", $sformatf("Byte No => %0d", byte_no), UVM_LOW)
         byte_no = byte_no - 1;
       end
-      `uvm_info("RECEIVE DATA", $sformatf("Byte No => %0d", byte_no), UVM_LOW)
+      //`uvm_info("RECEIVE DATA", $sformatf("Byte No => %0d", byte_no), UVM_LOW)
       read_nack_stop();
     end
     else if(byte_no == 1) begin
-      `uvm_info("RECEIVE DATA", $sformatf("Byte No => %0d", byte_no), UVM_LOW)
+      //`uvm_info("RECEIVE DATA", $sformatf("Byte No => %0d", byte_no), UVM_LOW)
       read_nack_stop();
     end
   endtask
