@@ -43,12 +43,13 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
 	// Storing the received packet in the expected queue.
 	function void write_exp_pred2scb(i2c_sequence_item exp_item);
 		//`uvm_info("PREDICTOR ==> SCOREBOARD", $sformatf("SLV_ADDR = %0h, MEM_ADDR = %0h, DATA = %0h", exp_item.slave_addr, exp_item.memry_addr, exp_item.exp_transmit_data), UVM_LOW);
+    exp_item.print();
     
-		exp_que.push_back(exp_item);
+		//exp_que.push_back(exp_item);
 
-    foreach (exp_que[i]) begin
-      `uvm_info("SCOREBOARD", $sformatf("i :: %0d, Slave Address :: %0h, Memory Address :: %0h, Data :: %0h", i, exp_que[i].slave_addr, exp_que[i].memry_addr, exp_que[i].exp_transmit_data), UVM_NONE)
-    end
+    //foreach (exp_que[i]) begin
+      //`uvm_info("SCOREBOARD", $sformatf("i :: %0d, Slave Address :: %0h, Memory Address :: %0h, Write Data :: %0h, Read Data = %0h", i, exp_que[i].slave_addr, exp_que[i].memry_addr, exp_que[i].exp_transmit_data, exp_que[i].exp_receive_data), UVM_NONE)
+    //end
 	endfunction
 
   /*
