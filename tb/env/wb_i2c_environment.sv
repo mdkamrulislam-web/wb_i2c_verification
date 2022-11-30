@@ -5,6 +5,7 @@ class wb_i2c_environment extends uvm_env;
   // ! Declaring the handle of WB_I2C Scoreboard, WB Agent, Environment Config, Wishbone I2C Predictor.
   wb_i2c_scoreboard wb_i2c_sb;
   wb_agent wb_agt;
+  i2c_agent i2c_agt;
   wb_i2c_env_config wb_i2c_env_con;
   wb_i2c_predictor wb_i2c_prdctr;
 
@@ -31,7 +32,8 @@ class wb_i2c_environment extends uvm_env;
       end
     end
 
-    wb_agt = wb_agent::type_id::create("wb_agt", this);
+    wb_agt  = wb_agent ::type_id::create("wb_agt",  this);
+    i2c_agt = i2c_agent::type_id::create("i2c_agt", this);
     
     // Setting WB_AGENT_CON in UVM Configuration Database to get it from WB Agent.
     uvm_config_db#(wb_agent_config)::set(this, "wb_agt", "wb_agent_config", wb_i2c_env_con.wb_agt_con);

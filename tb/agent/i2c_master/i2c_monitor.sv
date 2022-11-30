@@ -1,38 +1,57 @@
-// ! Plan for I2C Monitor and how send expected item from Wishbone Monitor to Scoreboard.
+class i2c_monitor extends uvm_monitor;
+  // ! Factory registration of I2C Monitor
+  `uvm_component_utils(i2c_monitor)
 
-// ! Flags & Registers
-// * 1. bit [1:0] i2c_wr_flag
-// * 3. reg [7:0] exp_mem_addr
-// * 4. reg [7:0] exp_transmit_data
-// * 6. reg [7:0] exp_slv_addr_wr_bit
+  // ! Declaring Handle for I2C Interface
+  virtual i2c_interface i2c_intf;
 
-// ! Wishbone Write 1
-    //? a. Check if wb_addr_i is equal to `TXR.
-    //? b. Check if wb_dat_o[7:1] == `SLVADDR & wb_dat_o[0] == `WR.
-    //? c. Save wb_dat_o[7:0] to exp_slv_addr_wr_bit.
-    //? d. i2c_wr_flag = i2c_wr_flag + 1
+  // ! Monitor Flags
+  static bit transfer_start;
 
-// ! Wishbone Write 2
-    //? a. Check if wb_addr_i is equal to `CR.
-    //? b. Check if wb_dat_o[7] == 1 & wb_dat_o[4] == 1.
-    //? c. i2c_wr_flag = i2c_wr_flag + 1
+  // ! I2C Monitor Constructor
+  function new(string name = "i2c_monitor", uvm_component parent = null);
+    super.new(name, parent);
+    `uvm_info(get_full_name(), "Inside I2C Monitor Constructor.", UVM_LOW)
+  endfunction
 
-// ! Wishbone Write 3
-    //? a. Check if wb_addr_i is equal to `TXR.
-    //? b. Save wb_dat_o[7:0] to exp_mem_addr.
-    //? c. i2c_wr_flag = i2c_wr_flag + 1
+  // ! I2C Monitor Build Phase
+  virtual function void build_phase(uvm_phase phase);
+    super.build_phase(phase);
+    `uvm_info(get_full_name(), "Inside I2C Monitor Build Phase.", UVM_LOW)
 
-// ! Wishbone Write 4
-    //? a. Check if wb_addr_i is equal to `CR.
-    //? b. Check if wb_dat_o[4] == 1.
-    //? c. i2c_wr_flag = i2c_wr_flag + 1
+    if(!uvm_config_db#(virtual i2c_interface)::get(this, "", "i2c_vintf", i2c_intf)) begin
+      `uvm_fatal("I2C Virtual Interface Not Found Inside Monitor!", {"Virtual interface must be set for: ",get_full_name(),".i2c_vintf"})
+    end
+    else begin
+      `uvm_info("I2C_INTF", "I2C Virtual Interface found inside monitor.", UVM_LOW)
+    end
+  endfunction
 
-// ! Wishbone Write 5
-    //? a. Check if wb_addr_i is equal to `TXR.
-    //? b. Save wb_dat_o[7:0] to exp_transmit_data.
-    //? c. i2c_wr_flag = i2c_wr_flag + 1
+  // ! I2C Monitor Connect Phase
+  virtual function void connect_phase(uvm_phase phase);
+    super.connect_phase(phase);
+    `uvm_info(get_full_name(), "Inside I2C Monitor Connect Phase.", UVM_LOW)
+  endfunction
 
-// ! Wishbone Write 6
-    //? a. Check if wb_addr_i is equal to `CR.
-    //? b. Check if wb_dat_o[4] == 1 & wb_dat_o[6] == 1.
-    //? c. i2c_wr_flag = i2c_wr_flag + 1
+  task i2c_start_condition();
+    forever begin
+      @(negedge i2c_intf.SDA_PAD_I);
+      @(posedge i2c_intf.CLK_I);
+      if(i2c_intf.SDA_PAD_I === 0 && i2c_intf.SCL_PAD_I === 1 && !transfer_start) begin
+        if(i2c_intf.SDA_PAD_I === 0 && i2c_intf.SCL_PAD_I === 1 && !transfer_start) begin
+        transfer_start = 1;
+      end
+    end
+  endtask
+
+  // ! I2C Monitor Run Phase
+  task run_phase(uvm_phase phase);
+    `uvm_info(get_full_name(), "Inside I2C Monitor Run Phase.", UVM_LOW)
+
+    fork
+      `uvm_info("Transfer Start", $sformatf("Transfer Start = %0b", transfer_start), UVM_NONE)
+      i2c_start_condition();
+      `uvm_info("Transfer Start", $sformatf("Transfer Start = %0b", transfer_start), UVM_NONE)
+    join
+  endtask
+endclass

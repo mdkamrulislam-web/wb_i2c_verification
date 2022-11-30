@@ -1,4 +1,4 @@
-interface i2c_interface(input bit WB_CLK_I);
+interface i2c_interface(input bit CLK_I);
   logic             SCL_PAD_I    ;
   logic             SCL_PAD_O    ;
   logic             SCL_PADOEN_O ;

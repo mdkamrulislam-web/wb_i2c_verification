@@ -6,8 +6,6 @@ class wb_i2c_predictor extends uvm_component;
 
   `include "../defines/defines.sv"
 
-  // ! Taking a queue as wb_wr_que
-  i2c_sequence_item i2c_wr_que[$];
   i2c_sequence_item i2c_sq_exp_item;
   logic [7:0] temp_txr_data;
   logic [7:0] temp_slv_addr;
@@ -15,11 +13,6 @@ class wb_i2c_predictor extends uvm_component;
   
   static int write;
   static int read;
-
-  static bit rep_wr;
-  static bit rep_rd;
-
-  static bit wr_stop_bit;
 
   // ! Declaring imports for getting monitor wishbone write packets
   uvm_analysis_imp_wb_wr_mtr2pdctr#(wb_sequence_item, wb_i2c_predictor) wb_wr_mtr2pdctr;
@@ -126,6 +119,5 @@ class wb_i2c_predictor extends uvm_component;
       `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_LOW)
       temp_txr_data = item.wb_dat_i;
     end
-
   endfunction
 endclass
