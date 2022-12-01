@@ -52,7 +52,7 @@ class wb_i2c_predictor extends uvm_component;
     // Setting Slave Address in TXR Reg
     if((item.wb_adr_i==`TXR) && (write == 0) && (read == 0)) begin
       temp_slv_addr = item.wb_dat_i;
-      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_LOW)
+      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_MEDIUM)
       write++;
       read++;
     end
@@ -60,21 +60,21 @@ class wb_i2c_predictor extends uvm_component;
     if((write == 1) && (read == 1) && (item.wb_adr_i==`CR) && (item.wb_dat_i==8'b1001_0000)) begin
       i2c_sq_exp_item.slave_addr = temp_slv_addr;
       exp_pred2scb_port.write(i2c_sq_exp_item);
-      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_LOW)
+      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_MEDIUM)
       write++;
       read++;
     end
     // Setting Memory Address in TXR Reg
     if((write == 2) && (read == 2) && (item.wb_adr_i==`TXR)) begin
       temp_mem_addr = item.wb_dat_i;
-      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_LOW)
+      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_MEDIUM)
       write++;
       read++;
     end
     if((write == 3) && (read == 3) && (item.wb_adr_i == `CR) && (item.wb_dat_i==8'b0001_0000)) begin
       i2c_sq_exp_item.memry_addr = temp_mem_addr;
       exp_pred2scb_port.write(i2c_sq_exp_item);
-      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_LOW)
+      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_MEDIUM)
       write++;
       read++;
     end
@@ -82,19 +82,21 @@ class wb_i2c_predictor extends uvm_component;
     // Setting TXR Reg
     if((write == 4) && (read == 4) && (item.wb_adr_i == `TXR)) begin
       temp_txr_data = item.wb_dat_i;
-      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_LOW)
+      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_MEDIUM)
       write++;
       read++;
     end
 
     // Single Write
     if((item.wb_adr_i == `CR) && (item.wb_dat_i == 8'b0101_0000)) begin
+      i2c_sq_exp_item.memry_addr        = temp_mem_addr;
       i2c_sq_exp_item.exp_transmit_data = temp_txr_data;
       exp_pred2scb_port.write(i2c_sq_exp_item);
-      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_LOW)
+      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_MEDIUM)
       //`uvm_info("I2C TRASMIT DATA STORED", $sformatf("Data :: %0h", temp_txr_data), UVM_NONE)
       read = 0;
       write = 0;
+      temp_mem_addr = 8'bXX;
     end
 
     // Slave Address & RD Bit for I2C Receive Configuration Transmission
@@ -103,20 +105,22 @@ class wb_i2c_predictor extends uvm_component;
       exp_pred2scb_port.write(i2c_sq_exp_item);
       read = 0;
       write = 0;
-      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_LOW)
+      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_MEDIUM)
     end
 
     // Rep Write
     if((write >= 5) && (item.wb_adr_i == `CR) && (item.wb_dat_i == 8'b0001_0000)) begin
+      i2c_sq_exp_item.memry_addr        = temp_mem_addr;
       i2c_sq_exp_item.exp_transmit_data = temp_txr_data;
       exp_pred2scb_port.write(i2c_sq_exp_item);
-      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_LOW)
+      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_MEDIUM)
       write++;
+      temp_mem_addr++;
     end    
 
     if((write >= 6) && (item.wb_adr_i == `TXR)) begin
       read = 0;
-      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_LOW)
+      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_MEDIUM)
       temp_txr_data = item.wb_dat_i;
     end
   endfunction
