@@ -50,7 +50,7 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
         end
         else if((dvr_seq_item.wb_rst_i == 0) && (dvr_seq_item.wb_we_i == 0)) begin
           wb_read();
-          tip_flag_checker();
+          //tip_flag_checker();
         end
       seq_item_port.item_done(dvr_seq_item);
     end
@@ -70,10 +70,10 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
   
   // ! RESET TASK
   task wb_reset();
-    wb_intf.WB_ADR_I <= 3'hX;
-    wb_intf.WB_DAT_I <= 8'hXX;
-    wb_intf.WB_WE_I  <= 1'hX;
-    wb_intf.WB_STB_I <= 1'hX;
+    wb_intf.WB_ADR_I <= 3'h0;
+    wb_intf.WB_DAT_I <= 8'h00;
+    wb_intf.WB_WE_I  <= 1'h0;
+    wb_intf.WB_STB_I <= 1'h0;
     wb_intf.WB_CYC_I <= 0;
     
     wb_intf.WB_RST_I <= 1;
@@ -106,11 +106,17 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
     while(~wb_intf.WB_ACK_O) @(negedge wb_intf.WB_CLK_I);
 
     //`uvm_info("DRIVER_WRITE_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_I), UVM_LOW)
-
+/*
     wb_intf.WB_ADR_I <= 3'hX;
     wb_intf.WB_DAT_I <= 8'hXX;
     wb_intf.WB_WE_I  <= 1'hX;
     wb_intf.WB_STB_I <= 1'hX;
+    wb_intf.WB_CYC_I <= 0;
+*/
+    wb_intf.WB_ADR_I <= 3'h0;
+    wb_intf.WB_DAT_I <= 8'h00;
+    wb_intf.WB_WE_I  <= 1'h0;
+    wb_intf.WB_STB_I <= 1'h0;
     wb_intf.WB_CYC_I <= 0;
   endtask
   
@@ -125,12 +131,20 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
 
     @(negedge wb_intf.WB_CLK_I);
 
-    while(~wb_intf.WB_ACK_O) @(negedge wb_intf.WB_CLK_I);
-    //`uvm_info("READ_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_O), UVM_LOW)
+    tip_flag_checker();
 
+    while(~wb_intf.WB_ACK_O) @(negedge wb_intf.WB_CLK_I);
+    //`uvm_info("READ_CHECKER", $sformatf("Addr :: %0b, Data :: %0b", wb_intf.WB_ADR_I, wb_intf.WB_DAT_O), UVM_LOW)
+/*
     wb_intf.WB_ADR_I <= 3'hX;
     wb_intf.WB_WE_I  <= 1'hX;
     wb_intf.WB_STB_I <= 1'hX;
     wb_intf.WB_CYC_I <= 0   ;
+*/
+    wb_intf.WB_ADR_I <= 3'h0;
+    wb_intf.WB_WE_I  <= 1'h0;
+    wb_intf.WB_STB_I <= 1'h0;
+    wb_intf.WB_CYC_I <= 1'h0   ;
+
   endtask
 endclass

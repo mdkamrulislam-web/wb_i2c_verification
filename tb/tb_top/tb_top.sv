@@ -8,9 +8,6 @@ module tb_top;
   // ! Clock Signal Declaration
   bit WB_CLK_I;
 
-  wire sda;
-  wire scl;
-
   // ! Register
   reg [7:0] myReg;
 
@@ -25,8 +22,8 @@ module tb_top;
   i2cSlave I2C_SLV_DUT(
     .clk   (  wb_intf.WB_CLK_I  ),
     .rst   (  wb_intf.WB_RST_I  ),
-    .sda   (  sda               ),
-    .scl   (  scl               ),
+    .sda   (  i2c_intf.TB_SDA   ),
+    .scl   (  i2c_intf.TB_SCL   ),
     .myReg0(                    ),
     .myReg1(                    ),
     .myReg2(                    ),
@@ -60,14 +57,6 @@ module tb_top;
     .sda_pad_o    ( i2c_intf.SDA_PAD_O    )  ,
     .sda_padoen_o ( i2c_intf.SDA_PADOEN_O )
   );
-
-  assign sda = i2c_intf.SDA_PADOEN_O ? 1'bz : i2c_intf.SDA_PAD_O;
-  assign i2c_intf.SDA_PAD_I = sda;
-  pullup(sda);
-
-  assign scl = i2c_intf.SCL_PADOEN_O ? 1'bz : i2c_intf.SCL_PAD_O;
-  assign i2c_intf.SCL_PAD_I = scl;
-  pullup(scl);
 
   initial begin
     `uvm_info("TB_TOP", "Inside tb_top Initial block", UVM_MEDIUM)
