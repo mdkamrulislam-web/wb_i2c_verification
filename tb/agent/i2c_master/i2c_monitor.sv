@@ -66,14 +66,15 @@ class i2c_monitor extends uvm_monitor;
   task stop_condition();
     //forever begin
       @(posedge i2c_intf.TB_SDA);
-      if(i2c_intf.TB_SCL == 1) begin
+      `uvm_info("SDA_POS_EDGE", "####################################################################", UVM_NONE)
+      if((i2c_intf.TB_SCL == 1) && (i2c_intf.TB_SDA == 1)) begin
         transfer_stop = 1;
         slv_mem_addr_ack = 0;  // For_Data
         mem_trigger = 0;
         dat_trigger = 0;
        
         `uvm_info("STOP_BIT", $sformatf("Start Flag = %0b :: Stop Flag = %0b", transfer_start, transfer_stop), UVM_NONE)
-        `uvm_info("START_FLAG_VALS", $sformatf("Start = %0b :: Stop = %0b :: SLV_ADDR_ACK = %0b :: SLV_MEM_ADDR_ACK = %0b :: DATA_ACK = %0b, MEM_Tri = %0b, DATA_Tri = %0b", transfer_start, transfer_stop, slv_addr_ack, slv_mem_addr_ack, data_ack, mem_trigger, dat_trigger), UVM_NONE)
+        `uvm_info("STOP_FLAG_VALS", $sformatf("Start = %0b :: Stop = %0b :: SLV_ADDR_ACK = %0b :: SLV_MEM_ADDR_ACK = %0b :: DATA_ACK = %0b, MEM_Tri = %0b, DATA_Tri = %0b", transfer_start, transfer_stop, slv_addr_ack, slv_mem_addr_ack, data_ack, mem_trigger, dat_trigger), UVM_NONE)
       end
     //end
   endtask
@@ -101,7 +102,7 @@ class i2c_monitor extends uvm_monitor;
           `uvm_info("SLAVE_ACK_BIT", $sformatf("Slave Ack Bit = %0b", slv_ack_bit), UVM_NONE)
           slv_addr_ack = 1;
         end
-        `uvm_info("START_FLAG_VALS", $sformatf("Start = %0b :: Stop = %0b :: SLV_ADDR_ACK = %0b :: SLV_MEM_ADDR_ACK = %0b :: DATA_ACK = %0b, MEM_Tri = %0b, DATA_Tri = %0b", transfer_start, transfer_stop, slv_addr_ack, slv_mem_addr_ack, data_ack, mem_trigger, dat_trigger), UVM_NONE)
+        `uvm_info("SLV_ADDR_FLAG_VALS", $sformatf("Start = %0b :: Stop = %0b :: SLV_ADDR_ACK = %0b :: SLV_MEM_ADDR_ACK = %0b :: DATA_ACK = %0b, MEM_Tri = %0b, DATA_Tri = %0b", transfer_start, transfer_stop, slv_addr_ack, slv_mem_addr_ack, data_ack, mem_trigger, dat_trigger), UVM_NONE)
       end
     //end
   endtask
@@ -129,7 +130,7 @@ class i2c_monitor extends uvm_monitor;
         
        // @(posedge i2c_intf.TB_SCL);
         mem_trigger = 1;
-        `uvm_info("START_FLAG_VALS", $sformatf("Start = %0b :: Stop = %0b :: SLV_ADDR_ACK = %0b :: SLV_MEM_ADDR_ACK = %0b :: DATA_ACK = %0b, MEM_Tri = %0b, DATA_Tri = %0b", transfer_start, transfer_stop, slv_addr_ack, slv_mem_addr_ack, data_ack, mem_trigger, dat_trigger), UVM_NONE)
+        `uvm_info("MEM_ADDR_FLAG_VALS", $sformatf("Start = %0b :: Stop = %0b :: SLV_ADDR_ACK = %0b :: SLV_MEM_ADDR_ACK = %0b :: DATA_ACK = %0b, MEM_Tri = %0b, DATA_Tri = %0b", transfer_start, transfer_stop, slv_addr_ack, slv_mem_addr_ack, data_ack, mem_trigger, dat_trigger), UVM_NONE)
       end
     //end
   endtask
@@ -155,7 +156,7 @@ class i2c_monitor extends uvm_monitor;
         end
         //@(posedge i2c_intf.TB_SCL);
         dat_trigger = 1;
-        `uvm_info("START_FLAG_VALS", $sformatf("Start = %0b :: Stop = %0b :: SLV_ADDR_ACK = %0b :: SLV_MEM_ADDR_ACK = %0b :: DATA_ACK = %0b, MEM_Tri = %0b, DATA_Tri = %0b", transfer_start, transfer_stop, slv_addr_ack, slv_mem_addr_ack, data_ack, mem_trigger, dat_trigger), UVM_NONE)
+        `uvm_info("TRANS_DATA_FLAG_VALS", $sformatf("Start = %0b :: Stop = %0b :: SLV_ADDR_ACK = %0b :: SLV_MEM_ADDR_ACK = %0b :: DATA_ACK = %0b, MEM_Tri = %0b, DATA_Tri = %0b", transfer_start, transfer_stop, slv_addr_ack, slv_mem_addr_ack, data_ack, mem_trigger, dat_trigger), UVM_NONE)
       end
     //end
   endtask
