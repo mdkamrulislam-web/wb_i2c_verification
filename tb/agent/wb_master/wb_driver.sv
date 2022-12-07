@@ -15,30 +15,30 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
   // ! Wishbone Driver Constructor
   function new(string name = "wb_driver", uvm_component parent = null);
     super.new(name, parent);
-    `uvm_info(get_full_name(), "Inside Wishbone Driver Constructor.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside Wishbone Driver Constructor.", UVM_HIGH)
   endfunction
   
   // ! Wishbone Driver Build Phase
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    `uvm_info(get_full_name(), "Inside Wishbone Driver Build Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside Wishbone Driver Build Phase.", UVM_HIGH)
 
     if(!uvm_config_db#(virtual wb_interface)::get(this, "", "wb_vintf", wb_intf)) begin
       `uvm_fatal("WB Virtual Interface Not Found Inside Driver!", {"Virtual interface must be set for: ",get_full_name(),".wb_vintf"})
     end
     else begin
-      `uvm_info("WB_INTF", "WB Virtual Interface found inside driver.", UVM_MEDIUM)
+      `uvm_info("WB_INTF", "WB Virtual Interface found inside driver.", UVM_HIGH)
     end
   endfunction
   
   // ! Wishbone Driver Connect Phase
   virtual function void connect_phase(uvm_phase phase);
-    `uvm_info(get_full_name(), "Inside Wishbone Driver Connect Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside Wishbone Driver Connect Phase.", UVM_HIGH)
   endfunction
   
   // ! Wishbone Driver Run Phase
   task run_phase(uvm_phase phase);
-    `uvm_info(get_full_name(), "Inside Wishbone Driver Run Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside Wishbone Driver Run Phase.", UVM_HIGH)
 
     forever begin
       seq_item_port.get_next_item(dvr_seq_item);

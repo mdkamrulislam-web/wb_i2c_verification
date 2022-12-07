@@ -21,13 +21,13 @@ class wb_i2c_base_test extends uvm_test;
   // ! WB_I2C Base Test Constructor: new
   function new(string name = "wb_i2c_base_test", uvm_component parent = null);
     super.new(name, parent);
-    `uvm_info(get_full_name(), "Inside WB_I2C Base Test Constructor", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB_I2C Base Test Constructor", UVM_HIGH)
   endfunction: new
 
   // ! WB_I2C Base Test Build Phase
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    `uvm_info(get_full_name(), "Inside WB_I2C Base Test Build Phase", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB_I2C Base Test Build Phase", UVM_HIGH)
 
     // Creating Environment, Environment Config Instances
     wb_i2c_env     = wb_i2c_environment::type_id::create("wb_i2c_env"    , this);
@@ -51,12 +51,12 @@ class wb_i2c_base_test extends uvm_test;
   // ! WB_I2C Base Test Connect Phase
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    `uvm_info(get_full_name(), "Inside WB_I2C Base Test Connect Phase", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB_I2C Base Test Connect Phase", UVM_HIGH)
   endfunction
 
   // ! WB_I2C Base Test Run Phase
   virtual task run_phase(uvm_phase phase);
-    `uvm_info(get_full_name(), "Inside WB_I2C Base Test Run Phase", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB_I2C Base Test Run Phase", UVM_HIGH)
   endtask
 
   /*#########################

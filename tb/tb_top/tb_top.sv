@@ -59,7 +59,7 @@ module tb_top;
   );
 
   initial begin
-    `uvm_info("TB_TOP", "Inside tb_top Initial block", UVM_MEDIUM)
+    `uvm_info("TB_TOP", "Inside tb_top Initial block", UVM_HIGH)
 
     uvm_config_db#(virtual wb_interface)  :: set(null, "*", "wb_vintf",  wb_intf) ;
     uvm_config_db#(virtual i2c_interface) :: set(null, "*", "i2c_vintf", i2c_intf);

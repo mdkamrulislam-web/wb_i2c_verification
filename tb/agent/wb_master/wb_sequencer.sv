@@ -5,20 +5,20 @@ class wb_sequencer extends uvm_sequencer #(wb_sequence_item);
   // ! Wishbone Sequencer Constructor
   function new(string name = "wb_sequencer", uvm_component parent = null);
     super.new(name, parent);
-    `uvm_info(get_full_name(), "Inside Wishbone Sequencer Constructor.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside Wishbone Sequencer Constructor.", UVM_HIGH)
   endfunction
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    `uvm_info(get_full_name(), "Inside Wishbone Sequencer Build Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside Wishbone Sequencer Build Phase.", UVM_HIGH)
   endfunction
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    `uvm_info(get_full_name(), "Inside Wishbone Sequencer Connect Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside Wishbone Sequencer Connect Phase.", UVM_HIGH)
   endfunction
 
   task run_phase(uvm_phase phase);
-    `uvm_info(get_full_name(), "Inside Wishbone Sequencer Run Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside Wishbone Sequencer Run Phase.", UVM_HIGH)
   endtask
 endclass

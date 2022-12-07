@@ -17,12 +17,12 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
 
   function new(string name = "wb_i2c_scoreboard", uvm_component parent = null);
     super.new(name, parent);
-    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Constructor.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Constructor.", UVM_HIGH)
   endfunction
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Build Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Build Phase.", UVM_HIGH)
 
     // Creating objects for the above declared imports
     exp_pred2scb = new("exp_pred2scb", this);
@@ -32,11 +32,11 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Connect Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Connect Phase.", UVM_HIGH)
   endfunction
 
   task run_phase(uvm_phase phase);
-    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Run Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Run Phase.", UVM_HIGH)
   endtask
 
 	// ! Defining write_wb_exp_mtr2scb() method which was created by macro `uvm_analysis_imp_decl(_wb_exp_mtr2scb).	
