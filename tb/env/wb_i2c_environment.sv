@@ -12,13 +12,13 @@ class wb_i2c_environment extends uvm_env;
   // ! WB_I2C Environment Constructor
   function new(string name = "wb_i2c_environment", uvm_component parent = null);
     super.new(name, parent);
-    `uvm_info(get_full_name(), "Inside WB_I2C Environment Constructor.", UVM_HIGH)
+    `uvm_info(get_full_name(), "Inside WB_I2C Environment Constructor.", UVM_MEDIUM)
   endfunction
 
   // ! WB_I2C Environment Build Phase
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    `uvm_info(get_full_name(), "Inside WB_I2C Environment Build Phase.", UVM_HIGH)
+    `uvm_info(get_full_name(), "Inside WB_I2C Environment Build Phase.", UVM_MEDIUM)
 
     // Getting APB_ENV_CON from UVM Configuration Database which was set from APB_BASE_TEST to Configure APB_Environment.
     if(!uvm_config_db#(wb_i2c_env_config)::get(this, "", "wb_i2c_env_config", wb_i2c_env_con)) begin
@@ -43,7 +43,7 @@ class wb_i2c_environment extends uvm_env;
   // ! WB_I2C Environment Connect Phase
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    `uvm_info(get_full_name(), "Inside WB_I2C Environment Connect Phase.", UVM_HIGH)
+    `uvm_info(get_full_name(), "Inside WB_I2C Environment Connect Phase.", UVM_MEDIUM)
 
 		// Connecting Driver & Monitor with Scoreboard, depending on the parameters of Enviornment Configuration & Agent Configuration
     if(wb_i2c_env_con.has_scoreboard) begin
@@ -51,13 +51,13 @@ class wb_i2c_environment extends uvm_env;
       wb_i2c_prdctr.exp_pred2scb_port.connect(wb_i2c_sb.exp_pred2scb);
     end
     else begin
-			`uvm_info("WB_ENV_CONFIG", "THIS TESTBENCH DOES NOT HAVE A SCOREBOARD.", UVM_HIGH)
+			`uvm_info("WB_ENV_CONFIG", "THIS TESTBENCH DOES NOT HAVE A SCOREBOARD.", UVM_LOW)
 		end
   endfunction
 
   // ! WB_I2C Environment Run Phase
   task run_phase(uvm_phase phase);
-    `uvm_info(get_full_name(), "Inside WB_I2C Environment Run Phase.", UVM_HIGH)
+    `uvm_info(get_full_name(), "Inside WB_I2C Environment Run Phase.", UVM_MEDIUM)
   endtask
 
 endclass

@@ -3,20 +3,21 @@ class wb_i2c_base_test extends uvm_test;
 
   `include "../defines/defines.sv"
 
-  bit         tip_flag;
-  logic [7:0] wb_read_data;
+  bit         tip_flag     ;
+  logic [7:0] wb_read_data ;
   logic [7:0] i2c_read_data;
-  static int byte_no;
+  static int byte_no       ;
 
   // ! Declearing handle of the WB_I2C Environment, Environment Config, WB Agent Config
-  wb_i2c_environment wb_i2c_env;
-  wb_i2c_env_config wb_i2c_env_con;
-  wb_agent_config wb_agt_con;
+  wb_i2c_environment wb_i2c_env    ;
+  wb_i2c_env_config  wb_i2c_env_con;
+  wb_agent_config    wb_agt_con    ;
+  i2c_agent_config   i2c_agt_con   ;
 
   // ! Declaring handles for different sequences.
   wb_rst_seq wb_rstn_sq;
-  wb_wr_seq wb_wr_sq;
-  wb_rd_seq wb_rd_sq;
+  wb_wr_seq wb_wr_sq   ;
+  wb_rd_seq wb_rd_sq   ;
 
   // ! WB_I2C Base Test Constructor: new
   function new(string name = "wb_i2c_base_test", uvm_component parent = null);
@@ -33,6 +34,7 @@ class wb_i2c_base_test extends uvm_test;
     wb_i2c_env     = wb_i2c_environment::type_id::create("wb_i2c_env"    , this);
     wb_i2c_env_con = wb_i2c_env_config ::type_id::create("wb_i2c_env_con", this);
     wb_agt_con     = wb_agent_config   ::type_id::create("wb_agt_con"    , this);
+    i2c_agt_con    = i2c_agent_config  ::type_id::create("i2c_agt_con"   , this);
 
     // Setting parameters of WB_I2C Environment Configuration
     wb_i2c_env_con.has_scoreboard      = 1          ; 
@@ -40,12 +42,11 @@ class wb_i2c_base_test extends uvm_test;
     wb_agt_con.is_active               = UVM_ACTIVE ;
 
     // Pointing WB_AGT_CON of this class to WB_AGT_CON of WB_I2C_ENV_CON
-		wb_i2c_env_con.wb_agt_con = wb_agt_con;
+    wb_i2c_env_con.wb_agt_con = wb_agt_con;
 
     // Setting WB_I2C_ENV_CON in UVM Configuration Database to get it from APB Environment.
     //uvm_config_db#(wb_i2c_env_config)::set(this, "wb_i2c_env", "wb_i2c_env_config", wb_i2c_env_con);
     uvm_config_db#(wb_i2c_env_config)::set(null, "uvm_test_top.wb_i2c_env", "wb_i2c_env_config", wb_i2c_env_con);
-
   endfunction
 
   // ! WB_I2C Base Test Connect Phase
@@ -97,7 +98,7 @@ class wb_i2c_base_test extends uvm_test;
     wb_rd_sq.start(wb_i2c_env.wb_agt.wb_sqr);
     tip_flag     = wb_rd_sq.dvr_rsp.t_flag  ;
 
-    //`uvm_info("READ_SEQ ===> TEST", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
+    //`uvm_info("READ_SEQ ===> TEST", $sformatf("TIP :: %0d", tip_flag), UVM_DEBUG)
   endtask
   
   /*#####################################
@@ -105,10 +106,10 @@ class wb_i2c_base_test extends uvm_test;
   #####################################*/
   task tip_poll();
     wb_read_task(`SR, tip_flag);
-    //`uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
+    `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_DEBUG)
     while (tip_flag) begin
       wb_read_task(`SR, tip_flag);
-      //`uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
+      `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_DEBUG)
     end
   endtask
 
@@ -127,14 +128,14 @@ class wb_i2c_base_test extends uvm_test;
     // Enabling the Core
     wb_write_task(0, `CTR    , ctr_dat    ); // * I2C Core & Interrupt Enable
 
-    //`uvm_info("I2C CORE SETUP", "I2C CORE SETUP IS DONE", UVM_LOW)
+    `uvm_info("I2C CORE SETUP", "I2C CORE SETUP IS DONE", UVM_HIGH)
   endtask
 
   /*##############################################################################
   ### I2C Start Condition Generation & Slave Address & WR/RD Bit Transfer Task ###
   ##############################################################################*/
   task i2c_slv_addr_trans(input logic [6:0] i2c_slv_addr, input bit wr_rd);
-    //`uvm_info("Transmitting Slave Address", $sformatf("SLV_ADDRESS => %0h", i2c_slv_addr), UVM_LOW)
+    `uvm_info("Transmitting Slave Address", $sformatf("SLV_ADDRESS => %0h", i2c_slv_addr), UVM_HIGH)
 
     wb_write_task(0, `TXR, {i2c_slv_addr, wr_rd});
     wb_write_task(0, `CR, 8'b1001_0000);  // Start & Write Bits HIGH
@@ -145,7 +146,7 @@ class wb_i2c_base_test extends uvm_test;
   ### I2C Memory Address Transfer Task ###
   ######################################*/
   task i2c_mem_addr_trans(input logic [7:0] mem_address);
-    //`uvm_info("Transmitting Memory Address", $sformatf("MEM_ADDRESS => %0h", mem_address), UVM_LOW)
+    `uvm_info("Transmitting Memory Address", $sformatf("MEM_ADDRESS => %0h", mem_address), UVM_HIGH)
 
     wb_write_task(0, `TXR, mem_address);
     wb_write_task(0, `CR, 8'b0001_0000);  // Write Bit HIGH
@@ -196,18 +197,20 @@ class wb_i2c_base_test extends uvm_test;
     int dwidth
   );
     byte_no = dwidth / 8;
+    i2c_agt_con.transfer_data_byte_no = byte_no;
+    `uvm_info("BASE_TEST", $sformatf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Transmit Byte No :: %0d", i2c_agt_con.transfer_data_byte_no), UVM_NONE)
     
     if(byte_no > 1) begin
       while(byte_no > 1) begin
         rep_start_wr(data[((byte_no * 8) - 1) -: 8]);
-        //`uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", byte_no, data[((byte_no * 8) - 1) -: 8]), UVM_LOW)
+        `uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", byte_no, data[((byte_no * 8) - 1) -: 8]), UVM_HIGH)
         byte_no = byte_no - 1;
       end
-      //`uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", byte_no, data[((byte_no * 8) - 1) -: 8]), UVM_LOW)
+      `uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", byte_no, data[((byte_no * 8) - 1) -: 8]), UVM_HIGH)
       stop_wr(data[((byte_no * 8) - 1) -: 8]);
     end
     else if(byte_no == 1) begin
-      //`uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", byte_no, data[((byte_no * 8) - 1) -: 8]), UVM_LOW)
+      `uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", byte_no, data[((byte_no * 8) - 1) -: 8]), UVM_HIGH)
       stop_wr(data[((byte_no * 8) - 1) -: 8]);
     end
   endtask
@@ -219,18 +222,21 @@ class wb_i2c_base_test extends uvm_test;
     int dwidth
   );
     byte_no = dwidth / 8;
+
+    i2c_agt_con.transfer_data_byte_no = byte_no;
+    `uvm_info("BASE_TEST", $sformatf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Receive Byte No :: %0d", i2c_agt_con.transfer_data_byte_no), UVM_NONE)
     
     if(byte_no > 1) begin
       while(byte_no > 1) begin
         rep_read_ack();
-        //`uvm_info("RECEIVE DATA", $sformatf("Byte No => %0d", byte_no), UVM_LOW)
+        `uvm_info("RECEIVE DATA", $sformatf("Byte No => %0d", byte_no), UVM_HIGH)
         byte_no = byte_no - 1;
       end
-      //`uvm_info("RECEIVE DATA", $sformatf("Byte No => %0d", byte_no), UVM_LOW)
+      `uvm_info("RECEIVE DATA", $sformatf("Byte No => %0d", byte_no), UVM_HIGH)
       read_nack_stop();
     end
     else if(byte_no == 1) begin
-      //`uvm_info("RECEIVE DATA", $sformatf("Byte No => %0d", byte_no), UVM_LOW)
+      `uvm_info("RECEIVE DATA", $sformatf("Byte No => %0d", byte_no), UVM_HIGH)
       read_nack_stop();
     end
   endtask

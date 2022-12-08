@@ -4,6 +4,7 @@ package wb_i2c_test_pkg;
   import wb_i2c_seq_pkg::*;
   import wb_i2c_env_pkg::*;
   import wb_agent_pkg::wb_agent_config;
+  import i2c_agent_pkg::i2c_agent_config;
 
   `include "wb_i2c_base_test.sv"
   `include "wb_rst_test.sv"
