@@ -5,7 +5,8 @@ class i2c_agent_config extends uvm_object;
   uvm_active_passive_enum is_active = UVM_PASSIVE;
   bit has_functional_coverage;
 
-  int transfer_data_byte_no;
+  int       agt_con_byte_no;
+  bit [1:0] agt_con_i2c_wr_rd;
 
   // ! I2C Agent Configuration Constructor
   function new(string name = "i2c_agent_config");
