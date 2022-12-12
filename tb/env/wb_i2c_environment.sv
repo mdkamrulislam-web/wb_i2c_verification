@@ -7,7 +7,6 @@ class wb_i2c_environment extends uvm_env;
   wb_agent wb_agt;
   i2c_agent i2c_agt;
   wb_i2c_env_config wb_i2c_env_con;
-  wb_i2c_predictor wb_i2c_prdctr;
 
   // ! WB_I2C Environment Constructor
   function new(string name = "wb_i2c_environment", uvm_component parent = null);
@@ -27,7 +26,6 @@ class wb_i2c_environment extends uvm_env;
     else begin
       // Creating WB_I2C Scoreboard Instance.
       if (wb_i2c_env_con.has_scoreboard) begin
-        wb_i2c_prdctr = wb_i2c_predictor::type_id::create("wb_i2c_prdctr", this);
         wb_i2c_sb = wb_i2c_scoreboard::type_id::create("wb_i2c_sb", this);
       end
     end
@@ -45,14 +43,14 @@ class wb_i2c_environment extends uvm_env;
     super.connect_phase(phase);
     `uvm_info(get_full_name(), "Inside WB_I2C Environment Connect Phase.", UVM_MEDIUM)
 
-		// Connecting Driver & Monitor with Scoreboard, depending on the parameters of Enviornment Configuration & Agent Configuration
+    // Connecting Driver & Monitor with Scoreboard, depending on the parameters of Enviornment Configuration & Agent Configuration
     if(wb_i2c_env_con.has_scoreboard) begin
-      wb_agt.wb_mtr.wb_wr_exp_mtr2pdctr_port.connect(wb_i2c_prdctr.wb_wr_mtr2pdctr);
-      wb_i2c_prdctr.exp_pred2scb_port.connect(wb_i2c_sb.exp_pred2scb);
+      wb_agt.wb_mtr.wb_wr_mtr2scb_port.connect(wb_i2c_sb.wb_wr_mtr2scb);
+      wb_agt.wb_mtr.wb_wr_mtr2scb_port.connect(wb_i2c_sb.wb_rd_mtr2scb);
     end
     else begin
-			`uvm_info("WB_ENV_CONFIG", "THIS TESTBENCH DOES NOT HAVE A SCOREBOARD.", UVM_LOW)
-		end
+      `uvm_info("WB_ENV_CONFIG", "THIS TESTBENCH DOES NOT HAVE A SCOREBOARD.", UVM_LOW)
+    end
   endfunction
 
   // ! WB_I2C Environment Run Phase
