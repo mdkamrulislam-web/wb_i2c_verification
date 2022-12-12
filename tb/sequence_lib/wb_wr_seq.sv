@@ -8,7 +8,7 @@ class wb_wr_seq extends wb_i2c_seq;
   endfunction
 
   virtual task body();
-    `uvm_info("WB_WR_SEQ", "Inside WB Write Sequence Constructor.", UVM_MEDIUM)
+    `uvm_info("WB_WR_SEQ", "Inside WB Write Sequence Constructor.", UVM_HIGH)
     
     wb_item = wb_sequence_item::type_id::create("wb_item");
     wait_for_grant();

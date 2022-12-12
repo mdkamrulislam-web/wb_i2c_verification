@@ -8,6 +8,6 @@ class wb_agent_config extends uvm_object;
   // ! Wishbone Agent Configuration Constructor
   function new(string name = "wb_agent_config");
     super.new(name);
-    `uvm_info(get_full_name(), "Inside WB Agent Config Constructor", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB Agent Config Constructor", UVM_HIGH)
   endfunction
 endclass

@@ -8,23 +8,23 @@ class wb_wr_rd_test extends wb_i2c_base_test;
   // WB Write Read Test Constructor
   function new(string name = "wb_wr_rd_test", uvm_component parent = null);
     super.new(name, parent);
-    `uvm_info(get_full_name(), "Inside WB Write Read Test Constructor.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB Write Read Test Constructor.", UVM_HIGH)
   endfunction
 
   // WB Write Read Test Build Phase
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    `uvm_info(get_full_name(), "Inside WB Write Read Test Build Phase", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB Write Read Test Build Phase", UVM_HIGH)
   endfunction
 
   // WB Write Read Test Connect Phase 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    `uvm_info(get_full_name(), "Inside WB Write Read Test Connect Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB Write Read Test Connect Phase.", UVM_HIGH)
   endfunction
   // WB Write Read Test Run Phase
   task run_phase(uvm_phase phase);
-    `uvm_info(get_full_name(), "Inside WB Write Read Test Run Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB Write Read Test Run Phase.", UVM_HIGH)
 
     /*
       UVM testbench components which uses an objection mechanism share a counter between them.
@@ -60,10 +60,10 @@ class wb_wr_rd_test extends wb_i2c_base_test;
       // Polling TIP bit of Status Register //
       ////////////////////////////////////////
       wb_read_task(`SR, tip_flag);
-      `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
+      `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_MEDIUM)
       while (tip_flag) begin
         wb_read_task(`SR, tip_flag);
-        `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
+        `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_MEDIUM)
       end
 
       //////////////////////////
@@ -76,10 +76,10 @@ class wb_wr_rd_test extends wb_i2c_base_test;
       // Polling TIP bit of Status Register //
       ////////////////////////////////////////
       wb_read_task(`SR, tip_flag);
-      `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
+      `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_MEDIUM)
       while (tip_flag) begin
         wb_read_task(`SR, tip_flag);
-        `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
+        `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_MEDIUM)
       end
 
       ///////////////////////////
@@ -92,10 +92,10 @@ class wb_wr_rd_test extends wb_i2c_base_test;
       // Polling TIP bit of Status Register //
       ////////////////////////////////////////
       wb_read_task(`SR, tip_flag);
-      `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
+      `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_MEDIUM)
       while (tip_flag) begin
         wb_read_task(`SR, tip_flag);
-        `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_NONE)
+        `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_MEDIUM)
       end
 
       //////////////

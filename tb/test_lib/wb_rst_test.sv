@@ -5,23 +5,23 @@ class wb_rst_test extends wb_i2c_base_test;
   // ! WB Reset Test Constructor
   function new(string name = "wb_rst_test", uvm_component parent = null);
     super.new(name, parent);
-    `uvm_info(get_full_name(), "Inside WB Reset Test Constructor.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB Reset Test Constructor.", UVM_HIGH)
   endfunction
 
   // ! WB Reset Test Build Phase
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    `uvm_info(get_full_name(), "Inside WB Reset Test Build Phase", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB Reset Test Build Phase", UVM_HIGH)
   endfunction
 
   // ! WB Reset Test Connect Phase 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    `uvm_info(get_full_name(), "Inside WB Reset Test Connect Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB Reset Test Connect Phase.", UVM_HIGH)
   endfunction
   // ! WB Reset Test Run Phase
   task run_phase(uvm_phase phase);
-    `uvm_info(get_full_name(), "Inside WB Reset Test Run Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB Reset Test Run Phase.", UVM_HIGH)
     /*
 		UVM testbench components which uses an objection mechanism share a counter between them.
 		The method raise_objection increments the count & drop_objection decrements the count.
