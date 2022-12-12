@@ -38,7 +38,8 @@ class i2c_transmit_test extends wb_i2c_base_test;
 
       i2c_write(`SLVADDR, 8'h00, 64'h55_77_88, `DATAWIDTH_24);   // ! I2C Data Transfer
       i2c_write(`SLVADDR, 8'h01, 64'h33_44, `DATAWIDTH_16);   // ! I2C Data Transfer
-      i2c_read(`SLVADDR, 8'h01, `DATAWIDTH_16);
+      //i2c_read(`SLVADDR, 8'h01, `DATAWIDTH_16);
+      //i2c_read(`SLVADDR, 8'h00, `DATAWIDTH_8);
       #100000ns;
       phase.drop_objection(this);
   endtask

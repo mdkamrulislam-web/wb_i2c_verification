@@ -57,8 +57,10 @@ class i2c_monitor extends uvm_monitor;
     super.connect_phase(phase);
     `uvm_info(get_full_name(), "Inside I2C Monitor Connect Phase.", UVM_HIGH)
   endfunction
-
-  // I2C Start Condition Checker
+  
+  ///////////////////////////////////////////////////
+  /////////// I2C Start Condition Checker ///////////
+  ///////////////////////////////////////////////////
   task start_condition();
     @(negedge i2c_intf.TB_SDA && (i2c_intf.TB_SCL === 1));
     if(i2c_intf.TB_SCL === 1'b1) begin
@@ -67,13 +69,16 @@ class i2c_monitor extends uvm_monitor;
       mem_addr_ack_flag      = 1'b0;
       transmit_data_ack_flag = 1'b0;
       transfer_direction     = 1'b0;
+      count                  = 1   ;
       
-      `uvm_info("START_BIT_DETECT", "\t\t###############\t\t START BIT DETECTED\t\t ###############", UVM_NONE)
+      `uvm_info("START_BIT_DETECT", "\t\t=============>>\t\tSTART BIT DETECTED", UVM_NONE)
       `uvm_info("FLAGS::START_CON", $sformatf("scl = %0b :: sda = %0b :: start = %0b :: stop = %0b :: slv_ak_flg = %0b :: mem_ak_flg = %0b :: t_data_ak_flg :: %0b", i2c_intf.TB_SCL, i2c_intf.TB_SDA, transfer_start, transfer_stop, slv_addr_ack_flag, mem_addr_ack_flag, transmit_data_ack_flag), UVM_HIGH)
     end
   endtask
 
-  // I2C Stop Condition Checker
+  //////////////////////////////////////////////////
+  /////////// I2C Stop Condition Checker ///////////
+  //////////////////////////////////////////////////
   task stop_condition();
     @(posedge i2c_intf.TB_SDA);
     if((i2c_intf.TB_SCL === 1'b1) && (i2c_intf.TB_SDA === 1'b1)) begin
@@ -84,13 +89,16 @@ class i2c_monitor extends uvm_monitor;
       transfer_direction     = 1'b0;
       transmit_data_ack_flag = 1'b0;
       count                  = 1   ;
+      mem_addr               = 0   ;
      
-      `uvm_info("STOP_BIT_DETECT", "\t\t#################\t\t STOP BIT DETECTED\t\t ##################", UVM_NONE)
+      `uvm_info("STOP_BIT_DETECT", "\t\t=============>>\t\tSTOP BIT DETECTED", UVM_NONE)
       `uvm_info("FLAGS::STOP_CON", $sformatf("scl = %0b :: sda = %0b :: start = %0b :: stop = %0b :: slv_ak_flg = %0b :: mem_ak_flg = %0b :: t_data_ak_flg :: %0b", i2c_intf.TB_SCL, i2c_intf.TB_SDA, transfer_start, transfer_stop, slv_addr_ack_flag, mem_addr_ack_flag, transmit_data_ack_flag), UVM_HIGH)
     end
   endtask
 
-  // Collector Task
+  //////////////////////////////////////
+  /////////// Collector Task ///////////
+  //////////////////////////////////////
   task data_collector();
     @(posedge i2c_intf.TB_SCL);
     if(((transfer_start === 1'b1) || (slv_addr_ack_flag === 1'b1) || (mem_addr_ack_flag === 1'b1))) begin
@@ -134,25 +142,28 @@ class i2c_monitor extends uvm_monitor;
           if((transfer_start === 1'b1)) begin
             if(slv_addr_wr_rd[0] === 1'b0) begin
               transfer_direction = 1; // Write
-              `uvm_info("TRANS_DIRECTION", $sformatf("\t\t################### DATA WILL BE TRANSMITTED TO THE SLAVE :: %0h ###################", slv_addr_wr_rd[7:1]), UVM_LOW)
+              `uvm_info("TRANS_DIRECTION", $sformatf("\t\t=============>>\t\tDATA WILL BE TRANSMITTED TO THE SUBORDINATE @[0x%h]", slv_addr_wr_rd[7:1]), UVM_LOW)
             end
             else if(slv_addr_wr_rd[0] === 1'b1) begin
               transfer_direction = 0; // Read
-              `uvm_info("TRANS_DIRECTION", $sformatf("\t\t################ DATA WILL BE RECEIVED BY THE MASTER :: %0h ################", slv_addr_wr_rd[7:1]), UVM_LOW)
+              `uvm_info("TRANS_DIRECTION", $sformatf("\t\t=============>>\t\tDATA WILL BE RECEIVED BY THE SUPERVISOR @[0x%h]", slv_addr_wr_rd[7:1]), UVM_LOW)
             end
             else begin
-              `uvm_warning("TRANS_DIRECTION", "\t\t################ UNKNOWN TRANSFER DIRECTION ###############")
+              `uvm_warning("TRANS_DIRECTION", "\t\t=============>>\t\tUNKNOWN TRANSFER DIRECTION")
             end
           end
-        
+
+          ///////////////////////////////////////////////////////////
           ////////////// Slave Address Acknowledgement //////////////
+          ///////////////////////////////////////////////////////////
           if(transfer_start === 1'b1) begin
             slv_ack_bit = i2c_intf.TB_SDA;
             if(slv_ack_bit === 1'b0) begin
+              `uvm_info("SLVADDR_ACK", $sformatf("SUBORDINATE @[0x%h] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR", slv_addr_wr_rd[7:1]), UVM_NONE)
               //`uvm_info("SLVADDR_WR/RD_ACK_BIT_DTCT", $sformatf("\tSlave Address = %0h :: WR/RD Bit = %0b :: Slave Ack Bit = %0b", slv_addr_wr_rd[7:1], slv_addr_wr_rd[0], slv_ack_bit), UVM_LOW);
 
-              this.transfer_byte_no = i2c_agt_con.agt_con_byte_no   ; // ?  ###############################################
-              this.i2c_wr_rd        = i2c_agt_con.agt_con_i2c_wr_rd ; // ?  ###############################################
+              this.transfer_byte_no = i2c_agt_con.agt_con_byte_no   ;
+              this.i2c_wr_rd        = i2c_agt_con.agt_con_i2c_wr_rd ;
 
               slv_addr_ack_flag = 1;
               transfer_start = 0;
@@ -162,16 +173,18 @@ class i2c_monitor extends uvm_monitor;
             end
             else begin
               slv_addr_ack_flag = 0;
-              `uvm_error("SLAVE_ERROR", $sformatf("\tThere is no such slave as :: %0h", slv_addr_wr_rd[7:1]))
+              `uvm_error("SUBORDINATE_ERROR", $sformatf("\tThere is no such slave as :: %0h", slv_addr_wr_rd[7:1]))
             end
           end
-
+          ////////////////////////////////////////////////////////////
           ////////////// Memory Address Acknowledgement //////////////
+          ////////////////////////////////////////////////////////////
           else if((slv_addr_ack_flag === 1'b1) && (transfer_direction === 1'b1)) begin
             mem_ack_bit = i2c_intf.TB_SDA;
             if((mem_ack_bit === 1'b0)) begin
-              `uvm_info("MEM_ACK_DETECT", "\t##################### MEMORY ACKNOWLEDGED ######################", UVM_NONE);
-              `uvm_info("MEMADDR_WR/RD_ACK_BIT_DETECT", $sformatf("\tMemory Address = %0h :: Memory Ack Bit = %0b", mem_addr, mem_ack_bit), UVM_LOW);
+              `uvm_info("MEM_ACK_DETECT", $sformatf("\t\t=============>>\t\t[0x%h] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE", mem_addr), UVM_NONE);
+              `uvm_info("MEM_ACK_DETECT", $sformatf("\t\t=============>>\t\tMEMORY @[0x%h] ACKNOWLEDGED :: SUBORDINATE ==>> MASTER", mem_addr), UVM_NONE);
+              `uvm_info("MEMADDR_WR/RD_ACK_BIT_DETECT", $sformatf("\tMemory Address = %0h :: Memory Ack Bit = %0b", mem_addr, mem_ack_bit), UVM_HIGH);
               if(this.i2c_wr_rd === 2'b01)       mem_addr_ack_flag = 1;
               else if(this.i2c_wr_rd === 2'b10)  mem_addr_ack_flag = 0;
               slv_addr_ack_flag = 0;
@@ -183,16 +196,18 @@ class i2c_monitor extends uvm_monitor;
               `uvm_error("MEM_ERROR", $sformatf("\tThere is no such memory as :: %0h", mem_addr))
             end
           end
-
+          
+          ///////////////////////////////////////////////////////////
           ////////////// Transmit Data Acknowledgement //////////////
+          ///////////////////////////////////////////////////////////
           else if((mem_addr_ack_flag === 1'b1) && (transfer_direction === 1'b1)) begin
-            `uvm_info("I2C_TRANSMIT_BYTE_NO", $sformatf("\t###################### BYTE NO :: %0d IS TRANSMITTED TO THE SLAVE ######################", count), UVM_LOW)
+            `uvm_info("I2C_TRANSMIT_BYTE_NO", $sformatf("\t=============>>\t\tBYTE NO %0d :: [0x%h] IS TRANSMITTED TO THE SUBORDINATE MEMORY @ ADDRESS :: [0x%h]", count, transmit_data, mem_addr), UVM_LOW)
             count++;
             this.transfer_byte_no --;
             transmit_data_ack_bit = i2c_intf.TB_SDA;
             if(transmit_data_ack_bit === 1'b0) begin
-              `uvm_info("TRANS_DATA_ACK_DETECT", "\t##################### DATA TRANSMISSION ACKNOWLEDGED ######################", UVM_NONE);
-              `uvm_info("TRANSMIT_DATA_ACK_BIT_DETECT", $sformatf("\tTransmit Data = %0h :: Transmit Data Ack Bit = %0b", transmit_data, transmit_data_ack_bit), UVM_LOW);
+              `uvm_info("TRANS_DATA_ACK_DETECT", "\t=============>>\t\tDATA TRANSMITTED :: SUBORDINATE ==>> SUPERVISOR ACK", UVM_NONE);
+              `uvm_info("TRANSMIT_DATA_ACK_BIT_DETECT", $sformatf("\tTransmit Data = %0h :: Transmit Data Ack Bit = %0b", transmit_data, transmit_data_ack_bit), UVM_HIGH);
               transmit_data_ack_flag = 1'b1;
               if(this.transfer_byte_no < 1) mem_addr_ack_flag = 1'b0;
               `uvm_info("FLAGS::TRANS_DATA_CON", $sformatf("scl = %0b :: sda = %0b :: start = %0b :: stop = %0b :: slv_ak_flg = %0b :: mem_ak_flg = %0b :: t_data_ak_flg :: %0b", i2c_intf.TB_SCL, i2c_intf.TB_SDA, transfer_start, transfer_stop, slv_addr_ack_flag, mem_addr_ack_flag, transmit_data_ack_flag), UVM_HIGH)
@@ -201,28 +216,32 @@ class i2c_monitor extends uvm_monitor;
               transmit_data_ack_flag = 1'b0;
               `uvm_error("TRANS_DATA_ERROR", $sformatf("\tData transmission failed. Approched to transmit :: %0h", transmit_data))
             end
+            mem_addr++;
           end
-
+          
+          //////////////////////////////////////////////////////////
           ////////////// Receive Data Acknowledgement //////////////
+          //////////////////////////////////////////////////////////
           else if((slv_addr_ack_flag) && (this.i2c_wr_rd === 2'b10)) begin
-            `uvm_info("I2C_RECEIVE_BYTE_NO", $sformatf("\t############# DATA BYTE NO %0d :: %0h IS RECEIVED FROM THE SLAVE #############", count, receive_data), UVM_LOW)
+            `uvm_info("I2C_RECV_DATA_BYTE_NO", $sformatf("\t=============>>\t\tDATA BYTE NO %0d :: [0x%h] IS RECEIVED FROM THE SUBORDINATE MEMORY @ ADDRESS :: [0x%h]", count, receive_data, mem_addr), UVM_LOW)
             count++;
             this.transfer_byte_no --;
             receive_data_ack_bit = i2c_intf.TB_SDA;
             if(receive_data_ack_bit === 1'b0) begin
-              `uvm_info("RECV_DATA_ACK_DETECT", "\t########################## DATA RECEIVED :: ACK ###########################", UVM_NONE);
+              `uvm_info("RECV_DATA_ACK_DETECT", "\t=============>>\t\tDATA RECEIVED :: SUPERVISOR ==>> SUBORDINATE ACK", UVM_NONE);
               //`uvm_info("RECEIVE_DATA_ACK_BIT_DETECT", $sformatf("\tReceive Data = %0h :: Receive Data Ack Bit = %0b", receive_data, receive_data_ack_bit), UVM_LOW);
               //transmit_data_ack_flag = 1'b1;
               //if(this.transfer_byte_no < 1) slv_addr_ack_flag = 1'b0;
-              `uvm_info("FLAGS::TRANS_DATA_CON", $sformatf("scl = %0b :: sda = %0b :: start = %0b :: stop = %0b :: slv_ak_flg = %0b :: mem_ak_flg = %0b :: t_data_ak_flg :: %0b", i2c_intf.TB_SCL, i2c_intf.TB_SDA, transfer_start, transfer_stop, slv_addr_ack_flag, mem_addr_ack_flag, transmit_data_ack_flag), UVM_HIGH)
+              `uvm_info("FLAGS::RECV_DATA_CON", $sformatf("scl = %0b :: sda = %0b :: start = %0b :: stop = %0b :: slv_ak_flg = %0b :: mem_ak_flg = %0b :: t_data_ak_flg :: %0b", i2c_intf.TB_SCL, i2c_intf.TB_SDA, transfer_start, transfer_stop, slv_addr_ack_flag, mem_addr_ack_flag, transmit_data_ack_flag), UVM_HIGH)
             end
             else begin
               slv_addr_ack_flag = 1'b0;
-              `uvm_info("RECV_DATA_NACK_DETECT", "\t########################## DATA RECEIVED :: NACK ##########################", UVM_NONE);
+              `uvm_info("RECV_DATA_NACK_DETECT", "\t=============>>\t\tDATA RECEIVED :: SUPERVISOR ==>> SUBORDINATE NACK", UVM_NONE);
               //`uvm_info("RECEIVE_DATA_NACK_BIT_DTCT", $sformatf("Receive Data = %0h :: Receive Data Ack Bit = %0b", receive_data, receive_data_ack_bit), UVM_LOW);
               //`uvm_warning("RECV_END", "\t\tAll data received.")
-              `uvm_info("FLAGS::TRANS_DATA_CON", $sformatf("scl = %0b :: sda = %0b :: start = %0b :: stop = %0b :: slv_ak_flg = %0b :: mem_ak_flg = %0b :: t_data_ak_flg :: %0b", i2c_intf.TB_SCL, i2c_intf.TB_SDA, transfer_start, transfer_stop, slv_addr_ack_flag, mem_addr_ack_flag, transmit_data_ack_flag), UVM_HIGH)
+              `uvm_info("FLAGS::RECV_DATA_CON", $sformatf("scl = %0b :: sda = %0b :: start = %0b :: stop = %0b :: slv_ak_flg = %0b :: mem_ak_flg = %0b :: t_data_ak_flg :: %0b", i2c_intf.TB_SCL, i2c_intf.TB_SDA, transfer_start, transfer_stop, slv_addr_ack_flag, mem_addr_ack_flag, transmit_data_ack_flag), UVM_HIGH)
             end
+            mem_addr++;
           end
         end
       end
@@ -241,11 +260,9 @@ class i2c_monitor extends uvm_monitor;
       forever begin
         stop_condition();
       end
-      
       forever begin
         data_collector();
       end
     join
   endtask
 endclass
-
