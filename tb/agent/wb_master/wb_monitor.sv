@@ -67,14 +67,14 @@ class wb_monitor extends uvm_monitor;
       begin
         forever begin
           @(posedge wb_intf.WB_CLK_I);
-          if((!wb_intf.WB_RST_I && !wb_intf.ARST_I) && (wb_intf.WB_CYC_I && wb_intf.WB_STB_I && !wb_intf.WB_WE_I)) begin
+          if((!wb_intf.WB_RST_I && !wb_intf.ARST_I) && (wb_intf.WB_CYC_I && wb_intf.WB_STB_I && !wb_intf.WB_WE_I) && (wb_intf.WB_ADR_I == `RXR)) begin
             @(negedge wb_intf.WB_CLK_I);
             if(wb_intf.WB_ACK_O) begin
-              @(negedge wb_intf.WB_CLK_I);
+              //@(negedge wb_intf.WB_CLK_I);
               wb_rd_mtr_seq_item = wb_sequence_item::type_id::create("wb_rd_mtr_seq_item");
               wb_rd_mtr_seq_item.wb_adr_i = wb_intf.WB_ADR_I;
               wb_rd_mtr_seq_item.wb_dat_o = wb_intf.WB_DAT_O;
-              `uvm_info("MONITOR_READ_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_O), UVM_HIGH);
+              `uvm_info("MONITOR_READ_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_O), UVM_NONE);
               
               wb_rd_mtr2scb_port.write(wb_rd_mtr_seq_item);
             end

@@ -178,8 +178,10 @@ class wb_i2c_base_test extends uvm_test;
   #################################################################*/
   task rep_read_ack();
     wb_write_task(0, `CR, 8'b0010_0000);  // * Read HIGH & ACK Bit LOW
-    wb_read_task(`RXR, tip_flag);
     tip_poll();
+    //`uvm_info("BEFORE_READ", "#################################################", UVM_NONE)
+    wb_read_task(`RXR, tip_flag);
+    //`uvm_info("AFTER_READ", "#################################################", UVM_NONE)
   endtask
 
   /*##############################################################
@@ -187,8 +189,10 @@ class wb_i2c_base_test extends uvm_test;
   ##############################################################*/
   task read_nack_stop();
     wb_write_task(0, `CR, 8'b0110_1000);  // * Stop HIGH, Read HIGH & ACK Bit HIGH
-    wb_read_task(`RXR, tip_flag);
     tip_poll();
+    //`uvm_info("BEFORE_READ", "#################################################", UVM_NONE)
+    wb_read_task(`RXR, tip_flag);
+    //`uvm_info("AFTER_READ", "#################################################", UVM_NONE)
   endtask
 
   /*################################################################

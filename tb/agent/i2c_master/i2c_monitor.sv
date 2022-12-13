@@ -69,7 +69,6 @@ class i2c_monitor extends uvm_monitor;
       mem_addr_ack_flag      = 1'b0;
       transmit_data_ack_flag = 1'b0;
       transfer_direction     = 1'b0;
-      count                  = 1   ;
       
       `uvm_info("START_BIT_DETECT", "\t\t=============>>\t\tSTART BIT DETECTED", UVM_NONE)
       `uvm_info("FLAGS::START_CON", $sformatf("scl = %0b :: sda = %0b :: start = %0b :: stop = %0b :: slv_ak_flg = %0b :: mem_ak_flg = %0b :: t_data_ak_flg :: %0b", i2c_intf.TB_SCL, i2c_intf.TB_SDA, transfer_start, transfer_stop, slv_addr_ack_flag, mem_addr_ack_flag, transmit_data_ack_flag), UVM_HIGH)
@@ -149,7 +148,7 @@ class i2c_monitor extends uvm_monitor;
               `uvm_info("TRANS_DIRECTION", $sformatf("\t\t=============>>\t\tDATA WILL BE RECEIVED BY THE SUPERVISOR @[0x%h]", slv_addr_wr_rd[7:1]), UVM_LOW)
             end
             else begin
-              `uvm_warning("TRANS_DIRECTION", "\t\t=============>>\t\tUNKNOWN TRANSFER DIRECTION")
+              `uvm_warning("TRANS_DIRECTION", "\t\t################ UNKNOWN TRANSFER DIRECTION ###############")
             end
           end
 
@@ -159,7 +158,6 @@ class i2c_monitor extends uvm_monitor;
           if(transfer_start === 1'b1) begin
             slv_ack_bit = i2c_intf.TB_SDA;
             if(slv_ack_bit === 1'b0) begin
-              `uvm_info("SLVADDR_ACK", $sformatf("SUBORDINATE @[0x%h] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR", slv_addr_wr_rd[7:1]), UVM_NONE)
               //`uvm_info("SLVADDR_WR/RD_ACK_BIT_DTCT", $sformatf("\tSlave Address = %0h :: WR/RD Bit = %0b :: Slave Ack Bit = %0b", slv_addr_wr_rd[7:1], slv_addr_wr_rd[0], slv_ack_bit), UVM_LOW);
 
               this.transfer_byte_no = i2c_agt_con.agt_con_byte_no   ;
