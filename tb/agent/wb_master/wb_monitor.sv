@@ -56,8 +56,7 @@ class wb_monitor extends uvm_monitor;
             wb_wr_mtr_seq_item = wb_sequence_item::type_id::create("wb_wr_mtr_seq_item");
             wb_wr_mtr_seq_item.wb_adr_i = wb_intf.WB_ADR_I;
             wb_wr_mtr_seq_item.wb_dat_i = wb_intf.WB_DAT_I;
-            `uvm_info("MONITOR_WRITE_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_I), UVM_HIGH);
-            
+            `uvm_info("MONITOR_WRITE_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_wr_mtr_seq_item.wb_adr_i, wb_wr_mtr_seq_item.wb_dat_i), UVM_HIGH);
             wb_wr_mtr2scb_port.write(wb_wr_mtr_seq_item);
           end
         end
@@ -70,12 +69,10 @@ class wb_monitor extends uvm_monitor;
           if((!wb_intf.WB_RST_I && !wb_intf.ARST_I) && (wb_intf.WB_CYC_I && wb_intf.WB_STB_I && !wb_intf.WB_WE_I) && (wb_intf.WB_ADR_I == `RXR)) begin
             @(negedge wb_intf.WB_CLK_I);
             if(wb_intf.WB_ACK_O) begin
-              //@(negedge wb_intf.WB_CLK_I);
               wb_rd_mtr_seq_item = wb_sequence_item::type_id::create("wb_rd_mtr_seq_item");
               wb_rd_mtr_seq_item.wb_adr_i = wb_intf.WB_ADR_I;
               wb_rd_mtr_seq_item.wb_dat_o = wb_intf.WB_DAT_O;
-              `uvm_info("MONITOR_READ_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_intf.WB_ADR_I, wb_intf.WB_DAT_O), UVM_NONE);
-              
+              `uvm_info("MONITOR_READ_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_rd_mtr_seq_item.wb_adr_i, wb_rd_mtr_seq_item.wb_dat_o), UVM_HIGH);
               wb_rd_mtr2scb_port.write(wb_rd_mtr_seq_item);
             end
           end

@@ -69,6 +69,7 @@ class i2c_monitor extends uvm_monitor;
       mem_addr_ack_flag      = 1'b0;
       transmit_data_ack_flag = 1'b0;
       transfer_direction     = 1'b0;
+      count                  = 1;
       
       `uvm_info("START_BIT_DETECT", "\t\t=============>>\t\tSTART BIT DETECTED", UVM_NONE)
       `uvm_info("FLAGS::START_CON", $sformatf("scl = %0b :: sda = %0b :: start = %0b :: stop = %0b :: slv_ak_flg = %0b :: mem_ak_flg = %0b :: t_data_ak_flg :: %0b", i2c_intf.TB_SCL, i2c_intf.TB_SDA, transfer_start, transfer_stop, slv_addr_ack_flag, mem_addr_ack_flag, transmit_data_ack_flag), UVM_HIGH)
@@ -181,7 +182,7 @@ class i2c_monitor extends uvm_monitor;
             mem_ack_bit = i2c_intf.TB_SDA;
             if((mem_ack_bit === 1'b0)) begin
               `uvm_info("MEM_ACK_DETECT", $sformatf("\t\t=============>>\t\t[0x%h] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE", mem_addr), UVM_NONE);
-              `uvm_info("MEM_ACK_DETECT", $sformatf("\t\t=============>>\t\tMEMORY @[0x%h] ACKNOWLEDGED :: SUBORDINATE ==>> MASTER", mem_addr), UVM_NONE);
+              `uvm_info("MEM_ACK_DETECT", $sformatf("\t\t=============>>\t\tMEMORY @[0x%h] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR", mem_addr), UVM_NONE);
               `uvm_info("MEMADDR_WR/RD_ACK_BIT_DETECT", $sformatf("\tMemory Address = %0h :: Memory Ack Bit = %0b", mem_addr, mem_ack_bit), UVM_HIGH);
               if(this.i2c_wr_rd === 2'b01)       mem_addr_ack_flag = 1;
               else if(this.i2c_wr_rd === 2'b10)  mem_addr_ack_flag = 0;
@@ -204,7 +205,7 @@ class i2c_monitor extends uvm_monitor;
             this.transfer_byte_no --;
             transmit_data_ack_bit = i2c_intf.TB_SDA;
             if(transmit_data_ack_bit === 1'b0) begin
-              `uvm_info("TRANS_DATA_ACK_DETECT", "\t=============>>\t\tDATA TRANSMITTED :: SUBORDINATE ==>> SUPERVISOR ACK", UVM_NONE);
+              `uvm_info("TRANS_DATA_ACK_DETECT", "\t=============>>\t\tDATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK", UVM_NONE);
               `uvm_info("TRANSMIT_DATA_ACK_BIT_DETECT", $sformatf("\tTransmit Data = %0h :: Transmit Data Ack Bit = %0b", transmit_data, transmit_data_ack_bit), UVM_HIGH);
               transmit_data_ack_flag = 1'b1;
               if(this.transfer_byte_no < 1) mem_addr_ack_flag = 1'b0;
@@ -226,7 +227,7 @@ class i2c_monitor extends uvm_monitor;
             this.transfer_byte_no --;
             receive_data_ack_bit = i2c_intf.TB_SDA;
             if(receive_data_ack_bit === 1'b0) begin
-              `uvm_info("RECV_DATA_ACK_DETECT", "\t=============>>\t\tDATA RECEIVED :: SUPERVISOR ==>> SUBORDINATE ACK", UVM_NONE);
+              `uvm_info("RECV_DATA_ACK_DETECT", "\t=============>>\t\tDATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK", UVM_NONE);
               //`uvm_info("RECEIVE_DATA_ACK_BIT_DETECT", $sformatf("\tReceive Data = %0h :: Receive Data Ack Bit = %0b", receive_data, receive_data_ack_bit), UVM_LOW);
               //transmit_data_ack_flag = 1'b1;
               //if(this.transfer_byte_no < 1) slv_addr_ack_flag = 1'b0;
@@ -234,7 +235,7 @@ class i2c_monitor extends uvm_monitor;
             end
             else begin
               slv_addr_ack_flag = 1'b0;
-              `uvm_info("RECV_DATA_NACK_DETECT", "\t=============>>\t\tDATA RECEIVED :: SUPERVISOR ==>> SUBORDINATE NACK", UVM_NONE);
+              `uvm_info("RECV_DATA_NACK_DETECT", "\t=============>>\t\tDATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR NACK", UVM_NONE);
               //`uvm_info("RECEIVE_DATA_NACK_BIT_DTCT", $sformatf("Receive Data = %0h :: Receive Data Ack Bit = %0b", receive_data, receive_data_ack_bit), UVM_LOW);
               //`uvm_warning("RECV_END", "\t\tAll data received.")
               `uvm_info("FLAGS::RECV_DATA_CON", $sformatf("scl = %0b :: sda = %0b :: start = %0b :: stop = %0b :: slv_ak_flg = %0b :: mem_ak_flg = %0b :: t_data_ak_flg :: %0b", i2c_intf.TB_SCL, i2c_intf.TB_SDA, transfer_start, transfer_stop, slv_addr_ack_flag, mem_addr_ack_flag, transmit_data_ack_flag), UVM_HIGH)

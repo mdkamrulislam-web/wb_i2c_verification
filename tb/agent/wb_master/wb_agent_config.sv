@@ -5,6 +5,9 @@ class wb_agent_config extends uvm_object;
   uvm_active_passive_enum is_active = UVM_ACTIVE;
   bit has_functional_coverage;
 
+  bit wb_agt_con_rep_st_en;
+  int wb_agt_con_i2c_trans_byte;
+
   // ! Wishbone Agent Configuration Constructor
   function new(string name = "wb_agent_config");
     super.new(name);

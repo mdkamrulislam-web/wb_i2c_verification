@@ -36,11 +36,24 @@ class i2c_transmit_test extends wb_i2c_base_test;
 
       i2c_core_setup(8'h64, 8'h00, 8'hC0);                          // ! Core & Prescale Registers Setup
 
-      i2c_write(`SLVADDR, 8'h00, 64'h55_77_88, `DATAWIDTH_24);   // ! I2C Data Transfer
-      i2c_write(`SLVADDR, 8'h01, 64'h33_44, `DATAWIDTH_16);   // ! I2C Data Transfer
-      i2c_read(`SLVADDR, 8'h01, `DATAWIDTH_16);
-      i2c_read(`SLVADDR, 8'h00, `DATAWIDTH_8);
+
+      i2c_write(`SLVADDR, 8'h00, 64'h55_77_88, `DATAWIDTH_24, 1);   // ! I2C Data Transfer
+      i2c_write(`SLVADDR, 8'h01, 64'h33_44   , `DATAWIDTH_16, 0);   // ! I2C Data Transfer
+      i2c_read(`SLVADDR, 8'h01, `DATAWIDTH_16, 1);
+      i2c_read(`SLVADDR, 8'h00, `DATAWIDTH_8 , 0);
+
       #100000ns;
       phase.drop_objection(this);
   endtask
+      // NOTE::
+      /*############################################################################################################################################
+      SETUP   ::              i2c_core_setup([Prescaler Low Data] , [Prescaler High Data], [Control Reg Data]              )              ##########
+      ##########                            ([8'h00 - 8'hFF]      , [8'h00 - 8'hFF]      , [Core Enable & Interrupt Enable])              ##########
+      ##############################################################################################################################################
+      TRANSMIT:: i2c_write([Slave Address], [Memory Address], [Data To be Transmitted], [Data Width], [Repeated Start Enabled/ Disabled]) ##########
+      ##########          ([`SLVADDR]     , [0-3] = Wr/Rd   , [0 - 255]               , [32 Bits]   , [0 = Disabled / 1 = Enabled]      ) ##########
+      ##############################################################################################################################################
+      RECEIVE ::              i2c_read([Slave Address], [Memory Address], [Data Width], [Repeated Start Enabled/ Disabled])               ##########
+      ##########                      ([`SLVADDR]     , [0-3] = Wr/Rd   , [0 - 255]   , [0 = Disabled / 1 = Enabled]      )               ##########
+      ############################################################################################################################################*/
 endclass

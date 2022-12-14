@@ -43,10 +43,12 @@ class wb_i2c_environment extends uvm_env;
     super.connect_phase(phase);
     `uvm_info(get_full_name(), "Inside WB_I2C Environment Connect Phase.", UVM_MEDIUM)
 
+    wb_i2c_sb.wb_agt_con = wb_i2c_env_con.wb_agt_con;
+
     // Connecting Driver & Monitor with Scoreboard, depending on the parameters of Enviornment Configuration & Agent Configuration
     if(wb_i2c_env_con.has_scoreboard) begin
       wb_agt.wb_mtr.wb_wr_mtr2scb_port.connect(wb_i2c_sb.wb_wr_mtr2scb);
-      wb_agt.wb_mtr.wb_wr_mtr2scb_port.connect(wb_i2c_sb.wb_rd_mtr2scb);
+      wb_agt.wb_mtr.wb_rd_mtr2scb_port.connect(wb_i2c_sb.wb_rd_mtr2scb);
     end
     else begin
       `uvm_info("WB_ENV_CONFIG", "THIS TESTBENCH DOES NOT HAVE A SCOREBOARD.", UVM_LOW)
