@@ -8,10 +8,11 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
 
   wb_agent_config wb_agt_con;
 
-  logic [7:0] trans_slv_addr                    ;
-  logic [7:0] trans_mem_addr                    ;
-  logic [7:0] trans_txr_data                    ;
-  int         trans_byte_no                     ;
+  static logic [7:0] trans_exp_slv_addr             ;
+  static logic [7:0] temp_trans_exp_slv_addr        ;
+  logic [7:0] trans_exp_mem_addr                    ;
+  logic [7:0] trans_exp_txr_data                    ;
+  int         trans_exp_byte_no                     ;
   
   static int write                              ;
   static int read                               ;
@@ -59,28 +60,25 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
   // Storing the received packet in the expected queue.
   function void write_wb_wr_mtr2scb(wb_sequence_item wb_wr_exp_item);
     //wb_wr_exp_item.print();
-    `uvm_info("WB_WR_MTR_2_SCB", $sformatf("Address = %0h :: Data In = %0h", wb_wr_exp_item.wb_adr_i, wb_wr_exp_item.wb_dat_i), UVM_MEDIUM)
+    //`uvm_info("WB_WR_MTR_2_SCB", $sformatf("Address = %0h :: Data In = %0h", wb_wr_exp_item.wb_adr_i, wb_wr_exp_item.wb_dat_i), UVM_MEDIUM)
 
-    `uvm_info("WB_AGT_CHECKER", $sformatf("Transfer Byte No :: %0d, Repeated Start Enabled :: %0b", wb_agt_con.wb_agt_con_i2c_trans_byte, wb_agt_con.wb_agt_con_rep_st_en), UVM_NONE)
+    `uvm_info("WB_AGT_CHECKER", $sformatf("Transfer Byte No :: %0d, Repeated Start Enabled :: %0b, I2C_TR_RC :: %0b", wb_agt_con.wb_agt_con_i2c_trans_byte, wb_agt_con.wb_agt_con_rep_st_en, wb_agt_con.wb_agt_con_i2c_tr_rc), UVM_NONE)
     
     //////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////// EXPECTED TRANSMIT DATA /////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////
     // Setting Slave Address in TXR Reg
-    if((wb_wr_exp_item.wb_adr_i==`TXR) && (write == 0) && (read == 0)) begin
-      trans_slv_addr = wb_wr_exp_item.wb_dat_i;
-      `uvm_info("WRITE_READ_FLAG", $sformatf("\t\t#############>>\t\tWrite Flag Val :: %0d, Read Flag Val :: %0d, Temp_Slv_addr :: %0h", write, read, trans_slv_addr), UVM_NONE)
-      write++;
-      read++;
+    if((wb_agt_con.wb_agt_con_i2c_tr_rc === 2'b01)) begin
+      if((wb_wr_exp_item.wb_adr_i === `TXR) && (write === 0)) begin
+        temp_trans_exp_slv_addr = wb_wr_exp_item.wb_dat_i;
+        write++;
+      end
+      if((wb_wr_exp_item.wb_adr_i === `CR) && (write === 1) && ((wb_wr_exp_item.wb_dat_i===8'b1001_0000) || (wb_agt_con.wb_agt_con_rep_st_en === 1'b1))) begin
+        trans_exp_slv_addr = temp_trans_exp_slv_addr;
+        `uvm_info("SCOREBOARD_FLAGS::SLV_ADDR**", $sformatf("\t\t#############>>\t\tWRITE_FLAG_VAL :: %0d, TRANS_EXP_SLV_ADDR :: %0h", write, trans_exp_slv_addr), UVM_NONE)
+      end
     end
-    // Setting Start & Write Bits High
-    if((write == 1) && (read == 1) && (wb_wr_exp_item.wb_adr_i==`CR) && (wb_wr_exp_item.wb_dat_i==8'b1001_0000)) begin
-      //i2c_sq_exp_item.slave_addr = temp_slv_addr;
-      //exp_pred2scb_port.write(i2c_sq_exp_item);
-      `uvm_info("WRITE_READ_FLAG", $sformatf("Write Flag Val :: %0d, Read Flag Val :: %0d", write, read), UVM_MEDIUM)
-      write++;
-      read++;
-    end
+    
   endfunction
 
   function void write_wb_rd_mtr2scb(wb_sequence_item wb_rd_exp_item);

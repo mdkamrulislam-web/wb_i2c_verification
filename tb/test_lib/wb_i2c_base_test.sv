@@ -274,7 +274,7 @@ class wb_i2c_base_test extends uvm_test;
     i2c_agt_con.agt_con_byte_no          = this.byte_no;
     i2c_agt_con.agt_con_i2c_wr_rd        = 2'b01       ;
 
-    //wb_agt_con.wb_agt_con_rep_st_en      = with_rep_st ;
+    wb_agt_con.wb_agt_con_i2c_tr_rc      = 2'b01       ;
     wb_agt_con.wb_agt_con_i2c_trans_byte = this.byte_no;
 
     `uvm_info("BASE_TEST", $sformatf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Transmit Byte No :: %0d", i2c_agt_con.agt_con_byte_no), UVM_HIGH)
@@ -293,12 +293,12 @@ class wb_i2c_base_test extends uvm_test;
     input int          dwidth      ,
     input bit          with_rep_st
   );
-    this.byte_no                  = dwidth / 8         ;
+    this.byte_no                         = dwidth / 8  ;
 
-    i2c_agt_con.agt_con_byte_no   = this.byte_no       ;
-    i2c_agt_con.agt_con_i2c_wr_rd = 2'b10              ;
+    i2c_agt_con.agt_con_byte_no          = this.byte_no;
+    i2c_agt_con.agt_con_i2c_wr_rd        = 2'b10       ;
 
-    //wb_agt_con.wb_agt_con_rep_st_en      = with_rep_st ;
+    wb_agt_con.wb_agt_con_i2c_tr_rc      = 2'b10       ;
     wb_agt_con.wb_agt_con_i2c_trans_byte = this.byte_no;
 
     `uvm_info("BASE_TEST", $sformatf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Receive Byte No :: %0d", i2c_agt_con.agt_con_byte_no), UVM_HIGH)
