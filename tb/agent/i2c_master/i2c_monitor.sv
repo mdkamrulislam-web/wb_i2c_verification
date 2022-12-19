@@ -4,6 +4,9 @@ class i2c_monitor extends uvm_monitor;
 
   `include "../../defines/defines.sv"
 
+  // ! Declearing uvm_analysis_port, which is used to send packets from monitor to scoreboard.
+  uvm_analysis_port #(i2c_sequence_item) i2c_mtr2scb_port;
+
   // ! Declaring Handle for I2C Interface
   virtual i2c_interface i2c_intf;
 
@@ -28,6 +31,9 @@ class i2c_monitor extends uvm_monitor;
   // ! Declaring Handle for I2C Agent Config
   i2c_agent_config   i2c_agt_con           ;
 
+  //
+  i2c_sequence_item  i2c_mtr_sq_item       ;
+
   static int         transfer_byte_no      ;
   static bit [1:0]   i2c_wr_rd             ;
 
@@ -37,6 +43,7 @@ class i2c_monitor extends uvm_monitor;
   function new(string name = "i2c_monitor", uvm_component parent = null);
     super.new(name, parent);
     `uvm_info(get_full_name(), "Inside I2C Monitor Constructor.", UVM_HIGH)
+    i2c_mtr2scb_port = new("i2c_mtr2scb_port", this);
   endfunction
 
   // ! I2C Monitor Build Phase
@@ -142,11 +149,11 @@ class i2c_monitor extends uvm_monitor;
           if((transfer_start === 1'b1)) begin
             if(slv_addr_wr_rd[0] === 1'b0) begin
               transfer_direction = 1; // Write
-              `uvm_info("TRANS_DIRECTION", $sformatf("\t\t=============>>\t\tDATA WILL BE TRANSMITTED TO THE SUBORDINATE @[0x%h]", slv_addr_wr_rd[7:1]), UVM_LOW)
+              `uvm_info("TRANS_DIRECTION", $sformatf("\t\t=============>>\t\tDATA WILL BE TRANSMITTED TO THE SUBORDINATE @[0x%h] &&& WR_RD_BIT :: %0b", slv_addr_wr_rd[7:1], slv_addr_wr_rd[0]), UVM_LOW)
             end
             else if(slv_addr_wr_rd[0] === 1'b1) begin
               transfer_direction = 0; // Read
-              `uvm_info("TRANS_DIRECTION", $sformatf("\t\t=============>>\t\tDATA WILL BE RECEIVED BY THE SUPERVISOR @[0x%h]", slv_addr_wr_rd[7:1]), UVM_LOW)
+              `uvm_info("TRANS_DIRECTION", $sformatf("\t\t=============>>\t\tDATA WILL BE RECEIVED BY THE SUPERVISOR @[0x%h] &&& WR_RD_BIT :: %0b", slv_addr_wr_rd[7:1], slv_addr_wr_rd[0]), UVM_LOW)
             end
             else begin
               `uvm_warning("TRANS_DIRECTION", "\t\t################ UNKNOWN TRANSFER DIRECTION ###############")
@@ -167,6 +174,10 @@ class i2c_monitor extends uvm_monitor;
               slv_addr_ack_flag = 1;
               transfer_start = 0;
               `uvm_info("FLAGS::SLV_ADDR_CON", $sformatf("scl = %0b :: sda = %0b :: start = %0b :: stop = %0b :: slv_ak_flg = %0b :: mem_ak_flg = %0b :: t_data_ak_flg :: %0b", i2c_intf.TB_SCL, i2c_intf.TB_SDA, transfer_start, transfer_stop, slv_addr_ack_flag, mem_addr_ack_flag, transmit_data_ack_flag), UVM_HIGH);
+              i2c_mtr_sq_item = i2c_sequence_item::type_id::create("i2c_mtr_sq_item");
+
+              i2c_mtr_sq_item.slave_addr_wr_rd_bit = slv_addr_wr_rd;
+              i2c_mtr2scb_port.write(i2c_mtr_sq_item);
 
               break;
             end

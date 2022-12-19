@@ -1,89 +1,162 @@
-`uvm_analysis_imp_decl(_wb_wr_mtr2scb)
-`uvm_analysis_imp_decl(_wb_rd_mtr2scb)
+`uvm_analysis_imp_decl(_wb_mtr2scb)
+`uvm_analysis_imp_decl(_i2c_mtr2scb)
 
 class wb_i2c_scoreboard extends uvm_scoreboard;
   `uvm_component_utils(wb_i2c_scoreboard)
 
   `include "../defines/defines.sv"
 
-  wb_agent_config wb_agt_con;
+  logic [7:0] trns_slv_addr_wr_rd_bit             ;
+  logic [7:0] recv_slv_addr_wr_rd_bit             ;
 
-  static logic [7:0] trans_exp_slv_addr             ;
-  static logic [7:0] temp_trans_exp_slv_addr        ;
-  logic [7:0] trans_exp_mem_addr                    ;
-  logic [7:0] trans_exp_txr_data                    ;
-  int         trans_exp_byte_no                     ;
+  logic [7:0] ini_trns_mem_addr                   ;
+  logic [7:0] ini_recv_mem_addr                   ;
+
+  int         trns_byte_no                        ;
+  int         recv_byte_no                        ;
   
-  static int write                              ;
-  static int read                               ;
+  int         wr_step                             ;
+  int         rd_step                             ;
 
-  static logic [7:0] exp_i2c_slv_adr            ;
-
-  static logic [7:0] exp_transmit_data_memory[8];
-  static logic [7:0] act_transmit_data_memory[8];
+  logic [7:0] exp_transmit_data_memory[`DATADEPTH];  // Change Inside Define File to Modify Depth
 
   // ! Taking a queue as exp_que
-  wb_sequence_item wb_wr_exp_que[$]             ;
-  wb_sequence_item wb_rd_exp_que[$]             ;
+  i2c_sequence_item exp_i2c_trans_que[$]          ;
 
-  wb_sequence_item wb_rd_exp_mtr_item;
+  i2c_sequence_item exp_i2c_trans_item            ;
+
+  wb_sequence_item exp_wb_mtr_item                ;
+
+  wb_agent_config wb_agt_con                      ;
   
   // ! Declaring imports for getting driver packets and monitor packets.
-  uvm_analysis_imp_wb_wr_mtr2scb#(wb_sequence_item, wb_i2c_scoreboard) wb_wr_mtr2scb;
-  uvm_analysis_imp_wb_rd_mtr2scb#(wb_sequence_item, wb_i2c_scoreboard) wb_rd_mtr2scb;
+  uvm_analysis_imp_wb_mtr2scb#(wb_sequence_item, wb_i2c_scoreboard) wb_mtr2scb;
+  uvm_analysis_imp_i2c_mtr2scb#(i2c_sequence_item, wb_i2c_scoreboard) i2c_mtr2scb;
 
   function new(string name = "wb_i2c_scoreboard", uvm_component parent = null);
     super.new(name, parent);
-    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Constructor.", UVM_HIGH)
+    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Constructor.", UVM_DEBUG)
   endfunction
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Build Phase.", UVM_HIGH)
+    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Build Phase.", UVM_DEBUG)
 
     // Creating objects for the above declared imports
-    wb_wr_mtr2scb = new("wb_wr_mtr2scb", this);
-    wb_rd_mtr2scb = new("wb_rd_mtr2scb", this);
+    wb_mtr2scb = new("wb_mtr2scb", this);
+    i2c_mtr2scb = new("i2c_mtr2scb", this);
     
   endfunction
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Connect Phase.", UVM_HIGH)
+    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Connect Phase.", UVM_DEBUG)
   endfunction
 
   task run_phase(uvm_phase phase);
-    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Run Phase.", UVM_HIGH)
+    `uvm_info(get_full_name(), "Inside WB_I2C Scoreboard Run Phase.", UVM_DEBUG)
   endtask
 
   // ! Defining write_wb_exp_mtr2scb() method which was created by macro `uvm_analysis_imp_decl(_wb_exp_mtr2scb).	
   // Storing the received packet in the expected queue.
-  function void write_wb_wr_mtr2scb(wb_sequence_item wb_wr_exp_item);
-    //wb_wr_exp_item.print();
-    //`uvm_info("WB_WR_MTR_2_SCB", $sformatf("Address = %0h :: Data In = %0h", wb_wr_exp_item.wb_adr_i, wb_wr_exp_item.wb_dat_i), UVM_MEDIUM)
-
-    `uvm_info("WB_AGT_CHECKER", $sformatf("Transfer Byte No :: %0d, Repeated Start Enabled :: %0b, I2C_TR_RC :: %0b", wb_agt_con.wb_agt_con_i2c_trans_byte, wb_agt_con.wb_agt_con_rep_st_en, wb_agt_con.wb_agt_con_i2c_tr_rc), UVM_NONE)
+  function void write_wb_mtr2scb(wb_sequence_item wb_exp_item);
     
-    //////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////// EXPECTED TRANSMIT DATA /////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////
-    // Setting Slave Address in TXR Reg
-    if((wb_agt_con.wb_agt_con_i2c_tr_rc === 2'b01)) begin
-      if((wb_wr_exp_item.wb_adr_i === `TXR) && (write === 0)) begin
-        temp_trans_exp_slv_addr = wb_wr_exp_item.wb_dat_i;
-        write++;
+    // When Wishbone Register Address = Transmit Register and I2C Transmit
+    // operation is running.
+    if((wb_exp_item.wb_adr_i === `TXR) && (((wr_step === 0) && (rd_step === 0)) || (rd_step === 4))) begin
+      // Slave Address + WR Bit Transmiision to `TXR Reg ######### For I2C Transmit
+      if(wb_agt_con.wb_agt_con_i2c_tr_rc === 2'b01) begin
+        trns_slv_addr_wr_rd_bit = wb_exp_item.wb_dat_i;
+        wr_step++;
+        trns_byte_no = wb_agt_con.wb_agt_con_i2c_trans_byte;
+        `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
       end
-      if((wb_wr_exp_item.wb_adr_i === `CR) && (write === 1) && ((wb_wr_exp_item.wb_dat_i===8'b1001_0000) || (wb_agt_con.wb_agt_con_rep_st_en === 1'b1))) begin
-        trans_exp_slv_addr = temp_trans_exp_slv_addr;
-        `uvm_info("SCOREBOARD_FLAGS::SLV_ADDR**", $sformatf("\t\t#############>>\t\tWRITE_FLAG_VAL :: %0d, TRANS_EXP_SLV_ADDR :: %0h", write, trans_exp_slv_addr), UVM_NONE)
+      // Slave Address + WR Bit Transmission to `TXR Reg ######### For I2C Receive
+      else if(wb_agt_con.wb_agt_con_i2c_tr_rc === 2'b10) begin
+        recv_slv_addr_wr_rd_bit = wb_exp_item.wb_dat_i;
+        rd_step++;
+        recv_byte_no = wb_agt_con.wb_agt_con_i2c_trans_byte;
+        `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
       end
     end
-    
+    if((wb_exp_item.wb_adr_i === `CR) && (wb_exp_item.wb_dat_i === 8'b1001_0000)) begin
+      // Configuration Setting Check for I2C Slave Address Transmission to `TXR Reg ######### For I2C Transmit
+      if(wr_step === 1) begin
+        //`uvm_warning("WR_CHECKER", $sformatf("Transmission Slave Address :: %0h, Receive Slave Address :: %0h", trns_slv_addr_wr_rd_bit, recv_slv_addr_wr_rd_bit))
+        exp_i2c_trans_item = i2c_sequence_item::type_id::create("exp_i2c_trans_item");
+        exp_i2c_trans_item.slave_addr_wr_rd_bit = trns_slv_addr_wr_rd_bit;
+        `uvm_info("EXP_I2C_TRANS_ITEM", $sformatf("trans_slave_addr_wr_rd_bit :: %0h", exp_i2c_trans_item.slave_addr_wr_rd_bit), UVM_NONE)
+        exp_i2c_trans_que.push_back(exp_i2c_trans_item);
+        
+        
+        wr_step++;
+        `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
+      end
+      // Configuration Setting Check for I2C Slave Address Transmission to `TXR Reg ######### For I2C Receive
+      else if((rd_step === 1) || (rd_step === 5)) begin
+        exp_i2c_trans_item = i2c_sequence_item::type_id::create("exp_i2c_trans_item");
+        exp_i2c_trans_item.slave_addr_wr_rd_bit = recv_slv_addr_wr_rd_bit;
+        `uvm_info("EXP_I2C_TRANS_ITEM", $sformatf("recv_slave_addr_wr_rd_bit :: %0h", exp_i2c_trans_item.slave_addr_wr_rd_bit), UVM_NONE)
+        exp_i2c_trans_que.push_back(exp_i2c_trans_item);
+
+
+        rd_step++;
+        `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
+      end
+    end
+    if(wb_exp_item.wb_adr_i === `TXR) begin
+      // Memory Address Transmiision to `TXR Reg ######### For I2C Transmit
+      if(wr_step === 2) begin
+        ini_trns_mem_addr = wb_exp_item.wb_dat_i;
+        wr_step++;
+        `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
+      end
+      // Memory Address Transmiision to `TXR Reg ######### For I2C Transmit
+      else if(rd_step === 2) begin
+        ini_recv_mem_addr = wb_exp_item.wb_dat_i;
+        rd_step++;
+        `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
+      end
+    end
+    if((wb_exp_item.wb_adr_i === `CR) && (wb_exp_item.wb_dat_i === 8'b0001_0000)) begin
+      if(wr_step === 3) begin
+        wr_step++;
+        `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
+      end
+      else if(rd_step === 3) begin
+        rd_step++;
+        `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
+      end
+    end
+    if((wb_exp_item.wb_adr_i === `TXR) && (wr_step >= 4)) begin
+      wr_step++;
+      `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
+    end
+    if((wb_exp_item.wb_adr_i === `CR) && !(trns_byte_no < 1) && (wr_step >= 5)) begin
+      wr_step++;
+      trns_byte_no--;
+      if(trns_byte_no < 1) begin
+        wr_step = 0;
+      end
+      `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
+    end
+    if((wb_exp_item.wb_adr_i === `CR) && (wb_exp_item.wb_dat_i[5] === 1'b1) && (rd_step >= 6)) begin
+      rd_step++;
+      `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
+    end
+    if((wb_exp_item.wb_adr_i === `RXR) && (rd_step >= 7) && !(recv_byte_no < 1)) begin
+      rd_step++;
+      recv_byte_no--;
+      if(recv_byte_no < 1) begin
+        rd_step = 0;
+      end
+      `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
+    end
+
+
   endfunction
 
-  function void write_wb_rd_mtr2scb(wb_sequence_item wb_rd_exp_item);
-    //wb_rd_exp_item.print();
-    `uvm_info("WB_RD_MTR_2_SCB", $sformatf("Address = %0h :: Data Out = %0h", wb_rd_exp_item.wb_adr_i, wb_rd_exp_item.wb_dat_o), UVM_MEDIUM)
+  function void write_i2c_mtr2scb(i2c_sequence_item i2c_item);
+    //i2c_item.print();
   endfunction
-
 endclass

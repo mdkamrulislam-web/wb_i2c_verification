@@ -190,14 +190,8 @@ class wb_i2c_base_test extends uvm_test;
   task read_nack_stop(
     bit with_rep_st
   );
-    if(with_rep_st === 1'b0) begin
-      wb_write_task(0, `CR, 8'b0110_1000)           ;  // * Stop HIGH, Read HIGH & ACK Bit HIGH
-      //wb_agt_con.wb_agt_con_rep_st_en = with_rep_st ;
-    end
-    else begin
-      wb_write_task(0, `CR, 8'b0010_1000);  // * Stop LOW,  Read HIGH & ACK Bit HIGH
-      wb_agt_con.wb_agt_con_rep_st_en = with_rep_st ;
-    end
+    if(!with_rep_st)   wb_write_task(0, `CR, 8'b0110_1000);  // * Stop HIGH, Read HIGH & ACK Bit HIGH
+    else               wb_write_task(0, `CR, 8'b0010_1000);  // * Stop LOW,  Read HIGH & ACK Bit HIGH
     tip_poll();
     `uvm_info("BEFORE_READ", "#################################################", UVM_HIGH)
     wb_read_task(`RXR, tip_flag);
@@ -219,22 +213,13 @@ class wb_i2c_base_test extends uvm_test;
         this.byte_no = this.byte_no - 1;
       end
       `uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", this.byte_no, data[((this.byte_no * 8) - 1) -: 8]), UVM_HIGH)
-      if(with_rep_st === 1'b0) begin
-        stop_wr(data[((this.byte_no * 8) - 1) -: 8])     ;
-        wb_agt_con.wb_agt_con_rep_st_en = with_rep_st    ;
-      end
-      else begin
-        rep_start_wr(data[((this.byte_no * 8) - 1) -: 8]);
-        wb_agt_con.wb_agt_con_rep_st_en = with_rep_st    ;
-      end
+      if(!with_rep_st) stop_wr(data[((this.byte_no * 8) - 1) -: 8])     ;
+      else             rep_start_wr(data[((this.byte_no * 8) - 1) -: 8]);
     end
     else if(this.byte_no == 1) begin
       `uvm_info("TRANSMIT DATA", $sformatf("Byte No => %0d :: Data => %0h", this.byte_no, data[((this.byte_no * 8) - 1) -: 8]), UVM_HIGH)
-      if(with_rep_st === 1'b0) stop_wr(data[((this.byte_no * 8) - 1) -: 8])     ;
-      else begin
-        rep_start_wr(data[((this.byte_no * 8) - 1) -: 8]);
-        wb_agt_con.wb_agt_con_rep_st_en = with_rep_st    ;
-      end
+      if(!with_rep_st) stop_wr(data[((this.byte_no * 8) - 1) -: 8])     ;
+      else             rep_start_wr(data[((this.byte_no * 8) - 1) -: 8]);
     end
   endtask
 
@@ -270,18 +255,19 @@ class wb_i2c_base_test extends uvm_test;
     input int          dwidth      ,
     input bit          with_rep_st 
   );
-    this.byte_no                         = dwidth / 8  ;
-    i2c_agt_con.agt_con_byte_no          = this.byte_no;
-    i2c_agt_con.agt_con_i2c_wr_rd        = 2'b01       ;
+    this.byte_no = dwidth / 8                   ;
 
-    wb_agt_con.wb_agt_con_i2c_tr_rc      = 2'b01       ;
     wb_agt_con.wb_agt_con_i2c_trans_byte = this.byte_no;
+    wb_agt_con.wb_agt_con_i2c_tr_rc      = 2'b01;
+
+    i2c_agt_con.agt_con_byte_no   = this.byte_no;
+    i2c_agt_con.agt_con_i2c_wr_rd = 2'b01       ;
 
     `uvm_info("BASE_TEST", $sformatf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Transmit Byte No :: %0d", i2c_agt_con.agt_con_byte_no), UVM_HIGH)
 
-    i2c_slv_addr_trans(i2c_slv_addr, `WR)              ;
-    i2c_mem_addr_trans(mem_address)                    ;
-    i2c_data_trans(data, dwidth, with_rep_st)          ;
+    i2c_slv_addr_trans(i2c_slv_addr, `WR)       ;
+    i2c_mem_addr_trans(mem_address)             ;
+    i2c_data_trans(data, dwidth, with_rep_st)   ;
   endtask
 
   /*###################
@@ -293,19 +279,18 @@ class wb_i2c_base_test extends uvm_test;
     input int          dwidth      ,
     input bit          with_rep_st
   );
-    this.byte_no                         = dwidth / 8  ;
+    this.byte_no = dwidth / 8                   ;
 
-    i2c_agt_con.agt_con_byte_no          = this.byte_no;
-    i2c_agt_con.agt_con_i2c_wr_rd        = 2'b10       ;
-
-    wb_agt_con.wb_agt_con_i2c_tr_rc      = 2'b10       ;
     wb_agt_con.wb_agt_con_i2c_trans_byte = this.byte_no;
+    wb_agt_con.wb_agt_con_i2c_tr_rc      = 2'b10;
 
+    i2c_agt_con.agt_con_byte_no   = this.byte_no;
+    i2c_agt_con.agt_con_i2c_wr_rd = 2'b10;
     `uvm_info("BASE_TEST", $sformatf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Receive Byte No :: %0d", i2c_agt_con.agt_con_byte_no), UVM_HIGH)
 
-    i2c_slv_addr_trans(i2c_slv_addr, `WR)              ;
-    i2c_mem_addr_trans(mem_address)                    ;
-    i2c_slv_addr_trans(i2c_slv_addr, `RD)              ;
-    i2c_data_recv(dwidth, with_rep_st)                 ;
+    i2c_slv_addr_trans(i2c_slv_addr, `WR)       ;
+    i2c_mem_addr_trans(mem_address)             ;
+    i2c_slv_addr_trans(i2c_slv_addr, `RD)       ;
+    i2c_data_recv(dwidth, with_rep_st)          ;
   endtask
 endclass
