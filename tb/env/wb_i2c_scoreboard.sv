@@ -12,6 +12,8 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
   logic [7:0] ini_trns_mem_addr                   ;
   logic [7:0] ini_recv_mem_addr                   ;
 
+  logic [7:0] temp_trans_data                     ;
+
   int         trns_byte_no                        ;
   int         recv_byte_no                        ;
   
@@ -19,15 +21,14 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
   int         rd_step                             ;
 
   logic [7:0] exp_transmit_data_memory[`DATADEPTH];  // Change Inside Define File to Modify Depth
+  logic [7:0] act_receive_data_memory[`DATADEPTH] ;  // Change Inside Define File to Modify Depth
 
   // ! Taking a queue as exp_que
   i2c_sequence_item exp_i2c_trans_que[$]          ;
 
   i2c_sequence_item exp_i2c_trans_item            ;
 
-  wb_sequence_item exp_wb_mtr_item                ;
-
-  wb_agent_config wb_agt_con                      ;
+  wb_agent_config   wb_agt_con                    ;
   
   // ! Declaring imports for getting driver packets and monitor packets.
   uvm_analysis_imp_wb_mtr2scb#(wb_sequence_item, wb_i2c_scoreboard) wb_mtr2scb;
@@ -119,20 +120,40 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
       end
     end
     if((wb_exp_item.wb_adr_i === `CR) && (wb_exp_item.wb_dat_i === 8'b0001_0000)) begin
+      // Configuration Setting Check for Initial Memory Address Transmission to `TXR Reg ######### For I2C Transmit
       if(wr_step === 3) begin
+        exp_i2c_trans_item = i2c_sequence_item::type_id::create("exp_i2c_trans_item");
+        exp_i2c_trans_item.memry_addr = ini_trns_mem_addr;
+        `uvm_info("EXP_I2C_TRANS_ITEM", $sformatf("ini_trns_mem_addr :: %0h", exp_i2c_trans_item.memry_addr), UVM_NONE)
+        exp_i2c_trans_que.push_back(exp_i2c_trans_item);
+
+
         wr_step++;
         `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
       end
+      // Configuration Setting Check for Initial Memory Address Transmission to `TXR Reg ######### For I2C Receive
       else if(rd_step === 3) begin
+        exp_i2c_trans_item = i2c_sequence_item::type_id::create("exp_i2c_trans_item");
+        exp_i2c_trans_item.memry_addr = ini_recv_mem_addr;
+        `uvm_info("EXP_I2C_TRANS_ITEM", $sformatf("ini_recv_mem_addr :: %0h", exp_i2c_trans_item.memry_addr), UVM_NONE)
+        exp_i2c_trans_que.push_back(exp_i2c_trans_item);
+
+
         rd_step++;
         `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
       end
     end
     if((wb_exp_item.wb_adr_i === `TXR) && (wr_step >= 4)) begin
+      temp_trans_data = wb_exp_item.wb_dat_i;
       wr_step++;
       `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
     end
     if((wb_exp_item.wb_adr_i === `CR) && !(trns_byte_no < 1) && (wr_step >= 5)) begin
+      exp_transmit_data_memory[ini_trns_mem_addr] = temp_trans_data;
+      `uvm_info("EXP_I2C_TRANS_DAT_ADR", $sformatf("Data :: %0h, Address :: %0h", exp_transmit_data_memory[ini_trns_mem_addr], ini_trns_mem_addr), UVM_NONE)
+      ini_trns_mem_addr++;
+
+
       wr_step++;
       trns_byte_no--;
       if(trns_byte_no < 1) begin
@@ -145,6 +166,11 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
       `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
     end
     if((wb_exp_item.wb_adr_i === `RXR) && (rd_step >= 7) && !(recv_byte_no < 1)) begin
+      act_receive_data_memory[ini_recv_mem_addr] = wb_exp_item.wb_dat_o;
+      `uvm_info("EXP_I2C_RECV_DAT_ADR", $sformatf("Data :: %0h, Address :: %0h", act_receive_data_memory[ini_recv_mem_addr], ini_recv_mem_addr), UVM_NONE)
+      ini_recv_mem_addr++;
+
+
       rd_step++;
       recv_byte_no--;
       if(recv_byte_no < 1) begin
@@ -152,8 +178,6 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
       end
       `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
     end
-
-
   endfunction
 
   function void write_i2c_mtr2scb(i2c_sequence_item i2c_item);
