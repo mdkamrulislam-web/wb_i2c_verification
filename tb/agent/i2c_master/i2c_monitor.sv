@@ -42,7 +42,7 @@ class i2c_monitor extends uvm_monitor;
   // ! I2C Monitor Constructor
   function new(string name = "i2c_monitor", uvm_component parent = null);
     super.new(name, parent);
-    `uvm_info(get_full_name(), "Inside I2C Monitor Constructor.", UVM_HIGH)
+    `uvm_info(get_full_name(), "Inside I2C Monitor Constructor.", UVM_DEBUG)
     i2c_mtr2scb_port = new("i2c_mtr2scb_port", this);
   endfunction
 
@@ -55,14 +55,14 @@ class i2c_monitor extends uvm_monitor;
       `uvm_fatal("I2C Virtual Interface Not Found Inside Monitor!", {"Virtual interface must be set for: ",get_full_name(),".i2c_vintf"})
     end
     else begin
-      `uvm_info("I2C_INTF", "I2C Virtual Interface found inside monitor.", UVM_HIGH)
+      `uvm_info("I2C_INTF", "I2C Virtual Interface found inside monitor.", UVM_DEBUG)
     end
   endfunction
 
   // ! I2C Monitor Connect Phase
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    `uvm_info(get_full_name(), "Inside I2C Monitor Connect Phase.", UVM_HIGH)
+    `uvm_info(get_full_name(), "Inside I2C Monitor Connect Phase.", UVM_DEBUG)
   endfunction
   
   ///////////////////////////////////////////////////
@@ -179,6 +179,8 @@ class i2c_monitor extends uvm_monitor;
               i2c_mtr_sq_item.slave_addr_wr_rd_bit = slv_addr_wr_rd;
               i2c_mtr2scb_port.write(i2c_mtr_sq_item);
 
+              `uvm_info("I2C_MTR2_SCB", $sformatf("Slave Address :: %0h", i2c_mtr_sq_item.slave_addr_wr_rd_bit), UVM_NONE)
+
               break;
             end
             else begin
@@ -243,6 +245,7 @@ class i2c_monitor extends uvm_monitor;
               //transmit_data_ack_flag = 1'b1;
               //if(this.transfer_byte_no < 1) slv_addr_ack_flag = 1'b0;
               `uvm_info("FLAGS::RECV_DATA_CON", $sformatf("scl = %0b :: sda = %0b :: start = %0b :: stop = %0b :: slv_ak_flg = %0b :: mem_ak_flg = %0b :: t_data_ak_flg :: %0b", i2c_intf.TB_SCL, i2c_intf.TB_SDA, transfer_start, transfer_stop, slv_addr_ack_flag, mem_addr_ack_flag, transmit_data_ack_flag), UVM_HIGH)
+
             end
             else begin
               slv_addr_ack_flag = 1'b0;

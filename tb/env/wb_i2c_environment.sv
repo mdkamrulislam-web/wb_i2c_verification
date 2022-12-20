@@ -11,13 +11,13 @@ class wb_i2c_environment extends uvm_env;
   // ! WB_I2C Environment Constructor
   function new(string name = "wb_i2c_environment", uvm_component parent = null);
     super.new(name, parent);
-    `uvm_info(get_full_name(), "Inside WB_I2C Environment Constructor.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB_I2C Environment Constructor.", UVM_DEBUG)
   endfunction
 
   // ! WB_I2C Environment Build Phase
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    `uvm_info(get_full_name(), "Inside WB_I2C Environment Build Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB_I2C Environment Build Phase.", UVM_DEBUG)
 
     // Getting APB_ENV_CON from UVM Configuration Database which was set from APB_BASE_TEST to Configure APB_Environment.
     if(!uvm_config_db#(wb_i2c_env_config)::get(this, "", "wb_i2c_env_config", wb_i2c_env_con)) begin
@@ -41,7 +41,7 @@ class wb_i2c_environment extends uvm_env;
   // ! WB_I2C Environment Connect Phase
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    `uvm_info(get_full_name(), "Inside WB_I2C Environment Connect Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB_I2C Environment Connect Phase.", UVM_DEBUG)
 
     wb_i2c_sb.wb_agt_con = wb_i2c_env_con.wb_agt_con;
 
@@ -51,13 +51,13 @@ class wb_i2c_environment extends uvm_env;
       i2c_agt.i2c_mtr.i2c_mtr2scb_port.connect(wb_i2c_sb.i2c_mtr2scb);
     end
     else begin
-      `uvm_info("WB_ENV_CONFIG", "THIS TESTBENCH DOES NOT HAVE A SCOREBOARD.", UVM_LOW)
+      `uvm_info("WB_ENV_CONFIG", "THIS TESTBENCH DOES NOT HAVE A SCOREBOARD.", UVM_DEBUG)
     end
   endfunction
 
   // ! WB_I2C Environment Run Phase
   task run_phase(uvm_phase phase);
-    `uvm_info(get_full_name(), "Inside WB_I2C Environment Run Phase.", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB_I2C Environment Run Phase.", UVM_DEBUG)
   endtask
 
 endclass

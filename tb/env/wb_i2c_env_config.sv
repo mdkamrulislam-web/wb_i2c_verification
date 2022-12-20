@@ -8,6 +8,6 @@ class wb_i2c_env_config extends uvm_object;
 
   function new(string name = "wb_i2c_env_config");
     super.new(name);
-    `uvm_info(get_full_name(), "Inside WB_I2C Environment Config Constructor", UVM_MEDIUM)
+    `uvm_info(get_full_name(), "Inside WB_I2C Environment Config Constructor", UVM_DEBUG)
   endfunction
 endclass

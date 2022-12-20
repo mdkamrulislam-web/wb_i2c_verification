@@ -11,6 +11,6 @@ class i2c_agent_config extends uvm_object;
   // ! I2C Agent Configuration Constructor
   function new(string name = "i2c_agent_config");
     super.new(name);
-    `uvm_info(get_full_name(), "Inside I2C Agent Config Constructor", UVM_HIGH)
+    `uvm_info(get_full_name(), "Inside I2C Agent Config Constructor", UVM_DEBUG)
   endfunction
 endclass
