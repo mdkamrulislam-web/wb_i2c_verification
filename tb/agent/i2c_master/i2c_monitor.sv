@@ -24,6 +24,7 @@ class i2c_monitor extends uvm_monitor;
   bit                transfer_start        ;
   bit                transfer_stop         ;
   bit                transfer_direction    ;
+
   bit                slv_addr_ack_flag     ;
   bit                mem_addr_ack_flag     ;
   bit                transmit_data_ack_flag;
@@ -176,10 +177,11 @@ class i2c_monitor extends uvm_monitor;
               `uvm_info("FLAGS::SLV_ADDR_CON", $sformatf("scl = %0b :: sda = %0b :: start = %0b :: stop = %0b :: slv_ak_flg = %0b :: mem_ak_flg = %0b :: t_data_ak_flg :: %0b", i2c_intf.TB_SCL, i2c_intf.TB_SDA, transfer_start, transfer_stop, slv_addr_ack_flag, mem_addr_ack_flag, transmit_data_ack_flag), UVM_HIGH);
               i2c_mtr_sq_item = i2c_sequence_item::type_id::create("i2c_mtr_sq_item");
 
+              i2c_mtr_sq_item.slv_addr_transfer = 1;
               i2c_mtr_sq_item.slave_addr_wr_rd_bit = slv_addr_wr_rd;
               i2c_mtr2scb_port.write(i2c_mtr_sq_item);
 
-              `uvm_info("I2C_MTR2_SCB", $sformatf("Slave Address :: %0h", i2c_mtr_sq_item.slave_addr_wr_rd_bit), UVM_NONE)
+              //`uvm_info("I2C_MTR2_SCB", $sformatf("Slave Address :: %0h %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%", i2c_mtr_sq_item.slave_addr_wr_rd_bit), UVM_NONE)
 
               break;
             end
@@ -201,6 +203,14 @@ class i2c_monitor extends uvm_monitor;
               else if(this.i2c_wr_rd === 2'b10)  mem_addr_ack_flag = 0;
               slv_addr_ack_flag = 0;
               `uvm_info("FLAGS::MEM_ADDR_CON", $sformatf("scl = %0b :: sda = %0b :: start = %0b :: stop = %0b :: slv_ak_flg = %0b :: mem_ak_flg = %0b :: t_data_ak_flg :: %0b", i2c_intf.TB_SCL, i2c_intf.TB_SDA, transfer_start, transfer_stop, slv_addr_ack_flag, mem_addr_ack_flag, transmit_data_ack_flag), UVM_HIGH)
+              i2c_mtr_sq_item = i2c_sequence_item::type_id::create("i2c_mtr_sq_item");
+
+              i2c_mtr_sq_item.mem_addr_transfer = 1;
+              i2c_mtr_sq_item.memry_addr = mem_addr;
+              i2c_mtr2scb_port.write(i2c_mtr_sq_item);
+
+              //`uvm_info("I2C_MTR2_SCB", $sformatf("Memory Address :: %0h %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%", i2c_mtr_sq_item.memry_addr), UVM_NONE)              
+
               break;
             end
             else begin
@@ -223,6 +233,14 @@ class i2c_monitor extends uvm_monitor;
               transmit_data_ack_flag = 1'b1;
               if(this.transfer_byte_no < 1) mem_addr_ack_flag = 1'b0;
               `uvm_info("FLAGS::TRANS_DATA_CON", $sformatf("scl = %0b :: sda = %0b :: start = %0b :: stop = %0b :: slv_ak_flg = %0b :: mem_ak_flg = %0b :: t_data_ak_flg :: %0b", i2c_intf.TB_SCL, i2c_intf.TB_SDA, transfer_start, transfer_stop, slv_addr_ack_flag, mem_addr_ack_flag, transmit_data_ack_flag), UVM_HIGH)
+              i2c_mtr_sq_item = i2c_sequence_item::type_id::create("i2c_mtr_sq_item");
+
+              i2c_mtr_sq_item.data_trns  = 1;
+              i2c_mtr_sq_item.memry_addr = mem_addr;
+              i2c_mtr_sq_item.transmit_data = transmit_data;
+              i2c_mtr2scb_port.write(i2c_mtr_sq_item);
+
+              //`uvm_info("I2C_MTR2_SCB", $sformatf("Transmit Data :: %0h %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%", i2c_mtr_sq_item.transmit_data), UVM_NONE)
             end
             else begin
               transmit_data_ack_flag = 1'b0;
@@ -237,7 +255,7 @@ class i2c_monitor extends uvm_monitor;
           else if((slv_addr_ack_flag) && (this.i2c_wr_rd === 2'b10)) begin
             `uvm_info("I2C_RECV_DATA_BYTE_NO", $sformatf("\t=============>>\t\tDATA BYTE NO %0d :: [0x%h] IS RECEIVED FROM THE SUBORDINATE MEMORY @ ADDRESS :: [0x%h]", count, receive_data, mem_addr), UVM_LOW)
             count++;
-            this.transfer_byte_no --;
+            this.transfer_byte_no--;
             receive_data_ack_bit = i2c_intf.TB_SDA;
             if(receive_data_ack_bit === 1'b0) begin
               `uvm_info("RECV_DATA_ACK_DETECT", "\t=============>>\t\tDATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK", UVM_NONE);
