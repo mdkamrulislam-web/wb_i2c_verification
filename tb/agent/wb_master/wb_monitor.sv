@@ -13,6 +13,8 @@ class wb_monitor extends uvm_monitor;
   // ! Declearing uvm_analysis_port, which is used to send packets from monitor to scoreboard.
   uvm_analysis_port #(wb_sequence_item) wb_mtr2scb_port;
 
+  bit read_done;
+
   // ! Wishbone Monitor Constructor
   function new(string name = "wb_monitor", uvm_component parent = null);
     super.new(name, parent);
@@ -43,12 +45,13 @@ class wb_monitor extends uvm_monitor;
   task run_phase(uvm_phase phase);
     `uvm_info(get_full_name(), "Inside Wishbone Monitor Run Phase.", UVM_HIGH)
 
-    fork
+    //fork
 
-      // WB Write Condition
+      
       begin
         forever begin
           @(posedge wb_intf.WB_CLK_I);
+          // WB Write Condition
           if((!wb_intf.WB_RST_I && !wb_intf.ARST_I) && (wb_intf.WB_CYC_I && wb_intf.WB_STB_I && wb_intf.WB_WE_I)) begin
             wb_mtr_seq_item = wb_sequence_item::type_id::create("wb_mtr_seq_item");
             wb_mtr_seq_item.wb_adr_i = wb_intf.WB_ADR_I;
@@ -56,25 +59,26 @@ class wb_monitor extends uvm_monitor;
             `uvm_info("MONITOR_WRITE_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_mtr_seq_item.wb_adr_i, wb_mtr_seq_item.wb_dat_i), UVM_HIGH);
             wb_mtr2scb_port.write(wb_mtr_seq_item);
           end
-        end
-      end
-      
-      // WB Read Condition
-      begin
-        forever begin
-          @(posedge wb_intf.WB_CLK_I);
-          if((!wb_intf.WB_RST_I && !wb_intf.ARST_I) && (wb_intf.WB_CYC_I && wb_intf.WB_STB_I && !wb_intf.WB_WE_I) && (wb_intf.WB_ADR_I == `RXR)) begin
+          // WB Read Condition
+          else if((!wb_intf.WB_RST_I && !wb_intf.ARST_I) && (wb_intf.WB_CYC_I && wb_intf.WB_STB_I && !wb_intf.WB_WE_I) && (wb_intf.WB_ADR_I == `RXR)) begin
+            read_done = 0;
             @(negedge wb_intf.WB_CLK_I);
             if(wb_intf.WB_ACK_O) begin
+              read_done = 1;
               wb_mtr_seq_item = wb_sequence_item::type_id::create("wb_mtr_seq_item");
-              wb_mtr_seq_item.wb_adr_i = wb_intf.WB_ADR_I;
-              wb_mtr_seq_item.wb_dat_o = wb_intf.WB_DAT_O;
+              wb_mtr_seq_item.wb_adr_i  = wb_intf.WB_ADR_I;
+              wb_mtr_seq_item.wb_dat_o  = wb_intf.WB_DAT_O;
+              wb_mtr_seq_item.read_done = read_done;
+              
               `uvm_info("MONITOR_READ_CHECKER", $sformatf("Addr :: %0h, Data :: %0h", wb_mtr_seq_item.wb_adr_i, wb_mtr_seq_item.wb_dat_o), UVM_HIGH);
               wb_mtr2scb_port.write(wb_mtr_seq_item);
             end
           end
         end
       end
+      
+      
+
 /*
       begin
         forever begin
@@ -86,6 +90,6 @@ class wb_monitor extends uvm_monitor;
         end
       end
 */
-    join_none
+    //join_none
   endtask
 endclass

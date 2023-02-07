@@ -1,5 +1,6 @@
 `uvm_analysis_imp_decl(_wb_mtr2scb)
-`uvm_analysis_imp_decl(_i2c_mtr2scb)
+`uvm_analysis_imp_decl(_i2c_mtr2scb_td)
+`uvm_analysis_imp_decl(_i2c_mtr2scb_rc)
 
 class wb_i2c_scoreboard extends uvm_scoreboard;
   `uvm_component_utils(wb_i2c_scoreboard)
@@ -22,6 +23,9 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
 
   logic [7:0] exp_transmit_data_memory[`DATADEPTH];  // Change Inside Define File to Modify Depth
   logic [7:0] act_receive_data_memory[`DATADEPTH] ;  // Change Inside Define File to Modify Depth
+  logic [7:0] exp_receive_data_memory[`DATADEPTH] ;  // Change Inside Define File to Modify Depth
+
+  logic [7:0] exp_i2c_mem_addr                    ;
 
   // ! Taking a queue as exp_que
   i2c_sequence_item exp_i2c_trans_que[$]          ;
@@ -30,14 +34,10 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
 
   wb_agent_config   wb_agt_con                    ;
  
-  int trnsfr_chkr                                 ;
-  
-  int recv_chkr                                   ;
-
-
   // ! Declaring imports for getting driver packets and monitor packets.
   uvm_analysis_imp_wb_mtr2scb#(wb_sequence_item, wb_i2c_scoreboard) wb_mtr2scb;
-  uvm_analysis_imp_i2c_mtr2scb#(i2c_sequence_item, wb_i2c_scoreboard) i2c_mtr2scb;
+  uvm_analysis_imp_i2c_mtr2scb_td#(i2c_sequence_item, wb_i2c_scoreboard) i2c_mtr2scb_td;
+  uvm_analysis_imp_i2c_mtr2scb_rc#(i2c_sequence_item, wb_i2c_scoreboard) i2c_mtr2scb_rc;
 
   function new(string name = "wb_i2c_scoreboard", uvm_component parent = null);
     super.new(name, parent);
@@ -50,7 +50,8 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
 
     // Creating objects for the above declared imports
     wb_mtr2scb = new("wb_mtr2scb", this);
-    i2c_mtr2scb = new("i2c_mtr2scb", this);
+    i2c_mtr2scb_td = new("i2c_mtr2scb_td", this);
+    i2c_mtr2scb_rc = new("i2c_mtr2scb_rc", this);
     
   endfunction
 
@@ -91,7 +92,7 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
         //`uvm_warning("WR_CHECKER", $sformatf("Transmission Slave Address :: %0h, Receive Slave Address :: %0h", trns_slv_addr_wr_rd_bit, recv_slv_addr_wr_rd_bit))
         exp_i2c_trans_item = i2c_sequence_item::type_id::create("exp_i2c_trans_item");
         exp_i2c_trans_item.slave_addr_wr_rd_bit = trns_slv_addr_wr_rd_bit;
-        `uvm_info("EXP_I2C_TRANS_ITEM", $sformatf("trans_slave_addr_wr_rd_bit :: %0h", exp_i2c_trans_item.slave_addr_wr_rd_bit), UVM_NONE)
+        `uvm_info("EXP_I2C_TRANS_ITEM", $sformatf("trans_slave_addr_wr_rd_bit :: %0h", exp_i2c_trans_item.slave_addr_wr_rd_bit), UVM_HIGH)
         exp_i2c_trans_que.push_back(exp_i2c_trans_item);
 
         //$display("PUSH DURING WRITE################################");
@@ -104,7 +105,7 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
       else if((rd_step === 1) || (rd_step === 5)) begin
         exp_i2c_trans_item = i2c_sequence_item::type_id::create("exp_i2c_trans_item");
         exp_i2c_trans_item.slave_addr_wr_rd_bit = recv_slv_addr_wr_rd_bit;
-        `uvm_info("EXP_I2C_TRANS_ITEM", $sformatf("recv_slave_addr_wr_rd_bit :: %0h", exp_i2c_trans_item.slave_addr_wr_rd_bit), UVM_NONE)
+        `uvm_info("EXP_I2C_TRANS_ITEM", $sformatf("recv_slave_addr_wr_rd_bit :: %0h", exp_i2c_trans_item.slave_addr_wr_rd_bit), UVM_HIGH)
         exp_i2c_trans_que.push_back(exp_i2c_trans_item);
         
         //$display("PUSH DURING READ################################");
@@ -135,7 +136,6 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
         `uvm_info("EXP_I2C_TRANS_ITEM", $sformatf("ini_trns_mem_addr :: %0h", exp_i2c_trans_item.memry_addr), UVM_NONE)
         exp_i2c_trans_que.push_back(exp_i2c_trans_item);
 
-
         wr_step++;
         `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
       end
@@ -143,9 +143,8 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
       else if(rd_step === 3) begin
         exp_i2c_trans_item = i2c_sequence_item::type_id::create("exp_i2c_trans_item");
         exp_i2c_trans_item.memry_addr = ini_recv_mem_addr;
-        `uvm_info("EXP_I2C_TRANS_ITEM", $sformatf("ini_recv_mem_addr :: %0h", exp_i2c_trans_item.memry_addr), UVM_NONE)
+        `uvm_info("EXP_I2C_TRANS_ITEM", $sformatf("ini_recv_mem_addr :: %0h", exp_i2c_trans_item.memry_addr), UVM_HIGH)
         exp_i2c_trans_que.push_back(exp_i2c_trans_item);
-
 
         rd_step++;
         `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
@@ -164,10 +163,9 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
       exp_i2c_trans_item = i2c_sequence_item::type_id::create("exp_i2c_trans_item");
       exp_i2c_trans_item.memry_addr = ini_trns_mem_addr;
       exp_i2c_trans_item.transmit_data = exp_transmit_data_memory[ini_trns_mem_addr];
-      `uvm_info("EXP_I2C_TRANS_DAT_ADR", $sformatf("Data :: %0h, Address :: %0h", exp_transmit_data_memory[ini_trns_mem_addr], ini_trns_mem_addr), UVM_NONE)
+      `uvm_info("EXP_I2C_TRANS_DAT_ADR", $sformatf("Data :: %0h, Address :: %0h", exp_transmit_data_memory[ini_trns_mem_addr], ini_trns_mem_addr), UVM_HIGH)
       exp_i2c_trans_que.push_back(exp_i2c_trans_item);
       ini_trns_mem_addr++;
-
 
       wr_step++;
       trns_byte_no--;
@@ -181,10 +179,19 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
       `uvm_info("SCB_WR_RD_FLAG_VALS", $sformatf("WRITE_FLAG :: %0d, READ_FLAG :: %0d", wr_step, rd_step), UVM_HIGH)
     end
     if((wb_exp_item.wb_adr_i === `RXR) && (rd_step >= 7) && !(recv_byte_no < 1)) begin
+      
       act_receive_data_memory[ini_recv_mem_addr] = wb_exp_item.wb_dat_o;
-      `uvm_info("EXP_I2C_RECV_DAT_ADR", $sformatf("Data :: %0h, Address :: %0h", act_receive_data_memory[ini_recv_mem_addr], ini_recv_mem_addr), UVM_NONE)
-      ini_recv_mem_addr++;
 
+      `uvm_info("ACT_I2C_RECV_DAT_ADR", $sformatf("Act Data :: %0h, Address :: %0h, Exp Data :: %0h", act_receive_data_memory[ini_recv_mem_addr], ini_recv_mem_addr, exp_receive_data_memory[ini_recv_mem_addr]), UVM_HIGH)
+
+      if(act_receive_data_memory[ini_recv_mem_addr] === exp_receive_data_memory[ini_recv_mem_addr]) begin
+        `uvm_info("RECV_TRANS_PASSED",  $sformatf("\t#############>>\tExp Recv Data :: %0h \t Act Recv Data :: %0h \t Mem Addr :: %0h", exp_receive_data_memory[ini_recv_mem_addr], act_receive_data_memory[ini_recv_mem_addr], ini_recv_mem_addr), UVM_NONE);
+      end
+      else begin
+        `uvm_info("RECV_TRANS_FAILED",  $sformatf("\t#############>>\tExp Recv Data :: %0h \t Act Recv Data :: %0h \t Mem Addr :: %0h", exp_receive_data_memory[ini_recv_mem_addr], act_receive_data_memory[ini_recv_mem_addr], ini_recv_mem_addr), UVM_NONE);
+      end
+
+      ini_recv_mem_addr++;
 
       rd_step++;
       recv_byte_no--;
@@ -195,11 +202,10 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
     end
   endfunction
 
-  function void write_i2c_mtr2scb(i2c_sequence_item i2c_sq_itm);
+  function void write_i2c_mtr2scb_td(i2c_sequence_item i2c_sq_itm);
     i2c_sequence_item exp_trns_itm;
     //$display("RECEIVED FROM I2C################################");
     //i2c_sq_itm.print();
-    
 
     if(exp_i2c_trans_que.size()) begin
       exp_trns_itm = exp_i2c_trans_que.pop_front();
@@ -209,34 +215,39 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
       // Slave Address Check to Transfer Data
       if(i2c_sq_itm.slv_addr_transfer === 1) begin
         if(i2c_sq_itm.slave_addr_wr_rd_bit === exp_trns_itm.slave_addr_wr_rd_bit) begin
-          uvm_report_info("PASSED", $sformatf("Expected {Slv Addr, Wr/Rd Bit} :: %0h \t Actual {Slv Addr, Wr/Rd Bit} :: %0h", exp_trns_itm.slave_addr_wr_rd_bit, i2c_sq_itm.slave_addr_wr_rd_bit), UVM_NONE);
-          trnsfr_chkr++;
+          `uvm_info("SLVADR_TRANS_PASSED", $sformatf("\t#############>>\tExpected {Slv Addr, Wr/Rd Bit} :: %0h \t Actual {Slv Addr, Wr/Rd Bit} :: %0h", exp_trns_itm.slave_addr_wr_rd_bit, i2c_sq_itm.slave_addr_wr_rd_bit), UVM_NONE);
         end
         else begin
-          uvm_report_info("FAILED", $sformatf("Expected {Slv Addr, Wr/Rd Bit} :: %0h \t Actual {Slv Addr, Wr/Rd Bit} :: %0h", exp_trns_itm.slave_addr_wr_rd_bit, i2c_sq_itm.slave_addr_wr_rd_bit), UVM_NONE);
+          `uvm_info("SLVADR_TRANS_FAILED", $sformatf("\t#############>>\tExpected {Slv Addr, Wr/Rd Bit} :: %0h \t Actual {Slv Addr, Wr/Rd Bit} :: %0h", exp_trns_itm.slave_addr_wr_rd_bit, i2c_sq_itm.slave_addr_wr_rd_bit), UVM_NONE);
         end
       end
       
       // Initial Memory Address Check to Transfer Data
       if(i2c_sq_itm.mem_addr_transfer === 1) begin
         if(i2c_sq_itm.memry_addr === exp_trns_itm.memry_addr) begin
-          uvm_report_info("PASSED", $sformatf("Exp Init Mem Addr :: %0h \t Act Init Mem Addr :: %0h", exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
+          `uvm_info("MEMORY_TRANS_PASSED", $sformatf("\t#############>>\tExp Init Mem Addr :: %0h \t Act Init Mem Addr :: %0h", exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
         end
         else begin
-          uvm_report_info("FAILED", $sformatf("Exp Init Mem Addr :: %0h \t Act Init Mem Addr :: %0h", exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
+          `uvm_info("MEMORY_TRANS_FAILED", $sformatf("\t#############>>\tExp Init Mem Addr :: %0h \t Act Init Mem Addr :: %0h", exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
         end
       end
 
       if(i2c_sq_itm.data_trns === 1) begin
         if(exp_trns_itm.memry_addr === i2c_sq_itm.memry_addr) begin
           if(i2c_sq_itm.transmit_data === exp_trns_itm.transmit_data) begin
-            uvm_report_info("PASSED", $sformatf("Exp Transmit Data :: %0h \t Act Transmit Data :: %0h \t Exp Mem Addr :: %0h \t Act Mem Addr :: %0h", exp_trns_itm.transmit_data, i2c_sq_itm.transmit_data, exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
+            `uvm_info("DATA_TRANS_PASSED", $sformatf("\t#############>>\tExp Transmit Data :: %0h \t Act Transmit Data :: %0h \t Exp Mem Addr :: %0h \t Act Mem Addr :: %0h", exp_trns_itm.transmit_data, i2c_sq_itm.transmit_data, exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
           end
           else begin
-            uvm_report_info("FAILED", $sformatf("Exp Transmit Data :: %0h \t Act Transmit Data :: %0h \t Exp Mem Addr :: %0h \t Act Mem Addr :: %0h", exp_trns_itm.transmit_data, i2c_sq_itm.transmit_data, exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
+            `uvm_info("DATA_TRANS_FAILED", $sformatf("\t#############>>\tExp Transmit Data :: %0h \t Act Transmit Data :: %0h \t Exp Mem Addr :: %0h \t Act Mem Addr :: %0h", exp_trns_itm.transmit_data, i2c_sq_itm.transmit_data, exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
           end
         end
       end
     end
+  endfunction
+
+  function void write_i2c_mtr2scb_rc(i2c_sequence_item i2c_sq_itm);
+    exp_receive_data_memory[i2c_sq_itm.memry_addr] = i2c_sq_itm.receive_data;
+
+    `uvm_info("FUNCTION CHECKER", $sformatf("exp_mem_addr :: %0h, exp_data :: %0h", exp_i2c_mem_addr, exp_receive_data_memory[i2c_sq_itm.memry_addr]), UVM_HIGH)
   endfunction
 endclass
