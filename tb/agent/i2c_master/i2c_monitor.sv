@@ -294,7 +294,6 @@ class i2c_monitor extends uvm_monitor;
   task run_phase(uvm_phase phase);
     `uvm_info(get_full_name(), "Inside I2C Monitor Run Phase.", UVM_LOW)
     repeat(2) @(negedge i2c_intf.CLK_I);
-    
     fork
       forever begin
         start_condition();
