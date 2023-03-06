@@ -9,5 +9,5 @@ package wb_i2c_test_pkg;
   `include "wb_i2c_base_test.sv"
   `include "wb_rst_test.sv"
   `include "wb_wr_rd_test.sv"
-  `include "i2c_transmit_test.sv"
+  `include "i2c_transmit_receive_test.sv"
 endpackage

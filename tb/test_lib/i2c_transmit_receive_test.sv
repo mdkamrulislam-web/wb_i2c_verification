@@ -1,11 +1,11 @@
-class i2c_transmit_test extends wb_i2c_base_test;
+class i2c_transmit_receive_test extends wb_i2c_base_test;
   // Factory registration of WB Write Read Test
-  `uvm_component_utils(i2c_transmit_test)
+  `uvm_component_utils(i2c_transmit_receive_test)
 
   logic [7:0] i2c_read_dat;
 
   // I2C Write Read Test Constructor
-  function new(string name = "i2c_transmit_test", uvm_component parent = null);
+  function new(string name = "i2c_transmit_receive_test", uvm_component parent = null);
     super.new(name, parent);
     `uvm_info(get_full_name(), "Inside I2C Transmit Test Constructor.", UVM_HIGH)
   endfunction
@@ -36,12 +36,15 @@ class i2c_transmit_test extends wb_i2c_base_test;
 
       i2c_core_setup(8'h64, 8'h00, 8'hC0);                          // ! Core & Prescale Registers Setup
 
-
-      i2c_write(`SLVADDR, 8'h00, 64'h55_77_88, `DATAWIDTH_24, 1);   // ! I2C Data Transfer
-      i2c_write(`SLVADDR, 8'h01, 64'h33_44   , `DATAWIDTH_16, 0);   // ! I2C Data Transfer
-      i2c_read(`SLVADDR, 8'h01, `DATAWIDTH_16, 1);
-      i2c_read(`SLVADDR, 8'h00, `DATAWIDTH_8 , 0);
-
+      //i2c_write(`SLVADDR, 8'h00, 64'h55_77_88_99, `DATAWIDTH_40, 0);   // ! I2C Data Transfer
+      //i2c_write(`SLVADDR, 8'h01, 64'h33_44   , `DATAWIDTH_16, 0);   // ! I2C Data Transfer
+      //
+      for(int i = 0; i < 4; i++) begin
+        i2c_write(`SLVADDR, i, $urandom_range(0, ((2**32)-1)), (`DATAWIDTH_32 - (i*8)), 0);
+        //i2c_read( `SLVADDR, i,                                 (`DATAWIDTH_32 - (i*8)), 0);
+        i2c_read( `SLVADDR, 0,                                  `DATAWIDTH_32,          0);
+      end
+      
       #100000ns;
       phase.drop_objection(this);
   endtask

@@ -7,6 +7,8 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
 
   `include "../defines/defines.sv"
 
+  int pass_count, fail_count;
+
   logic [7:0] trns_slv_addr_wr_rd_bit             ;
   logic [7:0] recv_slv_addr_wr_rd_bit             ;
 
@@ -185,10 +187,10 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
       `uvm_info("ACT_I2C_RECV_DAT_ADR", $sformatf("Act Data :: %0h, Address :: %0h, Exp Data :: %0h", act_receive_data_memory[ini_recv_mem_addr], ini_recv_mem_addr, exp_receive_data_memory[ini_recv_mem_addr]), UVM_HIGH)
 
       if(act_receive_data_memory[ini_recv_mem_addr] === exp_receive_data_memory[ini_recv_mem_addr]) begin
-        `uvm_info("RECV_TRANS_PASSED",  $sformatf("\t#############>>\tExp Recv Data :: %0h \t Act Recv Data :: %0h \t Mem Addr :: %0h", exp_receive_data_memory[ini_recv_mem_addr], act_receive_data_memory[ini_recv_mem_addr], ini_recv_mem_addr), UVM_NONE);
+        `uvm_info("RECV_TRANSFER_PASSED",  $sformatf("\t#############>>\tExp Recv Data :: %0h \t Act Recv Data :: %0h \t Mem Addr :: %0h", exp_receive_data_memory[ini_recv_mem_addr], act_receive_data_memory[ini_recv_mem_addr], ini_recv_mem_addr), UVM_NONE);
       end
       else begin
-        `uvm_info("RECV_TRANS_FAILED",  $sformatf("\t#############>>\tExp Recv Data :: %0h \t Act Recv Data :: %0h \t Mem Addr :: %0h", exp_receive_data_memory[ini_recv_mem_addr], act_receive_data_memory[ini_recv_mem_addr], ini_recv_mem_addr), UVM_NONE);
+        `uvm_error("RECV_TRANSFER_FAILED",  $sformatf("\t#############>>\tExp Recv Data :: %0h \t Act Recv Data :: %0h \t Mem Addr :: %0h", exp_receive_data_memory[ini_recv_mem_addr], act_receive_data_memory[ini_recv_mem_addr], ini_recv_mem_addr));
       end
 
       ini_recv_mem_addr++;
@@ -215,30 +217,30 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
       // Slave Address Check to Transfer Data
       if(i2c_sq_itm.slv_addr_transfer === 1) begin
         if(i2c_sq_itm.slave_addr_wr_rd_bit === exp_trns_itm.slave_addr_wr_rd_bit) begin
-          `uvm_info("SLVADR_TRANS_PASSED", $sformatf("\t#############>>\tExpected {Slv Addr, Wr/Rd Bit} :: %0h \t Actual {Slv Addr, Wr/Rd Bit} :: %0h", exp_trns_itm.slave_addr_wr_rd_bit, i2c_sq_itm.slave_addr_wr_rd_bit), UVM_NONE);
+          `uvm_info("SLVADR_TRANSFER_PASSED", $sformatf("\t#############>>\tExpected {Slv Addr, Wr/Rd Bit} :: %0h \t Actual {Slv Addr, Wr/Rd Bit} :: %0h", exp_trns_itm.slave_addr_wr_rd_bit, i2c_sq_itm.slave_addr_wr_rd_bit), UVM_NONE);
         end
         else begin
-          `uvm_info("SLVADR_TRANS_FAILED", $sformatf("\t#############>>\tExpected {Slv Addr, Wr/Rd Bit} :: %0h \t Actual {Slv Addr, Wr/Rd Bit} :: %0h", exp_trns_itm.slave_addr_wr_rd_bit, i2c_sq_itm.slave_addr_wr_rd_bit), UVM_NONE);
+          `uvm_error("SLVADR_TRANSFER_FAILED", $sformatf("\t#############>>\tExpected {Slv Addr, Wr/Rd Bit} :: %0h \t Actual {Slv Addr, Wr/Rd Bit} :: %0h", exp_trns_itm.slave_addr_wr_rd_bit, i2c_sq_itm.slave_addr_wr_rd_bit));
         end
       end
       
       // Initial Memory Address Check to Transfer Data
       if(i2c_sq_itm.mem_addr_transfer === 1) begin
         if(i2c_sq_itm.memry_addr === exp_trns_itm.memry_addr) begin
-          `uvm_info("MEMORY_TRANS_PASSED", $sformatf("\t#############>>\tExp Init Mem Addr :: %0h \t Act Init Mem Addr :: %0h", exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
+          `uvm_info("MEMORY_TRANSFER_PASSED", $sformatf("\t#############>>\tExp Init Mem Addr :: %0h \t Act Init Mem Addr :: %0h", exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
         end
         else begin
-          `uvm_info("MEMORY_TRANS_FAILED", $sformatf("\t#############>>\tExp Init Mem Addr :: %0h \t Act Init Mem Addr :: %0h", exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
+          `uvm_error("MEMORY_TRANSFER_FAILED", $sformatf("\t#############>>\tExp Init Mem Addr :: %0h \t Act Init Mem Addr :: %0h", exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr));
         end
       end
 
       if(i2c_sq_itm.data_trns === 1) begin
         if(exp_trns_itm.memry_addr === i2c_sq_itm.memry_addr) begin
           if(i2c_sq_itm.transmit_data === exp_trns_itm.transmit_data) begin
-            `uvm_info("DATA_TRANS_PASSED", $sformatf("\t#############>>\tExp Transmit Data :: %0h \t Act Transmit Data :: %0h \t Exp Mem Addr :: %0h \t Act Mem Addr :: %0h", exp_trns_itm.transmit_data, i2c_sq_itm.transmit_data, exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
+            `uvm_info("DATA_TRANSFER_PASSED", $sformatf("\t#############>>\tExp Transmit Data :: %h \t Act Transmit Data :: %h \t Exp Mem Addr :: %0h \t Act Mem Addr :: %0h", exp_trns_itm.transmit_data, i2c_sq_itm.transmit_data, exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
           end
           else begin
-            `uvm_info("DATA_TRANS_FAILED", $sformatf("\t#############>>\tExp Transmit Data :: %0h \t Act Transmit Data :: %0h \t Exp Mem Addr :: %0h \t Act Mem Addr :: %0h", exp_trns_itm.transmit_data, i2c_sq_itm.transmit_data, exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
+            `uvm_error("DATA_TRANSFER_FAILED", $sformatf("\t#############>>\tExp Transmit Data :: %h \t Act Transmit Data :: %h \t Exp Mem Addr :: %0h \t Act Mem Addr :: %0h", exp_trns_itm.transmit_data, i2c_sq_itm.transmit_data, exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr));
           end
         end
       end
@@ -250,4 +252,21 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
 
     `uvm_info("FUNCTION CHECKER", $sformatf("exp_mem_addr :: %0h, exp_data :: %0h", exp_i2c_mem_addr, exp_receive_data_memory[i2c_sq_itm.memry_addr]), UVM_HIGH)
   endfunction
+
+  function void report_phase(uvm_phase phase);
+    uvm_report_server svr;
+    super.report_phase(phase);
+    svr = uvm_report_server::get_server();
+
+    if(svr.get_severity_count(UVM_FATAL)+svr.get_severity_count(UVM_ERROR)>0) begin
+       `uvm_info(get_type_name(), "-----------------------------------------", UVM_NONE)
+       `uvm_info(get_type_name(), "|---            TEST FAILED          ---|", UVM_NONE)
+       `uvm_info(get_type_name(), "-----------------------------------------", UVM_NONE)
+    end
+    else begin
+       `uvm_info(get_type_name(), "-----------------------------------------", UVM_NONE)
+       `uvm_info(get_type_name(), "|---           TEST PASSED           ---|", UVM_NONE)
+       `uvm_info(get_type_name(), "-----------------------------------------", UVM_NONE)
+    end
+  endfunction 
 endclass
