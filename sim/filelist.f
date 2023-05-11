@@ -22,7 +22,6 @@ C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src/uvm_pkg.sv
 ../rtl/registerInterface.v
 ../rtl/serialInterface.v
 ../rtl/i2cSlave.v
-../rtl/i2cSlaveTop.v
 
 // TB Files
 ../tb/defines/defines.sv

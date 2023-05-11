@@ -1,3 +1,12 @@
+##### Checking repository status
 - git status
-- git commit -m "**********"\
+
+##### Commit
+- git commit -m "<message>"
+
+##### Cancelling a local commit
 - git reset --hard <commit_id>/ HEAD
+
+##### Push to another Branch other than master
+- git checkout <branch_name>
+- git push -u origin <branch_name>
