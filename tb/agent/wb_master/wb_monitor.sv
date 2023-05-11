@@ -2,8 +2,6 @@ class wb_monitor extends uvm_monitor;
   // ! Factory registration of Wishbone Monitor
   `uvm_component_utils(wb_monitor)
 
-  `include "../../defines/defines.sv"
-
   // ! Declaring handle for virtual interface
   virtual wb_interface wb_intf;
 

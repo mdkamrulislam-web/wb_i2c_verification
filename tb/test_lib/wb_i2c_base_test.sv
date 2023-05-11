@@ -1,7 +1,7 @@
 class wb_i2c_base_test extends uvm_test;
   `uvm_component_utils(wb_i2c_base_test)
 
-  `include "../defines/defines.sv"
+  //`include "../defines/defines.sv"
 
   bit         tip_flag     ;
   logic [7:0] wb_read_data ;

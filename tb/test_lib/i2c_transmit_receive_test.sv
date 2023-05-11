@@ -35,14 +35,10 @@ class i2c_transmit_receive_test extends wb_i2c_base_test;
       wb_reset_task();                                              // ! System Reset
 
       i2c_core_setup(8'h64, 8'h00, 8'hC0);                          // ! Core & Prescale Registers Setup
-
-      //i2c_write(`SLVADDR, 8'h00, 64'h55_77_88_99, `DATAWIDTH_40, 0);   // ! I2C Data Transfer
-      //i2c_write(`SLVADDR, 8'h01, 64'h33_44   , `DATAWIDTH_16, 0);   // ! I2C Data Transfer
-      //
+//      i2c_write(`SLVADDR, 0, 5, `DATAWIDTH_8, 0);
       for(int i = 0; i < 4; i++) begin
         i2c_write(`SLVADDR, i, $urandom_range(0, ((2**32)-1)), (`DATAWIDTH_32 - (i*8)), 0);
-        //i2c_read( `SLVADDR, i,                                 (`DATAWIDTH_32 - (i*8)), 0);
-        i2c_read( `SLVADDR, 0,                                  `DATAWIDTH_32,          0);
+        i2c_read( `SLVADDR, 0,                                 `DATAWIDTH_32,           0);
       end
       
       #100000ns;

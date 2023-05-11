@@ -28,3 +28,8 @@ Register Address Definition
 ## SCOREBOARD Definition ##
 #########################*/
 `define DATADEPTH 8
+
+/*#########################
+##    Path Definition    ##
+#########################*/
+`define TOP_WB_I2C_DUT tb_top.WB_I2C_DUT

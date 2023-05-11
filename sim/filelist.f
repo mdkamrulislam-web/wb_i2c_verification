@@ -10,6 +10,7 @@ C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src/uvm_pkg.sv
 +incdir+../tb/env/
 +incdir+../tb/agent/i2c_master/
 +incdir+../tb/agent/wb_master/
++incdir+../tb/defines/
 
 //RTL Files
 // I2C Master
@@ -24,6 +25,7 @@ C:/intelFPGA/20.1/modelsim_ase/verilog_src/uvm-1.2/src/uvm_pkg.sv
 ../rtl/i2cSlaveTop.v
 
 // TB Files
+../tb/defines/defines.sv
 ../tb/tb_top/i2c_interface.sv
 ../tb/tb_top/wb_interface.sv
 ../tb/agent/i2c_master/i2c_agent_pkg.sv

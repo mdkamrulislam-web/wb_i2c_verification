@@ -59,12 +59,7 @@ class wb_wr_rd_test extends wb_i2c_base_test;
       ////////////////////////////////////////
       // Polling TIP bit of Status Register //
       ////////////////////////////////////////
-      wb_read_task(`SR, tip_flag);
-      `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_MEDIUM)
-      while (tip_flag) begin
-        wb_read_task(`SR, tip_flag);
-        `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_MEDIUM)
-      end
+      tip_poll();
 
       //////////////////////////
       // Slave Memory Address //
@@ -75,12 +70,7 @@ class wb_wr_rd_test extends wb_i2c_base_test;
       ////////////////////////////////////////
       // Polling TIP bit of Status Register //
       ////////////////////////////////////////
-      wb_read_task(`SR, tip_flag);
-      `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_MEDIUM)
-      while (tip_flag) begin
-        wb_read_task(`SR, tip_flag);
-        `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_MEDIUM)
-      end
+      tip_poll(); 
 
       ///////////////////////////
       // Writing Data to Slave //
@@ -91,12 +81,7 @@ class wb_wr_rd_test extends wb_i2c_base_test;
       ////////////////////////////////////////
       // Polling TIP bit of Status Register //
       ////////////////////////////////////////
-      wb_read_task(`SR, tip_flag);
-      `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_MEDIUM)
-      while (tip_flag) begin
-        wb_read_task(`SR, tip_flag);
-        `uvm_info("TIP_FLAG_CHECKER", $sformatf("TIP :: %0d", tip_flag), UVM_MEDIUM)
-      end
+      tip_poll();
 
       //////////////
       // Stop Bit //

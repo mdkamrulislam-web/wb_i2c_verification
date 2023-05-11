@@ -227,7 +227,7 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
       // Initial Memory Address Check to Transfer Data
       if(i2c_sq_itm.mem_addr_transfer === 1) begin
         if(i2c_sq_itm.memry_addr === exp_trns_itm.memry_addr) begin
-          `uvm_info("MEMORY_TRANSFER_PASSED", $sformatf("\t#############>>\tExp Init Mem Addr :: %0h \t Act Init Mem Addr :: %0h", exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
+          `uvm_info( "MEMORY_TRANSFER_PASSED", $sformatf("\t#############>>\tExp Init Mem Addr :: %0h \t Act Init Mem Addr :: %0h", exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
         end
         else begin
           `uvm_error("MEMORY_TRANSFER_FAILED", $sformatf("\t#############>>\tExp Init Mem Addr :: %0h \t Act Init Mem Addr :: %0h", exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr));
@@ -237,7 +237,7 @@ class wb_i2c_scoreboard extends uvm_scoreboard;
       if(i2c_sq_itm.data_trns === 1) begin
         if(exp_trns_itm.memry_addr === i2c_sq_itm.memry_addr) begin
           if(i2c_sq_itm.transmit_data === exp_trns_itm.transmit_data) begin
-            `uvm_info("DATA_TRANSFER_PASSED", $sformatf("\t#############>>\tExp Transmit Data :: %h \t Act Transmit Data :: %h \t Exp Mem Addr :: %0h \t Act Mem Addr :: %0h", exp_trns_itm.transmit_data, i2c_sq_itm.transmit_data, exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
+            `uvm_info( "DATA_TRANSFER_PASSED", $sformatf("\t#############>>\tExp Transmit Data :: %h \t Act Transmit Data :: %h \t Exp Mem Addr :: %0h \t Act Mem Addr :: %0h", exp_trns_itm.transmit_data, i2c_sq_itm.transmit_data, exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr), UVM_NONE);
           end
           else begin
             `uvm_error("DATA_TRANSFER_FAILED", $sformatf("\t#############>>\tExp Transmit Data :: %h \t Act Transmit Data :: %h \t Exp Mem Addr :: %0h \t Act Mem Addr :: %0h", exp_trns_itm.transmit_data, i2c_sq_itm.transmit_data, exp_trns_itm.memry_addr, i2c_sq_itm.memry_addr));

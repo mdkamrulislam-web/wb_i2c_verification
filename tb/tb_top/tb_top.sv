@@ -1,5 +1,6 @@
 `include "../../rtl/timescale.v"
 `include "uvm_macros.svh"
+`include "defines.sv"
 module tb_top;
   // ! Importing UVM Package and Test Package
   import uvm_pkg::*;
@@ -57,6 +58,8 @@ module tb_top;
     .sda_pad_o    ( i2c_intf.SDA_PAD_O    )  ,
     .sda_padoen_o ( i2c_intf.SDA_PADOEN_O )
   );
+
+  `include "../tb/asserts/wb_i2c_asserts.sv"
 
   initial begin
     `uvm_info("TB_TOP", "Inside tb_top Initial block", UVM_HIGH)

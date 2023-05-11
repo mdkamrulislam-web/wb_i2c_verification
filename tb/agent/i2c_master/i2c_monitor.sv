@@ -2,8 +2,6 @@ class i2c_monitor extends uvm_monitor;
   // ! Factory registration of I2C Monitor
   `uvm_component_utils(i2c_monitor)
 
-  `include "../../defines/defines.sv"
-
   // ! Declearing uvm_analysis_port, which is used to send packets from monitor to scoreboard.
   uvm_analysis_port #(i2c_sequence_item) i2c_mtr2scb_td_port;
   uvm_analysis_port #(i2c_sequence_item) i2c_mtr2scb_rc_port;
@@ -31,7 +29,6 @@ class i2c_monitor extends uvm_monitor;
   // ! Declaring Handle for I2C Agent Config
   i2c_agent_config   i2c_agt_con           ;
 
-  //
   i2c_sequence_item  i2c_mtr_sq_item       ;
 
   static int         transfer_byte_no      ;
@@ -294,6 +291,7 @@ class i2c_monitor extends uvm_monitor;
   task run_phase(uvm_phase phase);
     `uvm_info(get_full_name(), "Inside I2C Monitor Run Phase.", UVM_LOW)
     repeat(2) @(negedge i2c_intf.CLK_I);
+    
     fork
       forever begin
         start_condition();

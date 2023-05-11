@@ -1,0 +1,3 @@
+- git status
+- git commit -m "**********"\
+- git reset --hard <commit_id>/ HEAD

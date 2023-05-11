@@ -1,4 +1,5 @@
 interface i2c_interface(input bit CLK_I);
+  logic RESET        ;
   tri1  TB_SDA       ;
   logic SDA_PADOEN_O ;
   logic SDA_PAD_O    ;
@@ -26,7 +27,6 @@ interface i2c_interface(input bit CLK_I);
 
   tri scl;
   tri sda;
-
 
   assign sda = i2c_intf.SDA_PADOEN_O ? 1'bz : i2c_intf.SDA_PAD_O;
   assign i2c_intf.SDA_PAD_I = sda;

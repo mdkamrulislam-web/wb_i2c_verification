@@ -4,8 +4,6 @@ class wb_driver extends uvm_driver #(wb_sequence_item);
 
   bit         tip_flag;
 
-  `include "../../defines/defines.sv"
-
   // ! Delcaring handle for virtual interface
   virtual wb_interface wb_intf;
 
