@@ -1,0 +1,39 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
+-INPUT
+"@source /tools/cadence/IUS/tools/methodology/UVM/CDNS-1.1d/additions/sv/files/tcl/uvm_sim.tcl"
++UVM_VERBOSITY=UVM_NONE
++incdir+../rtl/
++incdir+../tb/test_lib/
++incdir+../tb/sequence_lib/
++incdir+../tb/env/
++incdir+../tb/agent/i2c_master/
++incdir+../tb/agent/wb_master/
++incdir+../tb/defines/
+-uvmhome
+/tools/cadence/IUS/tools/methodology/UVM/CDNS-1.1d
+-sv_lib
+/tools/cadence/IUS/tools/methodology/UVM/CDNS-1.1d/additions/sv/lib/libuvmpli.so
++UVM_TESTNAME=i2c_transmit_receive_test
+-gui
+-MESSAGES
+-SV_LIB
+/tools/cadence/IUS/tools/methodology/UVM/CDNS-1.1d/additions/sv/lib/libuvmdpi.so
++EMGRLOG
+irun.log
+-XLSTIME
+1684123933
+-XLKEEP
+-XLMODE
+./INCA_libs/irun.lnx86.15.20.nc
+-RUNMODE
+-CDSLIB
+./INCA_libs/irun.lnx86.15.20.nc/cds.lib
+-HDLVAR
+./INCA_libs/irun.lnx86.15.20.nc/hdl.var
+-XLNAME
+irun
+-XLVERSION
+"TOOL:	irun	15.20-s044"

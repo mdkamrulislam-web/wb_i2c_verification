@@ -1,0 +1,818 @@
+irun: 15.20-s044: (c) Copyright 1995-2018 Cadence Design Systems, Inc.
+TOOL:	irun	15.20-s044: Started on May 15, 2023 at 10:12:13 BDT
+irun
+	-timescale 1ns/1ps
+	-f filelist.f
+		+incdir+../rtl/
+		+incdir+../tb/test_lib/
+		+incdir+../tb/sequence_lib/
+		+incdir+../tb/env/
+		+incdir+../tb/agent/i2c_master/
+		+incdir+../tb/agent/wb_master/
+		+incdir+../tb/defines/
+		../rtl/i2c_master_bit_ctrl.v
+		../rtl/i2c_master_byte_ctrl.v
+		../rtl/i2c_master_top.v
+		../rtl/registerInterface.v
+		../rtl/serialInterface.v
+		../rtl/i2cSlave.v
+		../tb/defines/defines.sv
+		../tb/tb_top/i2c_interface.sv
+		../tb/tb_top/wb_interface.sv
+		../tb/agent/i2c_master/i2c_agent_pkg.sv
+		../tb/agent/wb_master/wb_agent_pkg.sv
+		../tb/sequence_lib/wb_i2c_seq_pkg.sv
+		../tb/env/wb_i2c_env_pkg.sv
+		../tb/test_lib/wb_i2c_test_pkg.sv
+		../tb/tb_top/tb_top.sv
+	-access +rwc
+	-uvm
+	+UVM_TESTNAME=i2c_transmit_receive_test
+	+UVM_VERBOSITY=UVM_NONE
+	-gui
+
+   User defined plus("+") options:
+	+UVM_VERBOSITY=UVM_NONE
+
+Compiling UVM packages (uvm_pkg.sv cdns_uvm_pkg.sv) using uvmhome location /tools/cadence/IUS/tools/methodology/UVM/CDNS-1.1d
+file: ../rtl/i2c_master_bit_ctrl.v
+	module worklib.i2c_master_bit_ctrl:v
+		errors: 0, warnings: 0
+file: ../rtl/i2c_master_byte_ctrl.v
+	module worklib.i2c_master_byte_ctrl:v
+		errors: 0, warnings: 0
+file: ../rtl/i2c_master_top.v
+	module worklib.i2c_master_top:v
+		errors: 0, warnings: 0
+file: ../rtl/registerInterface.v
+	module worklib.registerInterface:v
+		errors: 0, warnings: 0
+file: ../rtl/serialInterface.v
+	module worklib.serialInterface:v
+		errors: 0, warnings: 0
+file: ../rtl/i2cSlave.v
+	module worklib.i2cSlave:v
+		errors: 0, warnings: 0
+file: ../tb/defines/defines.sv
+file: ../tb/tb_top/i2c_interface.sv
+	interface worklib.i2c_interface:sv
+		errors: 0, warnings: 0
+file: ../tb/tb_top/wb_interface.sv
+	interface worklib.wb_interface:sv
+		errors: 0, warnings: 0
+file: ../tb/agent/i2c_master/i2c_agent_pkg.sv
+	package worklib.i2c_agent_pkg:sv
+		errors: 0, warnings: 0
+file: ../tb/agent/wb_master/wb_agent_pkg.sv
+	package worklib.wb_agent_pkg:sv
+		errors: 0, warnings: 0
+file: ../tb/sequence_lib/wb_i2c_seq_pkg.sv
+	package worklib.wb_i2c_seq_pkg:sv
+		errors: 0, warnings: 0
+file: ../tb/env/wb_i2c_env_pkg.sv
+	package worklib.wb_i2c_env_pkg:sv
+		errors: 0, warnings: 0
+file: ../tb/test_lib/wb_i2c_test_pkg.sv
+	package worklib.wb_i2c_test_pkg:sv
+		errors: 0, warnings: 0
+file: ../tb/tb_top/tb_top.sv
+	module worklib.tb_top:sv
+		errors: 0, warnings: 0
+ncvlog: *W,SPDUSD: Include directory ../tb/defines/ given but not used.
+	Total errors/warnings found outside modules and primitives:
+		errors: 0, warnings: 1
+		Caching library 'worklib' ....... Done
+	Elaborating the design hierarchy:
+	Top level design units:
+		uvm_pkg
+		cdns_uvmapi
+		cdns_assert2uvm_pkg
+		cdns_uvm_pkg
+		wb_agent_pkg
+		i2c_agent_pkg
+		wb_i2c_env_pkg
+		wb_i2c_seq_pkg
+		wb_i2c_test_pkg
+		tb_top
+ncelab: *W,DSEMEL: This SystemVerilog design will be simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
+ncelab: *W,DSEMEL: This SystemVerilog design will be simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
+	Building instance overlay tables: ................
+        wb_item.wb_dat_i = $urandom_range(8'hFF, 8'h00);
+                                          |
+ncelab: *W,INTWID (../tb/sequence_lib/wb_wr_seq.sv,20|42): Invalid width (8) on argument, (32) expected.
+        wb_item.wb_dat_i = $urandom_range(8'hFF, 8'h00);
+                                                 |
+ncelab: *W,INTWID (../tb/sequence_lib/wb_wr_seq.sv,20|49): Invalid width (8) on argument, (32) expected.
+.... Done
+	Generating native compiled code:
+		worklib.cdns_assert2uvm_pkg:sv <0x6e4ebcdf>
+			streams:   3, words:  2224
+		worklib.cdns_uvm_pkg:sv <0x13a56dea>
+			streams:  28, words: 40052
+		worklib.cdns_uvm_pkg:sv <0x24165af5>
+			streams: 136, words: 251567
+		worklib.cdns_uvm_pkg:sv <0x68884c1b>
+			streams:  10, words:  7814
+		worklib.cdns_uvm_pkg:sv <0x728c57a0>
+			streams:   9, words:  5336
+		worklib.cdns_uvmapi:svp <0x4b332bce>
+			streams:  27, words: 32277
+		worklib.i2cSlave:v <0x2f5ba73d>
+			streams:  19, words:  5121
+		worklib.i2c_agent_pkg:sv <0x295bc28a>
+			streams:   0, words:     0
+		worklib.i2c_interface:sv <0x5bad0f46>
+			streams:   4, words:   713
+		worklib.i2c_master_bit_ctrl:v <0x1fedf6cb>
+			streams:  33, words: 20698
+		worklib.i2c_master_byte_ctrl:v <0x48e4b434>
+			streams:  31, words: 15303
+		worklib.i2c_master_top:v <0x4a8e6f48>
+			streams:  35, words: 14477
+		worklib.registerInterface:v <0x3396d33e>
+			streams:   7, words:  2428
+		worklib.serialInterface:v <0x41fd4da4>
+			streams:  16, words: 12410
+		worklib.tb_top:sv <0x557fed25>
+			streams: 169, words: 248428
+		worklib.uvm_pkg:sv <0x0043cbef>
+			streams:   7, words:  2598
+		worklib.uvm_pkg:sv <0x027b20a8>
+			streams:  25, words: 26626
+		worklib.uvm_pkg:sv <0x0a495529>
+			streams:   7, words:  6500
+		worklib.uvm_pkg:sv <0x0abdda43>
+			streams:  27, words: 35698
+		worklib.uvm_pkg:sv <0x112d8ddf>
+			streams:   8, words:  6979
+		worklib.uvm_pkg:sv <0x1687f5c0>
+			streams:   9, words:  2577
+		worklib.uvm_pkg:sv <0x1cc67cb7>
+			streams:  25, words: 53467
+		worklib.uvm_pkg:sv <0x242f7f5a>
+			streams: 178, words: 199703
+		worklib.uvm_pkg:sv <0x2bc19377>
+			streams:   7, words:  1877
+		worklib.uvm_pkg:sv <0x2da67ba4>
+			streams:   8, words:  7347
+		worklib.uvm_pkg:sv <0x2e5607b9>
+			streams:  25, words: 44302
+		worklib.uvm_pkg:sv <0x2f312fcf>
+			streams:  71, words: 127859
+		worklib.uvm_pkg:sv <0x330b9abc>
+			streams:  28, words: 30542
+		worklib.uvm_pkg:sv <0x348ef7a8>
+			streams:  25, words: 26664
+		worklib.uvm_pkg:sv <0x38770fb6>
+			streams:  22, words: 58693
+		worklib.uvm_pkg:sv <0x3fa66b4d>
+			streams:  17, words: 16104
+		worklib.uvm_pkg:sv <0x40538389>
+			streams:  26, words: 33289
+		worklib.uvm_pkg:sv <0x42bc757c>
+			streams:  34, words: 36269
+		worklib.uvm_pkg:sv <0x4403013c>
+			streams:  25, words: 35858
+		worklib.uvm_pkg:sv <0x4735c18f>
+			streams:  27, words: 28290
+		worklib.uvm_pkg:sv <0x47389a16>
+			streams: 4718, words: 8983578
+		worklib.uvm_pkg:sv <0x513f3019>
+			streams:  27, words: 38420
+		worklib.uvm_pkg:sv <0x54e52d2a>
+			streams:  25, words: 51787
+		worklib.uvm_pkg:sv <0x5621c614>
+			streams:  24, words: 23434
+		worklib.uvm_pkg:sv <0x56dc44c6>
+			streams:  23, words: 26026
+		worklib.uvm_pkg:sv <0x56f3cf46>
+			streams:  27, words: 40344
+		worklib.uvm_pkg:sv <0x57432e5d>
+			streams: 108, words: 241682
+		worklib.uvm_pkg:sv <0x599178a8>
+			streams:   7, words:  1443
+		worklib.uvm_pkg:sv <0x5a42c806>
+			streams:  24, words: 23818
+		worklib.uvm_pkg:sv <0x5cfbb0fe>
+			streams:   7, words:  1443
+		worklib.uvm_pkg:sv <0x5e5c1084>
+			streams:  93, words: 141020
+		worklib.uvm_pkg:sv <0x5f9118f9>
+			streams:  29, words: 103859
+		worklib.uvm_pkg:sv <0x617f1ab5>
+			streams:   9, words:  4964
+		worklib.uvm_pkg:sv <0x62508919>
+			streams:  27, words: 46301
+		worklib.uvm_pkg:sv <0x635de64f>
+			streams:  16, words: 23184
+		worklib.uvm_pkg:sv <0x69633bcc>
+			streams:  25, words: 29754
+		worklib.uvm_pkg:sv <0x6a8dce51>
+			streams:  25, words: 29413
+		worklib.uvm_pkg:sv <0x6b039022>
+			streams:  24, words: 47548
+		worklib.uvm_pkg:sv <0x6f6c2c8d>
+			streams:  25, words: 59243
+		worklib.uvm_pkg:sv <0x70666d6d>
+			streams:  93, words: 146194
+		worklib.uvm_pkg:sv <0x725764ac>
+			streams:  25, words: 57593
+		worklib.uvm_pkg:sv <0x72c9b216>
+			streams:  26, words: 49571
+		worklib.uvm_pkg:sv <0x741bb678>
+			streams:  25, words: 56606
+		worklib.uvm_pkg:sv <0x78552065>
+			streams:   7, words:  2598
+		worklib.uvm_pkg:sv <0x78718a5c>
+			streams:  25, words: 53535
+		worklib.uvm_pkg:sv <0x7a5e0049>
+			streams:   7, words:  2598
+		worklib.uvm_pkg:sv <0x7abe8c3c>
+			streams: 213, words: 317816
+		worklib.uvm_pkg:sv <0x7ac38c54>
+			streams:  27, words: 37610
+		worklib.uvm_pkg:sv <0x7bbea002>
+			streams:  24, words: 23811
+		worklib.uvm_pkg:sv <0x7c37dedb>
+			streams:  26, words: 36098
+		worklib.uvm_pkg:sv <0x7dc36e51>
+			streams:  25, words: 28567
+		worklib.uvm_pkg:sv <0x7ee3624d>
+			streams:  24, words: 62118
+		worklib.uvm_pkg:sv <0x7fab6348>
+			streams:  93, words: 141541
+		worklib.wb_agent_pkg:sv <0x09cb6a7e>
+			streams:   0, words:     0
+		worklib.wb_i2c_env_pkg:sv <0x2cb3e3ed>
+			streams:  50, words: 119169
+		worklib.wb_i2c_env_pkg:sv <0x7bf0bc4e>
+			streams:   0, words:     0
+		worklib.wb_i2c_seq_pkg:sv <0x63336512>
+			streams:   0, words:     0
+		worklib.wb_i2c_test_pkg:sv <0x0d63eceb>
+			streams:  40, words: 93069
+		worklib.wb_i2c_test_pkg:sv <0x56a84d1a>
+			streams:   0, words:     0
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                       Instances  Unique
+		Modules:                       7       7
+		Interfaces:                    2       2
+		Verilog packages:              9       9
+		Registers:                 15497   10620
+		Scalar wires:                 63       -
+		Expanded wires:                3       1
+		Vectored wires:               20       -
+		Named events:                  8      16
+		Always blocks:                41      41
+		Initial blocks:              331     171
+		Parallel blocks:              27      28
+		Cont. assignments:            17      29
+		Pseudo assignments:           27      27
+		Assertions:                    6       6
+		SV Class declarations:       213     327
+		SV Class specializations:    427     427
+		Simulation timescale:        1ps
+	Writing initial simulation snapshot: worklib.tb_top:sv
+ncelab: *W,DPIEXP: DPI export function in  _sv_export.so not available.
+ncelab: *W,DPIEXP: DPI export function in  _sv_export.so not available.
+SVSEED default: 1
+ncsim: *E,IMPDLL: Unable to load the implicit shared object.
+OSDLERROR: (null)/tb_top/sv/_sv_export.so: cannot open shared object file: No such file or directory or file is not valid ELFCLASS32 library..
+ncsim: *W,DSEM2009: This SystemVerilog design is simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
+
+-------------------------------------
+Relinquished control to SimVision...
+ncsim> 
+ncsim> source /tools/cadence/IUS/tools/inca/files/ncsimrc
+ncsim> source /tools/cadence/IUS/tools/methodology/UVM/CDNS-1.1d/additions/sv/files/tcl/uvm_sim.tcl
+ncsim> input .simvision/191766_MD220208__autosave.tcl
+ncsim> 
+ncsim> # NC-Sim Command File
+ncsim> # TOOL:	ncsim	15.20-s044
+ncsim> #
+ncsim> 
+ncsim> set tcl_prompt1 {puts -nonewline "ncsim> "}
+puts -nonewline "ncsim> "
+ncsim> set tcl_prompt2 {puts -nonewline "> "}
+puts -nonewline "> "
+ncsim> set vlog_format %h
+%h
+ncsim> set vhdl_format %v
+%v
+ncsim> set real_precision 6
+6
+ncsim> set display_unit auto
+auto
+ncsim> set time_unit module
+module
+ncsim> set heap_garbage_size -200
+-200
+ncsim> set heap_garbage_time 0
+0
+ncsim> set assert_report_level note
+note
+ncsim> set assert_stop_level error
+error
+ncsim> set autoscope yes
+yes
+ncsim> set assert_1164_warnings yes
+yes
+ncsim> set pack_assert_off {}
+ncsim> set severity_pack_assert_off {note warning}
+note warning
+ncsim> set assert_output_stop_level failed
+failed
+ncsim> set tcl_debug_level 0
+0
+ncsim> set relax_path_name 1
+1
+ncsim> set vhdl_vcdmap XX01ZX01X
+XX01ZX01X
+ncsim> set intovf_severity_level ERROR
+ERROR
+ncsim> set probe_screen_format 0
+0
+ncsim> set rangecnst_severity_level ERROR
+ERROR
+ncsim> set textio_severity_level ERROR
+ERROR
+ncsim> set vital_timing_checks_on 1
+1
+ncsim> set vlog_code_show_force 0
+0
+ncsim> set assert_count_attempts 1
+1
+ncsim> set tcl_all64 false
+false
+ncsim> set tcl_runerror_exit false
+false
+ncsim> set assert_report_incompletes 0
+0
+ncsim> set show_force 1
+1
+ncsim> set force_reset_by_reinvoke 0
+0
+ncsim> set tcl_relaxed_literal 0
+0
+ncsim> set probe_exclude_patterns {}
+ncsim> set probe_packed_limit 4k
+4k
+ncsim> set probe_unpacked_limit 16k
+16k
+ncsim> set assert_internal_msg no
+no
+ncsim> set svseed 1
+1
+ncsim> set assert_reporting_mode 0
+0
+ncsim> alias . run
+ncsim> alias iprof profile
+ncsim> alias quit exit
+ncsim> 
+ncsim> simvision -input /home/MD220208/kamrul_islam/projects/wb_i2c/sim/.simvision/191766_MD220208__autosave.tcl.svcf
+ncsim> run
+----------------------------------------------------------------
+CDNS-UVM-1.1d (15.20-s044)
+(C) 2007-2013 Mentor Graphics Corporation
+(C) 2007-2013 Cadence Design Systems, Inc.
+(C) 2006-2013 Synopsys, Inc.
+(C) 2011-2013 Cypress Semiconductor Corp.
+----------------------------------------------------------------
+
+  ***********       IMPORTANT RELEASE NOTES         ************
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_NO_DEPRECATED undefined.
+  See http://www.eda.org/svdb/view.php?id=3313 for more details.
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+  See http://www.eda.org/svdb/view.php?id=3770 for more details.
+
+      (Specify +UVM_NO_RELNOTES to turn off this notice)
+
+UVM_INFO @ 0: reporter [RNTST] Running test i2c_transmit_receive_test...
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 8391000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 8460000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 8460000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 99291000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(138) @ 103490000: uvm_test_top.wb_i2c_env.wb_i2c_sb [EXP_I2C_TRANS_ITEM] ini_trns_mem_addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 190191000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x00] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 190191000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x00] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 190191000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 0 	 Act Init Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 281091000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 281091000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: 5f 	 Act Transmit Data :: 5f 	 Exp Mem Addr :: 0 	 Act Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 371991000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 371991000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: 8c 	 Act Transmit Data :: 8c 	 Exp Mem Addr :: 1 	 Act Mem Addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 462891000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 462891000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: 6b 	 Act Transmit Data :: 6b 	 Exp Mem Addr :: 2 	 Act Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 553791000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 553791000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: bf 	 Act Transmit Data :: bf 	 Exp Mem Addr :: 3 	 Act Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 567931000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 568000000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 568000000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 576011000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 576080000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 576080000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 666911000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 757811000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x00] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 757811000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x00] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 757811000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 0 	 Act Init Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 769931000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 769940000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 770000000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 860831000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 79 	 Actual {Slv Addr, Wr/Rd Bit} :: 79
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 951731000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 955900000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 5f 	 Act Recv Data :: 5f 	 Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 1042631000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 1046820000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 8c 	 Act Recv Data :: 8c 	 Mem Addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 1133531000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 1137700000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 6b 	 Act Recv Data :: 6b 	 Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(272) @ 1224431000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_NACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR NACK
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 1238571000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 1238640000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 1238640000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 1238700000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: bf 	 Act Recv Data :: bf 	 Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 1246651000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 1246720000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 1246720000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 1337551000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(138) @ 1341770000: uvm_test_top.wb_i2c_env.wb_i2c_sb [EXP_I2C_TRANS_ITEM] ini_trns_mem_addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 1428451000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x01] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 1428451000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x01] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 1428451000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 1 	 Act Init Mem Addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 1519351000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 1519351000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: 55 	 Act Transmit Data :: 55 	 Exp Mem Addr :: 1 	 Act Mem Addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 1610251000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 1610251000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: f0 	 Act Transmit Data :: f0 	 Exp Mem Addr :: 2 	 Act Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 1701151000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 1701151000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: 24 	 Act Transmit Data :: 24 	 Exp Mem Addr :: 3 	 Act Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 1715291000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 1715360000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 1715360000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 1723371000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 1723440000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 1723440000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 1814271000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 1905171000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x00] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 1905171000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x00] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 1905171000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 0 	 Act Init Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 1917291000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 1917300000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 1917360000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 2008191000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 79 	 Actual {Slv Addr, Wr/Rd Bit} :: 79
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 2099091000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 2103260000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 5f 	 Act Recv Data :: 5f 	 Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 2189991000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 2194180000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 55 	 Act Recv Data :: 55 	 Mem Addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 2280891000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 2285060000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: f0 	 Act Recv Data :: f0 	 Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(272) @ 2371791000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_NACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR NACK
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 2385931000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 2386000000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 2386000000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 2386060000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 24 	 Act Recv Data :: 24 	 Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 2394011000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 2394080000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 2394080000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 2484911000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(138) @ 2489130000: uvm_test_top.wb_i2c_env.wb_i2c_sb [EXP_I2C_TRANS_ITEM] ini_trns_mem_addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 2575811000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x02] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 2575811000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x02] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 2575811000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 2 	 Act Init Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 2666711000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 2666711000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: b2 	 Act Transmit Data :: b2 	 Exp Mem Addr :: 2 	 Act Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 2757611000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 2757611000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: 4b 	 Act Transmit Data :: 4b 	 Exp Mem Addr :: 3 	 Act Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 2771751000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 2771820000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 2771820000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 2779831000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 2779900000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 2779900000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 2870731000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 2961631000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x00] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 2961631000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x00] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 2961631000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 0 	 Act Init Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 2973751000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 2973760000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 2973820000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 3064651000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 79 	 Actual {Slv Addr, Wr/Rd Bit} :: 79
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 3155551000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 3159740000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 5f 	 Act Recv Data :: 5f 	 Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 3246451000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 3250620000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 55 	 Act Recv Data :: 55 	 Mem Addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 3337351000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 3341540000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: b2 	 Act Recv Data :: b2 	 Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(272) @ 3428251000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_NACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR NACK
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 3442391000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 3442460000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 3442460000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 3442540000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 4b 	 Act Recv Data :: 4b 	 Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 3450471000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 3450540000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 3450540000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 3541371000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(138) @ 3545570000: uvm_test_top.wb_i2c_env.wb_i2c_sb [EXP_I2C_TRANS_ITEM] ini_trns_mem_addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 3632271000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x03] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 3632271000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x03] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 3632271000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 3 	 Act Init Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 3723171000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 3723171000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: 96 	 Act Transmit Data :: 96 	 Exp Mem Addr :: 3 	 Act Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 3737311000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 3737380000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 3737380000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 3745391000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 3745460000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 3745460000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 3836291000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 3927191000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x00] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 3927191000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x00] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 3927191000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 0 	 Act Init Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 3939311000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 3939320000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 3939380000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 4030211000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 79 	 Actual {Slv Addr, Wr/Rd Bit} :: 79
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 4121111000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 4125300000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 5f 	 Act Recv Data :: 5f 	 Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 4212011000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 4216180000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 55 	 Act Recv Data :: 55 	 Mem Addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 4302911000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 4307100000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: b2 	 Act Recv Data :: b2 	 Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(272) @ 4393811000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_NACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR NACK
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 4407951000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 4408020000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 4408020000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 4408100000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 96 	 Act Recv Data :: 96 	 Mem Addr :: 3
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(267) @ 4508100000: uvm_test_top.wb_i2c_env.wb_i2c_sb [wb_i2c_scoreboard] -----------------------------------------
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(268) @ 4508100000: uvm_test_top.wb_i2c_env.wb_i2c_sb [wb_i2c_scoreboard] |---           TEST PASSED           ---|
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(269) @ 4508100000: uvm_test_top.wb_i2c_env.wb_i2c_sb [wb_i2c_scoreboard] -----------------------------------------
+
+--- UVM Report catcher Summary ---
+
+
+Number of demoted UVM_FATAL reports  :    0
+Number of demoted UVM_ERROR reports  :    0
+Number of demoted UVM_WARNING reports:    0
+Number of caught UVM_FATAL reports   :    0
+Number of caught UVM_ERROR reports   :    0
+Number of caught UVM_WARNING reports :    0
+
+--- UVM Report Summary ---
+
+** Report counts by severity
+UVM_INFO :  156
+UVM_WARNING :    0
+UVM_ERROR :    0
+UVM_FATAL :    0
+** Report counts by id
+[DATA_TRANSFER_PASSED]    10
+[EXP_I2C_TRANS_ITEM]     4
+[MEMORY_TRANSFER_PASSED]     8
+[MEM_ACK_DETECT]    16
+[RECV_DATA_ACK_DETECT]    12
+[RECV_DATA_NACK_DETECT]     4
+[RECV_TRANSFER_PASSED]    16
+[RNTST]     1
+[SLVADR_TRANSFER_PASSED]    12
+[START_BIT_DETECT]    12
+[START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK]    12
+[START_CONDITION_ASSERTION_PASSED_SEQUENCE]    12
+[STOP_BIT_DETECT]     8
+[STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK]     8
+[STOP_CONDITION_ASSERTION_PASSED_SEQUENCE]     8
+[TRANS_DATA_ACK_DETECT]    10
+[wb_i2c_scoreboard]     3
+Simulation complete via $finish(1) at time 4508100 NS + 45
+/tools/cadence/IUS/tools/methodology/UVM/CDNS-1.1d/sv/src/base/uvm_root.svh:457     $finish;
+ncsim> database -open waves -into waves.shm -default
+Created default SHM database waves
+ncsim> probe -create -shm tb_top.ASRST_START_CON_SEQUENCE tb_top.WB_I2C_DUT.wb_clk_i tb_top.WB_I2C_DUT.byte_controller.bit_controller.busy tb_top.WB_I2C_DUT.byte_controller.scl_i tb_top.WB_I2C_DUT.byte_controller.sda_i tb_top.WB_I2C_DUT.byte_controller.start tb_top.ASRST_STOP_CON_SEQUENCE tb_top.WB_I2C_DUT.byte_controller.stop
+Created probe 1
+ncsim> reset
+SVSEED default: 1
+ncsim: *E,IMPDLL: Unable to load the implicit shared object.
+OSDLERROR: (null)/tb_top/sv/_sv_export.so: cannot open shared object file: No such file or directory or file is not valid ELFCLASS32 library..
+ncsim: *W,SCPINV: Dynamic scope `uvm_pkg::uvm_root@1011_1.run_test' no longer valid - traversing to last valid scope `tb_top'.
+ncsim: *W,DSEM2009: This SystemVerilog design is simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
+Loaded snapshot worklib.tb_top:sv
+ncsim> run
+----------------------------------------------------------------
+CDNS-UVM-1.1d (15.20-s044)
+(C) 2007-2013 Mentor Graphics Corporation
+(C) 2007-2013 Cadence Design Systems, Inc.
+(C) 2006-2013 Synopsys, Inc.
+(C) 2011-2013 Cypress Semiconductor Corp.
+----------------------------------------------------------------
+
+  ***********       IMPORTANT RELEASE NOTES         ************
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_NO_DEPRECATED undefined.
+  See http://www.eda.org/svdb/view.php?id=3313 for more details.
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+  See http://www.eda.org/svdb/view.php?id=3770 for more details.
+
+      (Specify +UVM_NO_RELNOTES to turn off this notice)
+
+UVM_INFO @ 0: reporter [RNTST] Running test i2c_transmit_receive_test...
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 8391000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 8460000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 8460000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 99291000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(138) @ 103490000: uvm_test_top.wb_i2c_env.wb_i2c_sb [EXP_I2C_TRANS_ITEM] ini_trns_mem_addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 190191000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x00] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 190191000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x00] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 190191000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 0 	 Act Init Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 281091000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 281091000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: 5f 	 Act Transmit Data :: 5f 	 Exp Mem Addr :: 0 	 Act Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 371991000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 371991000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: 8c 	 Act Transmit Data :: 8c 	 Exp Mem Addr :: 1 	 Act Mem Addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 462891000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 462891000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: 6b 	 Act Transmit Data :: 6b 	 Exp Mem Addr :: 2 	 Act Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 553791000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 553791000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: bf 	 Act Transmit Data :: bf 	 Exp Mem Addr :: 3 	 Act Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 567931000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 568000000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 568000000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 576011000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 576080000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 576080000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 666911000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 757811000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x00] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 757811000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x00] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 757811000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 0 	 Act Init Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 769931000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 769940000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 770000000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 860831000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 79 	 Actual {Slv Addr, Wr/Rd Bit} :: 79
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 951731000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 955900000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 5f 	 Act Recv Data :: 5f 	 Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 1042631000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 1046820000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 8c 	 Act Recv Data :: 8c 	 Mem Addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 1133531000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 1137700000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 6b 	 Act Recv Data :: 6b 	 Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(272) @ 1224431000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_NACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR NACK
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 1238571000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 1238640000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 1238640000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 1238700000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: bf 	 Act Recv Data :: bf 	 Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 1246651000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 1246720000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 1246720000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 1337551000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(138) @ 1341770000: uvm_test_top.wb_i2c_env.wb_i2c_sb [EXP_I2C_TRANS_ITEM] ini_trns_mem_addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 1428451000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x01] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 1428451000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x01] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 1428451000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 1 	 Act Init Mem Addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 1519351000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 1519351000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: 55 	 Act Transmit Data :: 55 	 Exp Mem Addr :: 1 	 Act Mem Addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 1610251000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 1610251000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: f0 	 Act Transmit Data :: f0 	 Exp Mem Addr :: 2 	 Act Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 1701151000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 1701151000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: 24 	 Act Transmit Data :: 24 	 Exp Mem Addr :: 3 	 Act Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 1715291000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 1715360000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 1715360000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 1723371000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 1723440000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 1723440000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 1814271000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 1905171000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x00] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 1905171000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x00] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 1905171000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 0 	 Act Init Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 1917291000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 1917300000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 1917360000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 2008191000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 79 	 Actual {Slv Addr, Wr/Rd Bit} :: 79
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 2099091000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 2103260000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 5f 	 Act Recv Data :: 5f 	 Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 2189991000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 2194180000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 55 	 Act Recv Data :: 55 	 Mem Addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 2280891000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 2285060000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: f0 	 Act Recv Data :: f0 	 Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(272) @ 2371791000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_NACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR NACK
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 2385931000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 2386000000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 2386000000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 2386060000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 24 	 Act Recv Data :: 24 	 Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 2394011000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 2394080000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 2394080000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 2484911000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(138) @ 2489130000: uvm_test_top.wb_i2c_env.wb_i2c_sb [EXP_I2C_TRANS_ITEM] ini_trns_mem_addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 2575811000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x02] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 2575811000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x02] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 2575811000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 2 	 Act Init Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 2666711000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 2666711000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: b2 	 Act Transmit Data :: b2 	 Exp Mem Addr :: 2 	 Act Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 2757611000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 2757611000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: 4b 	 Act Transmit Data :: 4b 	 Exp Mem Addr :: 3 	 Act Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 2771751000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 2771820000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 2771820000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 2779831000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 2779900000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 2779900000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 2870731000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 2961631000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x00] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 2961631000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x00] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 2961631000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 0 	 Act Init Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 2973751000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 2973760000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 2973820000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 3064651000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 79 	 Actual {Slv Addr, Wr/Rd Bit} :: 79
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 3155551000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 3159740000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 5f 	 Act Recv Data :: 5f 	 Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 3246451000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 3250620000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 55 	 Act Recv Data :: 55 	 Mem Addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 3337351000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 3341540000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: b2 	 Act Recv Data :: b2 	 Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(272) @ 3428251000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_NACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR NACK
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 3442391000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 3442460000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 3442460000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 3442540000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 4b 	 Act Recv Data :: 4b 	 Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 3450471000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 3450540000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 3450540000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 3541371000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(138) @ 3545570000: uvm_test_top.wb_i2c_env.wb_i2c_sb [EXP_I2C_TRANS_ITEM] ini_trns_mem_addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 3632271000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x03] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 3632271000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x03] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 3632271000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 3 	 Act Init Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(227) @ 3723171000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [TRANS_DATA_ACK_DETECT] 	=============>>		DATA TRANSMITTED :: SUPERVISOR ==>> SUBORDINATE ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(240) @ 3723171000: uvm_test_top.wb_i2c_env.wb_i2c_sb [DATA_TRANSFER_PASSED] 	#############>>	Exp Transmit Data :: 96 	 Act Transmit Data :: 96 	 Exp Mem Addr :: 3 	 Act Mem Addr :: 3
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 3737311000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 3737380000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 3737380000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 3745391000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 3745460000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 3745460000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 3836291000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 78 	 Actual {Slv Addr, Wr/Rd Bit} :: 78
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(195) @ 3927191000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		[0x00] MEMORY ADDRESS TRANSMITTED TO THE SUBORDINATE
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(196) @ 3927191000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [MEM_ACK_DETECT] 		=============>>		MEMORY @[0x00] ACKNOWLEDGED :: SUBORDINATE ==>> SUPERVISOR
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(230) @ 3927191000: uvm_test_top.wb_i2c_env.wb_i2c_sb [MEMORY_TRANSFER_PASSED] 	#############>>	Exp Init Mem Addr :: 0 	 Act Init Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(80) @ 3939311000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [START_BIT_DETECT] 		=============>>		START BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(13) @ 3939320000: reporter [START_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(26) @ 3939380000: reporter [START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 1, Actual :: 1
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(220) @ 4030211000: uvm_test_top.wb_i2c_env.wb_i2c_sb [SLVADR_TRANSFER_PASSED] 	#############>>	Expected {Slv Addr, Wr/Rd Bit} :: 79 	 Actual {Slv Addr, Wr/Rd Bit} :: 79
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 4121111000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 4125300000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 5f 	 Act Recv Data :: 5f 	 Mem Addr :: 0
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 4212011000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 4216180000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 55 	 Act Recv Data :: 55 	 Mem Addr :: 1
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(255) @ 4302911000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_ACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR ACK
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 4307100000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: b2 	 Act Recv Data :: b2 	 Mem Addr :: 2
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(272) @ 4393811000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [RECV_DATA_NACK_DETECT] 	=============>>		DATA RECEIVED :: SUBORDINATE ==>> SUPERVISOR NACK
+UVM_INFO ../tb/agent/i2c_master//i2c_monitor.sv(98) @ 4407951000: uvm_test_top.wb_i2c_env.i2c_agt.i2c_mtr [STOP_BIT_DETECT] 		=============>>		STOP BIT DETECTED
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(57) @ 4408020000: reporter [STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/test_lib//../asserts/i2c_asserts.sv(44) @ 4408020000: reporter [STOP_CONDITION_ASSERTION_PASSED_SEQUENCE] Expected :: 0, Actual :: 0
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(190) @ 4408100000: uvm_test_top.wb_i2c_env.wb_i2c_sb [RECV_TRANSFER_PASSED] 	#############>>	Exp Recv Data :: 96 	 Act Recv Data :: 96 	 Mem Addr :: 3
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(267) @ 4508100000: uvm_test_top.wb_i2c_env.wb_i2c_sb [wb_i2c_scoreboard] -----------------------------------------
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(268) @ 4508100000: uvm_test_top.wb_i2c_env.wb_i2c_sb [wb_i2c_scoreboard] |---           TEST PASSED           ---|
+UVM_INFO ../tb/env//wb_i2c_scoreboard.sv(269) @ 4508100000: uvm_test_top.wb_i2c_env.wb_i2c_sb [wb_i2c_scoreboard] -----------------------------------------
+
+--- UVM Report catcher Summary ---
+
+
+Number of demoted UVM_FATAL reports  :    0
+Number of demoted UVM_ERROR reports  :    0
+Number of demoted UVM_WARNING reports:    0
+Number of caught UVM_FATAL reports   :    0
+Number of caught UVM_ERROR reports   :    0
+Number of caught UVM_WARNING reports :    0
+
+--- UVM Report Summary ---
+
+** Report counts by severity
+UVM_INFO :  156
+UVM_WARNING :    0
+UVM_ERROR :    0
+UVM_FATAL :    0
+** Report counts by id
+[DATA_TRANSFER_PASSED]    10
+[EXP_I2C_TRANS_ITEM]     4
+[MEMORY_TRANSFER_PASSED]     8
+[MEM_ACK_DETECT]    16
+[RECV_DATA_ACK_DETECT]    12
+[RECV_DATA_NACK_DETECT]     4
+[RECV_TRANSFER_PASSED]    16
+[RNTST]     1
+[SLVADR_TRANSFER_PASSED]    12
+[START_BIT_DETECT]    12
+[START_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK]    12
+[START_CONDITION_ASSERTION_PASSED_SEQUENCE]    12
+[STOP_BIT_DETECT]     8
+[STOP_CONDITION_ASSERTION_PASSED_ALWAYS_BLOCK]     8
+[STOP_CONDITION_ASSERTION_PASSED_SEQUENCE]     8
+[TRANS_DATA_ACK_DETECT]    10
+[wb_i2c_scoreboard]     3
+Simulation complete via $finish(1) at time 4508100 NS + 45
+/tools/cadence/IUS/tools/methodology/UVM/CDNS-1.1d/sv/src/base/uvm_root.svh:457     $finish;
+ncsim> ^C
+ncsim> exit
+TOOL:	irun	15.20-s044: Exiting on May 15, 2023 at 10:16:45 BDT  (total: 00:04:32)

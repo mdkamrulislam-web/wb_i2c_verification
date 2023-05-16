@@ -1,0 +1,24 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
+-INCDIR
+../rtl/
+-INCDIR
+../tb/test_lib/
+-INCDIR
+../tb/sequence_lib/
+-INCDIR
+../tb/env/
+-INCDIR
+../tb/agent/i2c_master/
+-INCDIR
+../tb/agent/wb_master/
+-INCDIR
+../tb/defines/
+-I_INCDIR
+/tools/cadence/IUS/tools/methodology/UVM/CDNS-1.1d/sv/src
+-DEFINE
+USE_PARAMETERIZED_WRAPPER
+-I_INCDIR
+/tools/cadence/IUS/tools/methodology/UVM/CDNS-1.1d/additions/sv

@@ -1,0 +1,14 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
+-timescale
+1ns/1ps
+-f
+filelist.f
+-access
++rwc
+-uvm
++UVM_TESTNAME=i2c_transmit_receive_test
++UVM_VERBOSITY=UVM_NONE
+-gui

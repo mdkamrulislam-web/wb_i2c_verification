@@ -1,0 +1,30 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
++UVM_VERBOSITY=UVM_NONE
++incdir+../rtl/
++incdir+../tb/test_lib/
++incdir+../tb/sequence_lib/
++incdir+../tb/env/
++incdir+../tb/agent/i2c_master/
++incdir+../tb/agent/wb_master/
++incdir+../tb/defines/
+-loadpli
+/tools/cadence/IUS/tools/methodology/UVM/CDNS-1.1d/additions/sv/lib/libuvmpli.so:uvm_pli_boot
+-timescale
+1ns/1ps
+-ACCESS
++rwc
++UVM_TESTNAME=i2c_transmit_receive_test
+-MESSAGES
+-XLMODE
+./INCA_libs/irun.lnx86.15.20.nc
+-RUNMODE
+-CDSLIB
+./INCA_libs/irun.lnx86.15.20.nc/cds.lib
+-HDLVAR
+./INCA_libs/irun.lnx86.15.20.nc/hdl.var
+-WORK
+worklib
+-HASXLMODE
